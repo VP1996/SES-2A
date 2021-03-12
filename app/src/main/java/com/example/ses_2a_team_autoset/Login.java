@@ -15,6 +15,7 @@ import androidx.appcompat.app.AlertDialog;
 import android.content.Intent;
 import android.text.TextUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,7 +29,8 @@ public class Login extends AppCompatActivity {
     Button btSubmit;
     //Firebase
     FirebaseDatabase database;
-    DatabaseReference users;
+    DatabaseReference DRef;
+    //String currentUserId;
 
 
     @Override
@@ -38,7 +40,10 @@ public class Login extends AppCompatActivity {
 
         //Firebase
         database = FirebaseDatabase.getInstance("https://ses-2a-studybuddies-default-rtdb.firebaseio.com/");
-        users = database.getReference("Users");
+        DRef = database.getReference("Users");
+
+
+
 
         etUsername = findViewById(R.id.et_userID);
         etPassword = findViewById(R.id.et_password);
@@ -59,20 +64,20 @@ public class Login extends AppCompatActivity {
     }
 
     private void logIn(final String UID, final String UPassword) {
-        users.addListenerForSingleValueEvent(new ValueEventListener() {
+        DRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.child(UID).exists()){
                     if(!UID.isEmpty()){
-                        String password = dataSnapshot.child(UID).child("Password").getValue().toString();
+                        String password = dataSnapshot.child(UID).child("password").getValue().toString();
                         if(password.equals(UPassword)){
-                            String type = dataSnapshot.child(UID).child("Type").getValue().toString();
+                            String type = dataSnapshot.child(UID).child("type").getValue().toString();
                             if(type.equals("Student")){
                                 Toast.makeText(Login.this, "Success Login", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(Login.this, HomeScreenStaff.class));
+                                startActivity(new Intent(Login.this, HomeScreenStudent.class));
                             }else if(type.equals("Staff")){
                                 Toast.makeText(Login.this, "Success Login", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(Login.this, HomeScreenStudent.class));
+                                startActivity(new Intent(Login.this, HomeScreenStaff.class));
                             }else
                                 Toast.makeText(Login.this, "Wrong type", Toast.LENGTH_SHORT).show();
 
@@ -86,7 +91,7 @@ public class Login extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                    //custom code
+                Toast.makeText(Login.this, "****NOT FOUND****", Toast.LENGTH_SHORT).show();
             }
         });
 

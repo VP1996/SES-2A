@@ -9,6 +9,33 @@
     android:gravity="center"
     tools:context=".HomeScreenStaff">
 
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome back "/>
+    <Button
+        android:id="@+id/btn_regnew"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Register New Student"
+        android:textColor="@android:color/white" />
+    <Button
+        android:id="@+id/btn_subjectlist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View Subject List"
+        android:textColor="@android:color/white" />
+    <Button
+        android:id="@+id/btn_replytoreq"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reply to requests"
+        android:textColor="@android:color/white" />
+    <Button
+        android:id="@+id/btn_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Log Out"
+        android:textColor="@android:color/white" />
 
 </LinearLayout>
