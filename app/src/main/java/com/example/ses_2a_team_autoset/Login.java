@@ -31,6 +31,8 @@ public class Login extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference DRef;
     //String currentUserId;
+    CurrentUser user;
+
 
 
     @Override
@@ -41,6 +43,7 @@ public class Login extends AppCompatActivity {
         //Firebase
         database = FirebaseDatabase.getInstance("https://ses-2a-studybuddies-default-rtdb.firebaseio.com/");
         DRef = database.getReference("Users");
+
 
 
 
@@ -72,6 +75,12 @@ public class Login extends AppCompatActivity {
                         String password = dataSnapshot.child(UID).child("password").getValue().toString();
                         if(password.equals(UPassword)){
                             String type = dataSnapshot.child(UID).child("type").getValue().toString();
+                            user = new CurrentUser();
+                            user.setID(UID);
+                            user.setFirstName(dataSnapshot.child(UID).child("firstName").getValue().toString());
+                            user.setLastName(dataSnapshot.child(UID).child("lastName").getValue().toString());
+
+
                             if(type.equals("Student")){
                                 Toast.makeText(Login.this, "Success Login", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(Login.this, HomeScreenStudent.class));
