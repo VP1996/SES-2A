@@ -35,12 +35,14 @@
         android:layout_height="wrap_content"
         android:text="Log Out"
         android:textColor="@android:color/white" />
-    <Button
-        android:id="@+id/btn_subjectlist"
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="View Subject List"
-        android:textColor="@android:color/white" />
+        android:text="List of subjects:"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        android:textStyle="bold|italic" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvAdmin1"
         android:layout_width="match_parent"

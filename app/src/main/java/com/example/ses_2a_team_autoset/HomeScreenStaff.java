@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 public class HomeScreenStaff extends AppCompatActivity {
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private AdapterForSubjects mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     public TextView welocmeTXT;
     String curretnuser;
@@ -64,12 +64,24 @@ public class HomeScreenStaff extends AppCompatActivity {
                                 if(dataSnapshot.exists()){
                                     subjectList.add(new AddSubjectToSubjectView(dataSnapshot.getValue().toString()));
 
+
                                     mRecyclerView = findViewById(R.id.rvAdmin1);
                                     mRecyclerView.setHasFixedSize(true);
                                     mLayoutManager = new LinearLayoutManager(HomeScreenStaff.this);
                                     mAdapter = new AdapterForSubjects(subjectList);
                                     mRecyclerView.setLayoutManager(mLayoutManager);
                                     mRecyclerView.setAdapter(mAdapter);
+                                    mAdapter.setOnItemClickListener(new AdapterForSubjects.OnItemClickListener() {
+                                        @Override
+                                        public void onItemClick(int position) {
+                                            String subject = subjectList.get(position).getSubject1();
+                                            Intent intent = new Intent(HomeScreenStaff.this, SubjectClassesAdmin.class);
+                                            intent.putExtra("subject", subject);
+                                            startActivity(intent);
+                                        }
+                                    });
+
+
 
                                 }else {
                                     Toast.makeText(HomeScreenStaff.this, "Not found", Toast.LENGTH_SHORT).show();
@@ -96,7 +108,6 @@ public class HomeScreenStaff extends AppCompatActivity {
 
 
         welocmeTXT = findViewById(R.id.welocmetxt);
-        btSubjectList = findViewById(R.id.btn_subjectlist);
         btLogOut = findViewById(R.id.btn_logout);
         btRequests = findViewById(R.id.btn_replytoreq);
         btRegisterNewStudent = findViewById(R.id.btn_regnew);
@@ -113,12 +124,6 @@ public class HomeScreenStaff extends AppCompatActivity {
             }
         });
 
-        btSubjectList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(HomeScreenStaff.this, "LOL no....", Toast.LENGTH_SHORT).show();
-            }
-        });
         btRequests.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
