@@ -7,32 +7,107 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class HomeScreenStudent  extends AppCompatActivity {
+    private RecyclerView mRecyclerView;
+    private AdapterForSubjects mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    public TextView welocmeTXT;
+    String curretnuser;
 
+    CurrentUser user;
 
-    Button btSubjectList,btLogOut;
+    Button btProfile,btLogOut;
     //Firebase
-    FirebaseDatabase database;
-    DatabaseReference users;
+    private DatabaseReference reff1;
+    private DatabaseReference reffy1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homescreen_student);
+        String ID = user.getID();
 
-        //database = FirebaseDatabase.getInstance("https://ses-2a-studybuddies-default-rtdb.firebaseio.com/");
-        //users = database.getReference("Users");
+        reff1 = FirebaseDatabase.getInstance().getReference().child("Users").child(ID).child("Subjects");
+        ArrayList<AddSubjectToSubjectView> subjectList = new ArrayList<>();
+
+        reff1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    float count = dataSnapshot.getChildrenCount();
+                    for (int i = 1; i <= count; i++){
+                        String temp = String.valueOf(i);
+                        reffy1 = FirebaseDatabase.getInstance().getReference().child("Users").child(ID).child("Subjects").child(temp);
+                        reffy1.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if(dataSnapshot.exists()){
+                                    subjectList.add(new AddSubjectToSubjectView(dataSnapshot.getValue().toString()));
 
 
-        btSubjectList = findViewById(R.id.btn_subjectlist);
+                                    mRecyclerView = findViewById(R.id.rvStudent1);
+                                    mRecyclerView.setHasFixedSize(true);
+                                    mLayoutManager = new LinearLayoutManager(HomeScreenStudent.this);
+                                    mAdapter = new AdapterForSubjects(subjectList);
+                                    mRecyclerView.setLayoutManager(mLayoutManager);
+                                    mRecyclerView.setAdapter(mAdapter);
+                                    mAdapter.setOnItemClickListener(new AdapterForSubjects.OnItemClickListener() {
+                                        @Override
+                                        public void onItemClick(int position) {
+                                            String subject = subjectList.get(position).getSubject1();
+                                            Intent intent = new Intent(HomeScreenStudent.this, SubjectClassesStudent.class);
+                                            intent.putExtra("subject", subject);
+                                            startActivity(intent);
+                                        }
+                                    });
+
+
+
+                                }else {
+                                    Toast.makeText(HomeScreenStudent.this, "Not found", Toast.LENGTH_SHORT).show();
+                                }
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                Toast.makeText(HomeScreenStudent.this, "Not found", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }else {
+                    Toast.makeText(HomeScreenStudent.this, "Not found", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        welocmeTXT = findViewById(R.id.welocmetxt);
+        btProfile = findViewById(R.id.btn_Profile);
         btLogOut = findViewById(R.id.btn_logout);
+
+        curretnuser = "Welocome " + user.getFirstName()+" "+ user.getLastName();
+        welocmeTXT.setText(curretnuser);
 
         btLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,12 +116,13 @@ public class HomeScreenStudent  extends AppCompatActivity {
             }
         });
 
-        btSubjectList.setOnClickListener(new View.OnClickListener() {
+        btProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(HomeScreenStudent.this, "LOL no....", Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
 }
