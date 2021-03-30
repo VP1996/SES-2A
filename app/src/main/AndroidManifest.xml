@@ -28,6 +28,8 @@
             android:label="@string/app_name"/>
         <activity android:name=".SubjectClassesStudent"
             android:label="@string/app_name"/>
+        <activity android:name=".RequestPage"
+            android:label="@string/app_name"/>
 
     </application>
 
