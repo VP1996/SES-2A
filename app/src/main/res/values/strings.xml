@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">SES_2A_team_autoset</string>
+    <string name="app_name">Study Buddies</string>
+    <string name="invalid_login">Invalid ID or Password</string>
 </resources>

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "427109313626",
+    "project_id": "ses-2a-studybuddies",
+    "storage_bucket": "ses-2a-studybuddies.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:427109313626:android:8aa56f42be53cce088fc63",
+        "android_client_info": {
+          "package_name": "com.example.ses_2a_team_autoset"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "427109313626-37rog6k4j7t1lbp64vhvktnog7674k04.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSn2C1yDy1YQoUZIrPV-RE4obY3yB5sXo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "427109313626-37rog6k4j7t1lbp64vhvktnog7674k04.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
