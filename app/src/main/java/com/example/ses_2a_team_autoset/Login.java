@@ -22,8 +22,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-
-
 public class Login extends AppCompatActivity {
     EditText etUsername,etPassword;
     Button btSubmit;
@@ -32,8 +30,6 @@ public class Login extends AppCompatActivity {
     DatabaseReference DRef;
     //String currentUserId;
     CurrentUser user;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,26 +40,17 @@ public class Login extends AppCompatActivity {
         database = FirebaseDatabase.getInstance("https://ses-2a-studybuddies-default-rtdb.firebaseio.com/");
         DRef = database.getReference("Users");
 
-
-
-
-
         etUsername = findViewById(R.id.et_userID);
         etPassword = findViewById(R.id.et_password);
         btSubmit = findViewById(R.id.bt_login);
-
-
 
         btSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 logIn(etUsername.getText().toString(),
                         etPassword.getText().toString());
-
             }
         });
-
-
     }
 
     private void logIn(final String UID, final String UPassword) {
@@ -103,7 +90,6 @@ public class Login extends AppCompatActivity {
                 Toast.makeText(Login.this, "****NOT FOUND****", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
 }

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,11 +26,10 @@ public class HomeScreenStaff extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private AdapterForSubjects mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    public TextView welocmeTXT;
-    String curretnuser;
+    public TextView welcomeTXT;
+    String currentUser;
 
     CurrentUser user;
-
 
     Button btSubjectList,btLogOut,btRegisterNewStudent,btRequests;
     //Firebase
@@ -47,9 +45,6 @@ public class HomeScreenStaff extends AppCompatActivity {
         reff1 = FirebaseDatabase.getInstance().getReference().child("Users").child(ID).child("Subjects");
         ArrayList<AddSubjectToSubjectView> subjectList = new ArrayList<>();
 
-
-
-
         reff1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -63,7 +58,6 @@ public class HomeScreenStaff extends AppCompatActivity {
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 if(dataSnapshot.exists()){
                                     subjectList.add(new AddSubjectToSubjectView(dataSnapshot.getValue().toString()));
-
 
                                     mRecyclerView = findViewById(R.id.rvAdmin1);
                                     mRecyclerView.setHasFixedSize(true);
@@ -80,13 +74,9 @@ public class HomeScreenStaff extends AppCompatActivity {
                                             startActivity(intent);
                                         }
                                     });
-
-
-
                                 }else {
                                     Toast.makeText(HomeScreenStaff.this, "Not found", Toast.LENGTH_SHORT).show();
                                 }
-
                             }
 
                             @Override
@@ -106,16 +96,13 @@ public class HomeScreenStaff extends AppCompatActivity {
             }
         });
 
-
-        welocmeTXT = findViewById(R.id.welocmetxt);
+        welcomeTXT = findViewById(R.id.welcometxt);
         btLogOut = findViewById(R.id.btn_logout);
         btRequests = findViewById(R.id.btn_replytoreq);
         btRegisterNewStudent = findViewById(R.id.btn_regnew);
 
-        curretnuser = "Welocome " + user.getFirstName()+" "+ user.getLastName();
-        welocmeTXT.setText(curretnuser);
-
-
+        currentUser = "Welcome " + user.getFirstName()+" "+ user.getLastName();
+        welcomeTXT.setText(currentUser);
 
         btLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,5 +124,4 @@ public class HomeScreenStaff extends AppCompatActivity {
             }
         });
     }
-
 }

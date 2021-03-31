@@ -61,9 +61,6 @@ public class AdapterForSubjects extends RecyclerView.Adapter<AdapterForSubjects.
         AddSubjectToSubjectView currentItem = mSubjectList.get(position);
 
         holder.mTextView1.setText(currentItem.getSubject1());
-
-
-
     }
 
     @Override

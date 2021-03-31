@@ -6,11 +6,7 @@ public class CurrentUser {
     private static String LastName;
     private static String ID;
 
-
-
     //private String Subject1;
-
-
     public static String getFirstName() {
         return CurrentUser.FirstName;
     }

@@ -14,7 +14,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class Register extends AppCompatActivity {
 
-
     EditText etFName,etLName,etStudentID,etEmail,etPassword;
     Button btRegister,btGoBack;
     Person newPerson;
@@ -49,7 +48,6 @@ public class Register extends AppCompatActivity {
         btRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
                 if(TextUtils.isEmpty(etFName.getText().toString().trim())) {
                     etFName.setError("First Name is Required.");

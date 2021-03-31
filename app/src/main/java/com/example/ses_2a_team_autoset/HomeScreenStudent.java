@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,8 +26,8 @@ public class HomeScreenStudent  extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private AdapterForSubjects mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    public TextView welocmeTXT;
-    String curretnuser;
+    public TextView welcomeTXT;
+    String currentuser;
 
     CurrentUser user;
 
@@ -102,12 +101,12 @@ public class HomeScreenStudent  extends AppCompatActivity {
             }
         });
 
-        welocmeTXT = findViewById(R.id.welocmetxt);
+        welcomeTXT = findViewById(R.id.welcometxt);
         btProfile = findViewById(R.id.btn_Profile);
         btLogOut = findViewById(R.id.btn_logout);
 
-        curretnuser = "Welocome " + user.getFirstName()+" "+ user.getLastName();
-        welocmeTXT.setText(curretnuser);
+        currentuser = "Welcome " + user.getFirstName()+" "+ user.getLastName();
+        welcomeTXT.setText(currentuser);
 
         btLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,7 +121,5 @@ public class HomeScreenStudent  extends AppCompatActivity {
                 Toast.makeText(HomeScreenStudent.this, "LOL no....", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
-
 }

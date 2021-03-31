@@ -18,8 +18,5 @@ public class SubjectClassesAdmin extends AppCompatActivity {
         ClassName = findViewById(R.id.SubjectName);
 
         ClassName.setText(subject);
-
-
-
     }
 }
