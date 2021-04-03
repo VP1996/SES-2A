@@ -70,7 +70,7 @@ public class Login extends AppCompatActivity {
 
                             if(type.equals("Student")){
                                 Toast.makeText(Login.this, "Success Login", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(Login.this, HomeScreenStudent.class));
+                                startActivity(new Intent(Login.this, QuizPageOne.class));
                             }else if(type.equals("Staff")){
                                 Toast.makeText(Login.this, "Success Login", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(Login.this, HomeScreenStaff.class));

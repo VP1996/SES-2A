@@ -75,9 +75,6 @@ public class HomeScreenStudent  extends AppCompatActivity {
                                             startActivity(intent);
                                         }
                                     });
-
-
-
                                 }else {
                                     Toast.makeText(HomeScreenStudent.this, "Not found", Toast.LENGTH_SHORT).show();
                                 }

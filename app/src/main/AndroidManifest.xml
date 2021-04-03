@@ -30,6 +30,8 @@
             android:label="@string/app_name"/>
         <activity android:name=".RequestPage"
             android:label="@string/app_name"/>
+        <activity android:name=".QuizPageOne"
+            android:label="@string/app_name"/>
 
     </application>
 
