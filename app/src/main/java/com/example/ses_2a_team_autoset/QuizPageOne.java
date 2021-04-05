@@ -30,7 +30,7 @@ public class QuizPageOne extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(QuizPageOne.this, HomeScreenStudent.class));
+                startActivity(new Intent(QuizPageOne.this, QuizPageTwo.class));
             }
         });
     }
