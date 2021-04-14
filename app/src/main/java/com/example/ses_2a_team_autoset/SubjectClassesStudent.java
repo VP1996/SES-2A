@@ -5,21 +5,29 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-import javax.security.auth.Subject;
+import java.util.ArrayList;
 
 public class SubjectClassesStudent extends AppCompatActivity {
 
     Button btnlogout, btnback, btnprofile;
     public TextView ClassName;
-
+    DatabaseReference reference;
+    RecyclerView recyclerView;
+    ArrayList<Studentdetails> list;
+    Myadapter adapter;
 
     @Override
 
@@ -27,9 +35,32 @@ public class SubjectClassesStudent extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.subjclass_student);
 
+            recyclerView = (RecyclerView) findViewById(R.id.myRecyclerstudent);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+
+            reference = FirebaseDatabase.getInstance().getReference().child("Users").child("ID").child("Subjects");
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    list = new ArrayList<Studentdetails>();
+                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                        Studentdetails p = dataSnapshot1.getValue(Studentdetails.class);
+                        list.add(p);
+                    }
+                    adapter = new Myadapter(SubjectClassesStudent.this, list);
+                    recyclerView.setAdapter(adapter);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(SubjectClassesStudent.this, "Opsss.... Something is wrong", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+
         Bundle bundle = getIntent().getExtras();
         String subject = bundle.getString("subject");
-
 
 
         ClassName = findViewById(R.id.SubjectName);
@@ -40,23 +71,23 @@ public class SubjectClassesStudent extends AppCompatActivity {
 
         ClassName.setText(subject);
         btnlogout.setOnClickListener(new View.OnClickListener() {
-@Override
-public void onClick(View v) {
-        startActivity(new Intent(SubjectClassesStudent.this, Login.class));
-        }
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SubjectClassesStudent.this, Login.class));
+            }
         });
         btnback.setOnClickListener(new View.OnClickListener() {
-@Override
-public void onClick(View v) {
-        startActivity(new Intent(SubjectClassesStudent.this, HomeScreenStudent.class));
-        }
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SubjectClassesStudent.this, HomeScreenStudent.class));
+            }
         });
         btnprofile.setOnClickListener(new View.OnClickListener() {
-@Override
-public void onClick(View v) {
-        startActivity(new Intent(SubjectClassesStudent.this, Profile.class));
-        }
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SubjectClassesStudent.this, Profile.class));
+            }
         });
 
 
-        }}
+    }}

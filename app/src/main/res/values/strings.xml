@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">Study Buddies</string>
     <string name="invalid_login">Invalid ID or Password</string>
+    <string name="subject">Subject: </string>
+    <string name="time">Time: </string>
+    <string name="location">Location: </string>
+    <string name="group">Group: </string>
+    <string name="request">Request Change </string>
+
+
 </resources>

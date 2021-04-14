@@ -24,14 +24,7 @@
             android:text="Back"
             android:layout_alignParentLeft="true" />
 
-        <TextView
-            android:id="@+id/rvSubject1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sample"
-            android:textColor="@android:color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+
         <Button
             android:id="@+id/btn_profile_student"
             android:layout_width="wrap_content"
@@ -64,6 +57,23 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/myRecyclerstudent"/>
+
+
+    </RelativeLayout>
 
 
 
