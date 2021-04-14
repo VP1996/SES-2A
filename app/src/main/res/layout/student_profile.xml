@@ -22,6 +22,17 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <Button
+                android:id="@+id/btn_home_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Home"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
                 android:id="@+id/title_studentProfile"
                 android:layout_width="wrap_content"
@@ -39,9 +50,9 @@
                 android:id="@+id/rellay_profile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="32dp"
+                android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginRight="32dp"
+                android:layout_marginRight="16dp"
                 android:background="@color/purple_500"
                 android:paddingBottom="30dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -220,6 +231,38 @@
                     android:paddingBottom="8dp"
                     android:background="#EEEEEE"
                     android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_studentSubjects"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_studentLevel"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginRight="32dp"
+                    android:gravity="center_vertical"
+                    android:text="Student Subjects"
+                    android:paddingLeft="16dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:background="#EEEEEE"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_studentAvailabilities"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_studentSubjects"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginRight="32dp"
+                    android:gravity="center_vertical"
+                    android:text="Student Availabilities"
+                    android:paddingLeft="16dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:background="#EEEEEE"
+                    android:textSize="18sp" />
             </RelativeLayout>
 
             <LinearLayout
@@ -235,16 +278,16 @@
                     android:id="@+id/btn_edit_profile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Edit"
+                    android:text="Edit Profile"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <Button
-                    android:id="@+id/btn_view_quiz"
+                    android:id="@+id/btn_edit_quiz_answers"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="6dp"
-                    android:text="View quiz answers"
+                    android:text="Edit quiz answers"
                     app:layout_constraintEnd_toEndOf="parent" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
