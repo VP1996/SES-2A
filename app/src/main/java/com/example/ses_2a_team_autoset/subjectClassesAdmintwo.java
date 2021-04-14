@@ -7,16 +7,14 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
-public class SubjectClassesAdmin extends AppCompatActivity {
+class SubjectClassesAdmintwo extends AppCompatActivity {
     Button btnlogout, btnback, btnmailbox;
     public TextView ClassName;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.subjclass_admin);
+        setContentView(R.layout.subjclass_admin_two);
 
         Bundle bundle = getIntent().getExtras();
         String subject = bundle.getString("subject");
@@ -29,22 +27,21 @@ public class SubjectClassesAdmin extends AppCompatActivity {
         btnlogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(SubjectClassesAdmin.this, Login.class));
+                startActivity(new Intent(SubjectClassesAdmintwo.this, Login.class));
             }
         });
         btnback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(SubjectClassesAdmin.this, HomeScreenStaff.class));
+                startActivity(new Intent(SubjectClassesAdmintwo.this, SubjectClassesAdmin.class));
             }
         });
         btnmailbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(SubjectClassesAdmin.this, Mailbox.class));
+                startActivity(new Intent(SubjectClassesAdmintwo.this, Mailbox.class));
             }
         });
         ClassName.setText(subject);
     }
 }
-
