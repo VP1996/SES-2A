@@ -115,7 +115,7 @@ public class HomeScreenStudent  extends AppCompatActivity {
         btProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(HomeScreenStudent.this, "LOL no....", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(HomeScreenStudent.this, StudentProfile.class));
             }
         });
     }
