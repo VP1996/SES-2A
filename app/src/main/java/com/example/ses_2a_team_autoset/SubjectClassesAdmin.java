@@ -2,7 +2,9 @@ package com.example.ses_2a_team_autoset;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -13,10 +15,40 @@ public class SubjectClassesAdmin extends AppCompatActivity {
     Button btnlogout, btnback, btnmailbox;
     public TextView ClassName;
 
+
+    private FirebaseRecyclerOptions<Staffdetails> options;
+    private FirebaseRecyclerAdapter<Staffdetails, sAdapter> adapter;
+
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.subjclass_admin);
+
+        ref = FirebaseDatabase.getInstance().getReference().child("Student");
+        recyclerView = (RecyclerView) findViewById(R.id.myRecyclerstaff);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        options=new FirebaseRecyclerOptions.Builder<Staffdetails>().setQuery(ref, Staffdetails.class).build();
+        adapter= new FirebaseRecyclerAdapter<Staffdetails, SubjectClassesAdmin.sAdapter>(options) {
+            @Override
+            protected void onBindViewHolder(@NonNull SubjectClassesAdmin.sAdapter holder, int position, @NonNull Staffdetails model) {
+
+                holder.time.setText(model.getTime());
+                holder.id.setText(model.getId());
+                holder.group.setText(model.getGroup());
+                holder.name.setText(model.getName());
+
+
+            }
+
+            @NonNull
+            @Override
+            public SubjectClassesAdmin.sAdapter onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View s = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardviewstaff, parent, false);
+                return new SubjectClassesAdmin.sAdapter(s);
+            }
+        };
 
         Bundle bundle = getIntent().getExtras();
         String subject = bundle.getString("subject");
@@ -45,6 +77,44 @@ public class SubjectClassesAdmin extends AppCompatActivity {
             }
         });
         ClassName.setText(subject);
-    }
-}
+        btnlogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SubjectClassesAdmin.this, Login.class));
+            }
+        });
+        btnback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SubjectClassesAdmin.this, HomeScreenStaff.class));
+            }
+        });
+        btnmailbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SubjectClassesAdmin.this, Mailbox.class));
 
+            }
+        });
+        adapter.startListening();
+        recyclerView.setAdapter(adapter);
+
+    }
+
+
+    private class sAdapter extends RecyclerView.ViewHolder {
+
+        TextView time, id, group, name;
+        public sAdapter(@NonNull View itemView) {
+            super(itemView);
+
+            time= itemView.findViewById(R.id.time);
+            id= itemView.findViewById(R.id.id);
+            group = itemView.findViewById(R.id.group);
+            name = itemView.findViewById(R.id.name);
+
+        }
+    }
+
+
+}

@@ -2,23 +2,21 @@ package com.example.ses_2a_team_autoset;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
 
 public class SubjectClassesStudent extends AppCompatActivity {
 
@@ -26,8 +24,9 @@ public class SubjectClassesStudent extends AppCompatActivity {
     public TextView ClassName;
     DatabaseReference reference;
     RecyclerView recyclerView;
-    ArrayList<Studentdetails> list;
-    Myadapter adapter;
+
+    private FirebaseRecyclerOptions<Studentdetails> options;
+    private FirebaseRecyclerAdapter<Studentdetails, mAdapter> adapter;
 
     @Override
 
@@ -35,28 +34,30 @@ public class SubjectClassesStudent extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.subjclass_student);
 
-            recyclerView = (RecyclerView) findViewById(R.id.myRecyclerstudent);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        reference = FirebaseDatabase.getInstance().getReference().child("SubjectInfo");
+        recyclerView = (RecyclerView) findViewById(R.id.myRecyclerstudent);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        options=new FirebaseRecyclerOptions.Builder<Studentdetails>().setQuery(reference, Studentdetails.class).build();
+        adapter= new FirebaseRecyclerAdapter<Studentdetails, mAdapter>(options) {
+            @Override
+            protected void onBindViewHolder(@NonNull mAdapter holder, int position, @NonNull Studentdetails model) {
+
+                holder.time.setText(model.getTime());
+                holder.location.setText(model.getLocation());
+                holder.group.setText(model.getGroup());
 
 
-            reference = FirebaseDatabase.getInstance().getReference().child("Users").child("ID").child("Subjects");
-            reference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    list = new ArrayList<Studentdetails>();
-                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                        Studentdetails p = dataSnapshot1.getValue(Studentdetails.class);
-                        list.add(p);
-                    }
-                    adapter = new Myadapter(SubjectClassesStudent.this, list);
-                    recyclerView.setAdapter(adapter);
-                }
+            }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Toast.makeText(SubjectClassesStudent.this, "Opsss.... Something is wrong", Toast.LENGTH_SHORT).show();
-                }
-            });
+            @NonNull
+            @Override
+            public mAdapter onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardviewstudent, parent, false);
+                return new mAdapter(v);
+            }
+        };
+
 
 
         Bundle bundle = getIntent().getExtras();
@@ -89,5 +90,22 @@ public class SubjectClassesStudent extends AppCompatActivity {
             }
         });
 
+        adapter.startListening();
+        recyclerView.setAdapter(adapter);
 
-    }}
+    }
+
+
+    private class mAdapter extends RecyclerView.ViewHolder {
+
+        TextView time, location, group;
+        public mAdapter(@NonNull View itemView) {
+            super(itemView);
+
+            time= itemView.findViewById(R.id.time);
+            location= itemView.findViewById(R.id.location);
+            group = itemView.findViewById(R.id.group);
+
+        }
+    }
+}

@@ -1,65 +1,59 @@
 package com.example.ses_2a_team_autoset;
 
 public class Studentdetails {
-        private String subject;
-        private String time;
+        private String time;   // comes from the subject
         private String location;
         private String group;
-        private String request;
-        private boolean permission;
+        private String subject;
+
 
         public Studentdetails() {
         }
 
-        public Studentdetails(String subject, String time, String location,String group, boolean permission) {
-            this.subject = subject;
+        public Studentdetails( String time, String location,String group) {
+
             this.time = time;
             this.location = location;
             this.group = group;
 
-            this.permission = permission;
+
+
+
         }
 
-        public String getsubject() {
-            return subject;
-        }
+    public String getTime() {
+        return time;
+    }
 
-        public void setsubject(String subject) {
-            this.subject = subject;
-        }
+    public void setTime(String time) {
+        this.time = time;
+    }
 
-        public String gettime() {
-            return time;
-        }
+    public String getLocation() {
+        return location;
+    }
 
-        public void settime(String time) {
-            this.time = time;
-        }
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
-        public String getlocation() {
-            return location;
-        }
-
-        public void setlocation(String location) {
-            this.location = location;
-        }
-
-
-    public String getgroup() {
+    public String getGroup() {
         return group;
     }
 
-    public void setgroup(String group) {
+    public void setGroup(String group) {
         this.group = group;
     }
 
-
-
-    public boolean getPermission() {
-            return permission;
-        }
-
-        public void setPermission(boolean permission) {
-            this.permission = permission;
-        }
+    public String getSubject() {
+        return subject;
     }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+}
+
+
+
+
