@@ -7,6 +7,7 @@ public class Person {
     private String Password;
     private String Email;
     private String Type;
+    private String Quiz;
 
 
     public String getFirstName() {
@@ -38,5 +39,11 @@ public class Person {
     }
     public void setType(String Type) {
         this.Type = Type;
+    }
+    public String getQuiz() {
+        return Quiz;
+    }
+    public void setQuiz(String Quiz) {
+        this.Quiz = Quiz;
     }
 }

@@ -69,8 +69,14 @@ public class Login extends AppCompatActivity {
 
 
                             if(type.equals("Student")){
-                                Toast.makeText(Login.this, "Success Login", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(Login.this, QuizPageOne.class));
+                                String quiz = dataSnapshot.child(UID).child("Quiztaken").getValue().toString();
+                                if(quiz.equals("0")){
+                                    Toast.makeText(Login.this, "Success Login", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(Login.this, QuizPageOne.class));
+                                }else {
+                                    Toast.makeText(Login.this, "Success Login", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(Login.this, HomeScreenStudent.class));
+                                }
                             }else if(type.equals("Staff")){
                                 Toast.makeText(Login.this, "Success Login", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(Login.this, HomeScreenStaff.class));
