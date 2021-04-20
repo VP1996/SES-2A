@@ -63,11 +63,24 @@
                 android:drawablePadding="16dp"
                 android:hint="Select Subjects"
                 android:padding="23dp"
-                android:text="Subjects"
+                android:text="Select your subjects"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/subtitle_quizTwo" />
+
+            <LinearLayout
+                android:id="@+id/llSelectClasses"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_subjects">
+            </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/layout_availabilities"
@@ -75,13 +88,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginLeft="32dp"
-                android:layout_marginTop="16dp"
                 android:layout_marginEnd="32dp"
                 android:layout_marginRight="32dp"
                 android:hint="Availabilities"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_subjects">
+                app:layout_constraintTop_toBottomOf="@+id/llSelectClasses">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/input_availabilities"
