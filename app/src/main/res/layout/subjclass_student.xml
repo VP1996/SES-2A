@@ -16,6 +16,16 @@
         android:textColor="@android:color/black"
         android:textSize="20sp"
         android:textStyle="bold" />
+    <TextView
+        android:id="@+id/txtclss1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Class Type"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvSubject1"
