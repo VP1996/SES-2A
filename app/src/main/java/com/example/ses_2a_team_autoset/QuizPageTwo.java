@@ -1,9 +1,10 @@
 package com.example.ses_2a_team_autoset;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -13,10 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.Constraints;
 
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -36,7 +36,6 @@ public class QuizPageTwo extends AppCompatActivity {
     //TODO: Replace hardcoded list with subjects list from Firebase
     String[] subjectsArray = {"SES1A", "SES1B", "SES2A", "SES2B", "SES3A", "SES3B"};
 
-    //TODO: Add all faculties to the array
     String[] facultiesArray = {
             "Business",
             "Communication",
@@ -86,15 +85,14 @@ public class QuizPageTwo extends AppCompatActivity {
                 //Initialise alert dialog
                 AlertDialog.Builder builder = new AlertDialog.Builder(QuizPageTwo.this);
                 builder.setTitle("Select Subjects");
-                builder.setCancelable(false);
+                builder.setCancelable(true);
                 builder.setMultiChoiceItems(subjectsArray, selectedSubjects, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                         if (isChecked) {
                             subjectsList.add(which);
                             Collections.sort(subjectsList);
-                        }
-                        else {
+                        } else {
                             subjectsList.remove(which);
                         }
                     }
@@ -102,6 +100,7 @@ public class QuizPageTwo extends AppCompatActivity {
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        mLayout.removeAllViews();
                         StringBuilder stringBuilder = new StringBuilder();
                         for (int i = 0; i < subjectsList.size(); i++) {
                             //Concat array value
@@ -127,6 +126,7 @@ public class QuizPageTwo extends AppCompatActivity {
                 builder.setNeutralButton("Clear All", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        mLayout.removeAllViews();
                         for (int i = 0; i < selectedSubjects.length; i++) {
                             //Remove all selections
                             selectedSubjects[i] = false;
@@ -149,15 +149,13 @@ public class QuizPageTwo extends AppCompatActivity {
         final LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        //TODO: Convert the margin to dp (from pixel to dp)
-        lparams.bottomMargin = 16;
+        lparams.bottomMargin = 20;
         final TextView textView = new TextView(this);
         textView.setLayoutParams(lparams);
-        textView.setBackgroundResource(R.drawable.select_box_background);
-        textView.setBackgroundColor(Color.parseColor("#E0E0E0"));
-        textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.select_box_arrow_down, 0);
-        textView.setCompoundDrawablePadding(16);
-        textView.setPadding(23, 23, 23, 23);
+        textView.setBackgroundResource(android.R.drawable.editbox_background);
+        textView.getBackground().setColorFilter(Color.parseColor("#E0E0E0"), PorterDuff.Mode.SRC_ATOP);
+        textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, android.R.drawable.arrow_down_float, 0);
+        textView.setPadding(60,60,60,60);
         textView.setTextSize(16);
         textView.setText(text);
         return textView;
