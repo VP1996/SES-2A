@@ -20,9 +20,9 @@ public class QuizPageOne extends AppCompatActivity {
     RadioButton radioBtnFemale, radioBtnMale, radioBtnOther;
     TextInputLayout textInputFullName, textInputEmail, textInputAge, textInputPhone, textInputAddress, textInputCulturalBack;
     RadioGroup radGrpGender;
+
     QP1Answers QP1Answers;
     CurrentUser user;
-
     FirebaseDatabase database;
     DatabaseReference users;
 
@@ -69,7 +69,7 @@ public class QuizPageOne extends AppCompatActivity {
                 if (radioBtnOther.isChecked())
                     gender = "Other";
 
-                QuizPage1(textInputFullName.getEditText().getText().toString(),
+                saveQuizPage1Answers(textInputFullName.getEditText().getText().toString(),
                         textInputEmail.getEditText().getText().toString(),
                         gender,
                         textInputAge.getEditText().getText().toString(),
@@ -80,7 +80,7 @@ public class QuizPageOne extends AppCompatActivity {
         });
     }
 
-    private void QuizPage1(String fullName, String email, String gender, String age, String phoneNumber, String address, String cultureBackground) {
+    private void saveQuizPage1Answers(String fullName, String email, String gender, String age, String phoneNumber, String address, String cultureBackground) {
         QP1Answers = new QP1Answers();
         QP1Answers.setFullName(fullName);
         QP1Answers.setEmail(email);
@@ -91,7 +91,7 @@ public class QuizPageOne extends AppCompatActivity {
         QP1Answers.setCulturalBackground(cultureBackground);
 
         String ID = user.getID();
-        users.child(ID).child("Quiz").child("Quizpage1").setValue(QP1Answers);
+        users.child(ID).child("Quiz").child("QuizPage1").setValue(QP1Answers);
         startActivity(new Intent(QuizPageOne.this, QuizPageTwo.class));
     }
 

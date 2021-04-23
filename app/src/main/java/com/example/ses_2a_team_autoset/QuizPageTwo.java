@@ -4,21 +4,27 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,13 +34,21 @@ public class QuizPageTwo extends AppCompatActivity {
     Button btnLogout, btnNext;
     TextView tvSubjects;
     boolean[] selectedSubjects;
-    TextInputLayout tilFaculties;
+    TextInputLayout tilFaculties, tilAvailabilities, tilDegree, tilGpa;
+    RadioButton radioBtnUg, radioBtnPg, radioBtnPhd;
     LinearLayout mLayout;
     AutoCompleteTextView actvFaculties;
 
-    ArrayList<Integer> subjectsList = new ArrayList<>();
-    //TODO: Replace hardcoded list with subjects list from Firebase
-    String[] subjectsArray = {"SES1A", "SES1B", "SES2A", "SES2B", "SES3A", "SES3B"};
+    QP2Answers QP2Answers;
+    CurrentUser user;
+    FirebaseDatabase database;
+    DatabaseReference users;
+    DatabaseReference subjects;
+
+    ArrayList<Integer> subjectsIndexList = new ArrayList<>();
+    ArrayList<String> subjectsList = new ArrayList<>();
+    ArrayList<String> selectedSubjectsList = new ArrayList<>();
+    String[] subjectsArray;
 
     String[] facultiesArray = {
             "Business",
@@ -57,13 +71,38 @@ public class QuizPageTwo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.quiz_page_two);
 
+        database = FirebaseDatabase.getInstance("https://ses-2a-studybuddies-default-rtdb.firebaseio.com/");
+        users = database.getReference("Users");
+        subjects = database.getReference("Subjects");
+
         btnLogout = findViewById(R.id.btn_logout_quizTwo);
         btnNext = findViewById(R.id.btn_next_quizTwo);
         tvSubjects = findViewById(R.id.tv_subjects);
-        selectedSubjects = new boolean[subjectsArray.length];
+        tilAvailabilities = findViewById(R.id.layout_availabilities);
         tilFaculties = findViewById(R.id.menu_faculties);
+        tilDegree = findViewById(R.id.layout_degree);
+        tilGpa = findViewById(R.id.layout_gpa);
+        radioBtnUg = findViewById(R.id.radioBtn_ug);
+        radioBtnPg = findViewById(R.id.radioBtn_pg);
+        radioBtnPhd = findViewById(R.id.radioBtn_phd);
         actvFaculties = findViewById(R.id.actv_faculties);
         mLayout = findViewById(R.id.llSelectClasses);
+
+        subjects.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    subjectsList.add(dataSnapshot.getKey().toString());
+                }
+                selectedSubjects = new boolean[subjectsList.size()];
+                subjectsArray = subjectsList.toArray(new String[subjectsList.size()]);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(QuizPageTwo.this, "No subjects found", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,7 +114,20 @@ public class QuizPageTwo extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(QuizPageTwo.this, QuizPageThree.class));
+                String studyLevel = "";
+                if (radioBtnUg.isChecked())
+                    studyLevel = "Undergraduate";
+                if (radioBtnPg.isChecked())
+                    studyLevel = "Postgraduate";
+                if (radioBtnPhd.isChecked())
+                    studyLevel = "PhD";
+
+                saveQuizPage2Answers(selectedSubjectsList,
+                        tilAvailabilities.getEditText().getText().toString(),
+                        actvFaculties.getText().toString(),
+                        tilDegree.getEditText().getText().toString(),
+                        studyLevel,
+                        tilGpa.getEditText().getText().toString());
             }
         });
 
@@ -90,10 +142,10 @@ public class QuizPageTwo extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                         if (isChecked) {
-                            subjectsList.add(which);
-                            Collections.sort(subjectsList);
+                            subjectsIndexList.add(which);
+                            Collections.sort(subjectsIndexList);
                         } else {
-                            subjectsList.remove(which);
+                            subjectsIndexList.remove(which);
                         }
                     }
                 });
@@ -102,18 +154,18 @@ public class QuizPageTwo extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         mLayout.removeAllViews();
                         StringBuilder stringBuilder = new StringBuilder();
-                        for (int i = 0; i < subjectsList.size(); i++) {
+                        for (int i = 0; i < subjectsIndexList.size(); i++) {
+                            selectedSubjectsList.add(subjectsArray[subjectsIndexList.get(i)]);
                             //Concat array value
-                            stringBuilder.append(subjectsArray[subjectsList.get(i)]);
-                            if (i != subjectsList.size() - 1) {
+                            stringBuilder.append(subjectsArray[subjectsIndexList.get(i)]);
+                            if (i != subjectsIndexList.size() - 1) {
                                 stringBuilder.append(", ");
                             }
                         }
                         tvSubjects.setText(stringBuilder.toString());
 
-                        //TODO: Create TextView dialogue
-                        for (int i = 0; i < subjectsList.size(); i++) {
-                            mLayout.addView(createNewTextViewSelectClasses(subjectsArray[subjectsList.get(i)]));
+                        for (int i = 0; i < subjectsIndexList.size(); i++) {
+                            mLayout.addView(createNewTextViewSelectClasses(subjectsArray[subjectsIndexList.get(i)]));
                         }
                     }
                 });
@@ -130,7 +182,7 @@ public class QuizPageTwo extends AppCompatActivity {
                         for (int i = 0; i < selectedSubjects.length; i++) {
                             //Remove all selections
                             selectedSubjects[i] = false;
-                            subjectsList.clear();
+                            subjectsIndexList.clear();
                             tvSubjects.setText("");
                         }
                     }
@@ -159,5 +211,19 @@ public class QuizPageTwo extends AppCompatActivity {
         textView.setTextSize(16);
         textView.setText(text);
         return textView;
+    }
+
+    private void saveQuizPage2Answers(ArrayList<String> subjects, String availabilities, String faculty, String degree, String studyLevel, String gpa) {
+        QP2Answers = new QP2Answers();
+        QP2Answers.setSubjects(subjects);
+        QP2Answers.setAvailabilities(availabilities);
+        QP2Answers.setFaculty(faculty);
+        QP2Answers.setDegree(degree);
+        QP2Answers.setStudyLevel(studyLevel);
+        QP2Answers.setGPA(gpa);
+
+        String ID = user.getID();
+        users.child(ID).child("Quiz").child("QuizPage2").setValue(QP2Answers);
+        startActivity(new Intent(QuizPageTwo.this, QuizPageThree.class));
     }
 }
