@@ -51,7 +51,7 @@ public class HomeScreenStudent  extends AppCompatActivity {
                 if(dataSnapshot.exists()){
                     float count = dataSnapshot.getChildrenCount();
                     for (int i = 1; i <= count; i++){
-                        String temp = String.valueOf(i);
+                        String temp = String.valueOf(i);      // act + String
                         reffy1 = FirebaseDatabase.getInstance().getReference().child("Users").child(ID).child("Subjects").child(temp);
                         reffy1.addValueEventListener(new ValueEventListener() {
                             @Override

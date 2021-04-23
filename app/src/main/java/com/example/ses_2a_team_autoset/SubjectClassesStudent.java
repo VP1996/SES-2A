@@ -2,75 +2,124 @@ package com.example.ses_2a_team_autoset;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class SubjectClassesStudent extends AppCompatActivity {
 
+
+
+    // private RecyclerView mRecyclerView;
+    //    private AdapterForSubjects mAdapter;
+    //    private RecyclerView.LayoutManager mLayoutManager;
+    //    public TextView welcomeTXT;
+    //    String currentuser;
+    //
+    //    CurrentUser user;
+    //
+    //    Button btProfile,btLogOut;
+    //    //Firebase
+    //    private DatabaseReference reff1;
+    //    private DatabaseReference reffy1;
+
     Button btnlogout, btnback, btnprofile;
+    private AdapterForClasses mAdapter;
+    TextView time, location, group, tut;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView mRecyclerView;
     public TextView ClassName;
-    DatabaseReference reference;
+    FirebaseDatabase reference;
+    String currentuser, temp;
     RecyclerView recyclerView;
+     CurrentUser user;
+   DatabaseReference users, subjects, ref1;
 
-    private FirebaseRecyclerOptions<Studentdetails> options;
-    private FirebaseRecyclerAdapter<Studentdetails, mAdapter> adapter;
 
+   // referecce subject
+    // edit the Student details or create a subject class like student details
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.subjclass_student);
-
-        reference = FirebaseDatabase.getInstance().getReference().child("SubjectInfo");
-        recyclerView = (RecyclerView) findViewById(R.id.myRecyclerstudent);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        options=new FirebaseRecyclerOptions.Builder<Studentdetails>().setQuery(reference, Studentdetails.class).build();
-        adapter= new FirebaseRecyclerAdapter<Studentdetails, mAdapter>(options) {
-            @Override
-            protected void onBindViewHolder(@NonNull mAdapter holder, int position, @NonNull Studentdetails model) {
-
-                holder.time.setText(model.getTime());
-                holder.location.setText(model.getLocation());
-                holder.group.setText(model.getGroup());
-
-
-            }
-
-            @NonNull
-            @Override
-            public mAdapter onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardviewstudent, parent, false);
-                return new mAdapter(v);
-            }
-        };
-
-
-
         Bundle bundle = getIntent().getExtras();
         String subject = bundle.getString("subject");
+        String ID = user.getID();
+        time= findViewById(R.id.time);
+        location=findViewById(R.id.location);
+        group =findViewById(R.id.group);
+        tut = findViewById(R.id.tut);
+
+
+        //reference = FirebaseDatabase.getInstance().getReference().child("SubjectInfo");
+
+
+        subjects = FirebaseDatabase.getInstance().getReference().child("Subjects");
+        users = FirebaseDatabase.getInstance().getReference().child("Users");// do another reference
+        ArrayList<AddSubjectToClassesView> classlist = new ArrayList<>(); // edit this for subject
+        users.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    String temp = snapshot.getKey();
+
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        subjects.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    String temp = snapshot.child(subject).getKey();
+                    String temp2 = snapshot.child(subject).child("Act1").getKey();      // tut
+                    String temp3 = temp + "  " + temp2;
+                    tut.setText(temp3);
+
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
 
 
         ClassName = findViewById(R.id.SubjectName);
         btnback = findViewById(R.id.btn_back_student);
         btnlogout = findViewById(R.id.btn_logout_student);
-        btnprofile = findViewById(R.id.btn_profile_student);
+        btnprofile = findViewById(R.id.btn_profile_student);    // reference th id here
 
 
         ClassName.setText(subject);
+
+
+
+
         btnlogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,22 +139,9 @@ public class SubjectClassesStudent extends AppCompatActivity {
             }
         });
 
-        adapter.startListening();
-        recyclerView.setAdapter(adapter);
+
 
     }
 
 
-    private class mAdapter extends RecyclerView.ViewHolder {
-
-        TextView time, location, group;
-        public mAdapter(@NonNull View itemView) {
-            super(itemView);
-
-            time= itemView.findViewById(R.id.time);
-            location= itemView.findViewById(R.id.location);
-            group = itemView.findViewById(R.id.group);
-
-        }
-    }
 }

@@ -8,8 +8,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SubjectClassesAdmin extends AppCompatActivity {
     Button btnlogout, btnback, btnmailbox;
@@ -18,18 +25,20 @@ public class SubjectClassesAdmin extends AppCompatActivity {
 
     private FirebaseRecyclerOptions<Staffdetails> options;
     private FirebaseRecyclerAdapter<Staffdetails, sAdapter> adapter;
-
+    DatabaseReference reference;
+    RecyclerView recyclerView;
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.subjclass_admin);
 
-        ref = FirebaseDatabase.getInstance().getReference().child("Student");
-        recyclerView = (RecyclerView) findViewById(R.id.myRecyclerstaff);
+       reference = FirebaseDatabase.getInstance().getReference().child("Users");
+
+        RecyclerView recyclerView =  findViewById(R.id.myRecyclerstaff);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        options=new FirebaseRecyclerOptions.Builder<Staffdetails>().setQuery(ref, Staffdetails.class).build();
+        options=new FirebaseRecyclerOptions.Builder<Staffdetails>().setQuery(reference, Staffdetails.class).build();
         adapter= new FirebaseRecyclerAdapter<Staffdetails, SubjectClassesAdmin.sAdapter>(options) {
             @Override
             protected void onBindViewHolder(@NonNull SubjectClassesAdmin.sAdapter holder, int position, @NonNull Staffdetails model) {

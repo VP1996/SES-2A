@@ -5,6 +5,7 @@ public class Studentdetails {
         private String location;
         private String group;
         private String subject;
+        private String tut;
 
 
         public Studentdetails() {
@@ -51,6 +52,14 @@ public class Studentdetails {
 
     public void setSubject(String subject) {
         this.subject = subject;
+    }
+
+    public String getTut() {
+        return tut;
+    }
+
+    public void setTut(String subject) {
+        this.tut = tut;
     }
 }
 
