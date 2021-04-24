@@ -82,8 +82,7 @@ public class Register extends AppCompatActivity {
         newPerson.setEmail(Email);
         newPerson.setPassword(Password);
         newPerson.setType("Student");
-        newPerson.setQuiz("0");
-
+        newPerson.setQuizTaken("0");
 
         users.child(StudentID).setValue(newPerson);
         Toast.makeText(Register.this, "New Student Added", Toast.LENGTH_SHORT).show();

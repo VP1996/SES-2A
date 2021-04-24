@@ -20,10 +20,9 @@ import com.google.firebase.database.ValueEventListener;
 public class Login extends AppCompatActivity {
     EditText etUsername, etPassword;
     Button btSubmit;
-    //Firebase
+
     FirebaseDatabase database;
     DatabaseReference DRef;
-    //String currentUserId;
     CurrentUser user;
 
     @Override

@@ -206,7 +206,7 @@ public class QuizPageTwo extends AppCompatActivity {
         textView.setBackgroundResource(android.R.drawable.editbox_background);
         textView.getBackground().setColorFilter(Color.parseColor("#E0E0E0"), PorterDuff.Mode.SRC_ATOP);
         textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, android.R.drawable.arrow_down_float, 0);
-        textView.setPadding(60,60,60,60);
+        textView.setPadding(60, 60, 60, 60);
         textView.setTextSize(16);
         textView.setText(text);
         return textView;
