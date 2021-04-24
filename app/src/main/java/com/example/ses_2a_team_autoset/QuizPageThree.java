@@ -58,8 +58,10 @@ public class QuizPageThree extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!validateQ1() | !validateQ3() | !validateQ4() | !validateQ5() | !validateQ6() | !validateQ7() |
-                        !validateQ8() | !validateQ9() | !validateQ10() | !validateQ11())
+                if (!validateQuestion(radioGrpQ1, 3) | !validateQuestion(radioGrpQ3, 2) | !validateQuestion(radioGrpQ4, 2) |
+                        !validateQuestion(radioGrpQ5, 3) | !validateQuestion(radioGrpQ6, 2) | !validateQuestion(radioGrpQ7, 3) |
+                        !validateQuestion(radioGrpQ8, 3) | !validateQuestion(radioGrpQ9, 4) | !validateQuestion(radioGrpQ10, 2) |
+                        !validateQuestion(radioGrpQ11, 3))
                     return;
 
                 radioBtnSelectedQ1 = findViewById(radioGrpQ1.getCheckedRadioButtonId());
@@ -107,117 +109,9 @@ public class QuizPageThree extends AppCompatActivity {
         startActivity(new Intent(QuizPageThree.this, QuizPageFour.class));
     }
 
-    private boolean validateQ1() {
-        int isSelected = radioGrpQ1.getCheckedRadioButtonId();
-        RadioButton lastRadioBtn = (RadioButton) radioGrpQ1.getChildAt(3);
-        if (isSelected <= 0) {
-            lastRadioBtn.setError("You must select an answer");
-            return false;
-        } else {
-            lastRadioBtn.setError(null);
-            return true;
-        }
-    }
-
-    private boolean validateQ3() {
-        int isSelected = radioGrpQ3.getCheckedRadioButtonId();
-        RadioButton lastRadioBtn = (RadioButton) radioGrpQ3.getChildAt(2);
-        if (isSelected <= 0) {
-            lastRadioBtn.setError("You must select an answer");
-            return false;
-        } else {
-            lastRadioBtn.setError(null);
-            return true;
-        }
-    }
-
-    private boolean validateQ4() {
-        int isSelected = radioGrpQ4.getCheckedRadioButtonId();
-        RadioButton lastRadioBtn = (RadioButton) radioGrpQ4.getChildAt(2);
-        if (isSelected <= 0) {
-            lastRadioBtn.setError("You must select an answer");
-            return false;
-        } else {
-            lastRadioBtn.setError(null);
-            return true;
-        }
-    }
-
-    private boolean validateQ5() {
-        int isSelected = radioGrpQ5.getCheckedRadioButtonId();
-        RadioButton lastRadioBtn = (RadioButton) radioGrpQ5.getChildAt(3);
-        if (isSelected <= 0) {
-            lastRadioBtn.setError("You must select an answer");
-            return false;
-        } else {
-            lastRadioBtn.setError(null);
-            return true;
-        }
-    }
-
-    private boolean validateQ6() {
-        int isSelected = radioGrpQ6.getCheckedRadioButtonId();
-        RadioButton lastRadioBtn = (RadioButton) radioGrpQ6.getChildAt(2);
-        if (isSelected <= 0) {
-            lastRadioBtn.setError("You must select an answer");
-            return false;
-        } else {
-            lastRadioBtn.setError(null);
-            return true;
-        }
-    }
-
-    private boolean validateQ7() {
-        int isSelected = radioGrpQ7.getCheckedRadioButtonId();
-        RadioButton lastRadioBtn = (RadioButton) radioGrpQ7.getChildAt(3);
-        if (isSelected <= 0) {
-            lastRadioBtn.setError("You must select an answer");
-            return false;
-        } else {
-            lastRadioBtn.setError(null);
-            return true;
-        }
-    }
-
-    private boolean validateQ8() {
-        int isSelected = radioGrpQ8.getCheckedRadioButtonId();
-        RadioButton lastRadioBtn = (RadioButton) radioGrpQ8.getChildAt(3);
-        if (isSelected <= 0) {
-            lastRadioBtn.setError("You must select an answer");
-            return false;
-        } else {
-            lastRadioBtn.setError(null);
-            return true;
-        }
-    }
-
-    private boolean validateQ9() {
-        int isSelected = radioGrpQ9.getCheckedRadioButtonId();
-        RadioButton lastRadioBtn = (RadioButton) radioGrpQ9.getChildAt(4);
-        if (isSelected <= 0) {
-            lastRadioBtn.setError("You must select an answer");
-            return false;
-        } else {
-            lastRadioBtn.setError(null);
-            return true;
-        }
-    }
-
-    private boolean validateQ10() {
-        int isSelected = radioGrpQ10.getCheckedRadioButtonId();
-        RadioButton lastRadioBtn = (RadioButton) radioGrpQ10.getChildAt(2);
-        if (isSelected <= 0) {
-            lastRadioBtn.setError("You must select an answer");
-            return false;
-        } else {
-            lastRadioBtn.setError(null);
-            return true;
-        }
-    }
-
-    private boolean validateQ11() {
-        int isSelected = radioGrpQ11.getCheckedRadioButtonId();
-        RadioButton lastRadioBtn = (RadioButton) radioGrpQ11.getChildAt(3);
+    private boolean validateQuestion(RadioGroup radioGrp, int index) {
+        int isSelected = radioGrp.getCheckedRadioButtonId();
+        RadioButton lastRadioBtn = (RadioButton) radioGrp.getChildAt(index);
         if (isSelected <= 0) {
             lastRadioBtn.setError("You must select an answer");
             return false;

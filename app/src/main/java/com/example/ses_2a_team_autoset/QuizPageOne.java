@@ -17,7 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class QuizPageOne extends AppCompatActivity {
     Button btnLogout, btnNext;
-    RadioButton radioBtnFemale, radioBtnMale, radioBtnOther;
+    RadioButton radioBtnSelectedGender, radioBtnOther;
     TextInputLayout textInputFullName, textInputEmail, textInputAge, textInputPhone, textInputAddress, textInputCulturalBack;
     RadioGroup radGrpGender;
 
@@ -38,14 +38,12 @@ public class QuizPageOne extends AppCompatActivity {
         btnNext = findViewById(R.id.btn_next_quizOne);
         textInputFullName = findViewById(R.id.layout_fullName);
         textInputAge = findViewById(R.id.layout_age);
-        radioBtnFemale = findViewById(R.id.radioBtn_female);
-        radioBtnMale = findViewById(R.id.radioBtn_male);
-        radioBtnOther = findViewById(R.id.radioBtn_other);
         textInputEmail = findViewById(R.id.layout_email);
         textInputPhone = findViewById(R.id.layout_phone);
         textInputAddress = findViewById(R.id.layout_address);
         textInputCulturalBack = findViewById(R.id.layout_background);
         radGrpGender = findViewById(R.id.radioGroupGender);
+        radioBtnOther = findViewById(R.id.radioBtn_other);
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,21 +55,15 @@ public class QuizPageOne extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!validateFullName() | !validateEmail() | !validateGender() | !validateAge() |
-                        !validatePhoneNumber() | !validateAddress() | !validateCulturalBackground())
+                if (!validateTextInput(textInputFullName) | !validateEmail() | !validateGender() | !validateTextInput(textInputAge) |
+                        !validateTextInput(textInputPhone) | !validateTextInput(textInputAddress) | !validateTextInput(textInputCulturalBack))
                     return;
 
-                String gender = "";
-                if (radioBtnFemale.isChecked())
-                    gender = "Female";
-                if (radioBtnMale.isChecked())
-                    gender = "Male";
-                if (radioBtnOther.isChecked())
-                    gender = "Other";
+                radioBtnSelectedGender = findViewById(radGrpGender.getCheckedRadioButtonId());
 
                 saveQuizPage1Answers(textInputFullName.getEditText().getText().toString(),
                         textInputEmail.getEditText().getText().toString(),
-                        gender,
+                        radioBtnSelectedGender.getText().toString(),
                         textInputAge.getEditText().getText().toString(),
                         textInputPhone.getEditText().getText().toString(),
                         textInputAddress.getEditText().getText().toString(),
@@ -95,13 +87,14 @@ public class QuizPageOne extends AppCompatActivity {
         startActivity(new Intent(QuizPageOne.this, QuizPageTwo.class));
     }
 
-    private boolean validateFullName() {
-        String fullNameInput = textInputFullName.getEditText().getText().toString().trim();
-        if (fullNameInput.isEmpty()) {
-            textInputFullName.setError("Full Name is required");
+    private boolean validateTextInput(TextInputLayout textInput) {
+        String input = textInput.getEditText().getText().toString().trim();
+        String inputName = (String) textInput.getHint();
+        if (input.isEmpty()) {
+            textInput.setError(inputName + " is required");
             return false;
         } else {
-            textInputFullName.setError(null);
+            textInput.setError(null);
             return true;
         }
     }
@@ -128,51 +121,6 @@ public class QuizPageOne extends AppCompatActivity {
             return false;
         } else {
             radioBtnOther.setError(null);
-            return true;
-        }
-
-    }
-
-    private boolean validateAge() {
-        String AgeInput = textInputAge.getEditText().getText().toString().trim();
-        if (AgeInput.isEmpty()) {
-            textInputAge.setError("Age is required");
-            return false;
-        } else {
-            textInputAge.setError(null);
-            return true;
-        }
-    }
-
-    private boolean validatePhoneNumber() {
-        String phoneNumberInput = textInputPhone.getEditText().getText().toString().trim();
-        if (phoneNumberInput.isEmpty()) {
-            textInputPhone.setError("Phone Number is required");
-            return false;
-        } else {
-            textInputPhone.setError(null);
-            return true;
-        }
-    }
-
-    private boolean validateAddress() {
-        String addressInput = textInputAddress.getEditText().getText().toString().trim();
-        if (addressInput.isEmpty()) {
-            textInputAddress.setError("Address is required");
-            return false;
-        } else {
-            textInputAddress.setError(null);
-            return true;
-        }
-    }
-
-    private boolean validateCulturalBackground() {
-        String culturalBackInput = textInputCulturalBack.getEditText().getText().toString().trim();
-        if (culturalBackInput.isEmpty()) {
-            textInputCulturalBack.setError("Cultural Background is required");
-            return false;
-        } else {
-            textInputCulturalBack.setError(null);
             return true;
         }
     }

@@ -11,6 +11,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +36,8 @@ public class QuizPageTwo extends AppCompatActivity {
     TextView tvSubjects;
     boolean[] selectedSubjects;
     TextInputLayout tilFaculties, tilAvailabilities, tilDegree, tilGpa;
-    RadioButton radioBtnUg, radioBtnPg, radioBtnPhd;
+    RadioButton radioBtnSelectedLevel, radioBtnPhd;
+    RadioGroup radioGrpStudyLevel;
     LinearLayout mLayout;
     AutoCompleteTextView actvFaculties;
 
@@ -82,9 +84,8 @@ public class QuizPageTwo extends AppCompatActivity {
         tilFaculties = findViewById(R.id.menu_faculties);
         tilDegree = findViewById(R.id.layout_degree);
         tilGpa = findViewById(R.id.layout_gpa);
-        radioBtnUg = findViewById(R.id.radioBtn_ug);
-        radioBtnPg = findViewById(R.id.radioBtn_pg);
         radioBtnPhd = findViewById(R.id.radioBtn_phd);
+        radioGrpStudyLevel = findViewById(R.id.radioGroupQuizTwo);
         actvFaculties = findViewById(R.id.actv_faculties);
         mLayout = findViewById(R.id.llSelectClasses);
 
@@ -114,19 +115,17 @@ public class QuizPageTwo extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String studyLevel = "";
-                if (radioBtnUg.isChecked())
-                    studyLevel = "Undergraduate";
-                if (radioBtnPg.isChecked())
-                    studyLevel = "Postgraduate";
-                if (radioBtnPhd.isChecked())
-                    studyLevel = "PhD";
+                if (!validateSubjects() | !validateTextInput(tilAvailabilities) | !validateTextInput(tilFaculties) |
+                        !validateTextInput(tilDegree) | !validateStudyLevel() | !validateTextInput(tilGpa))
+                    return;
+
+                radioBtnSelectedLevel = findViewById(radioGrpStudyLevel.getCheckedRadioButtonId());
 
                 saveQuizPage2Answers(selectedSubjectsList,
                         tilAvailabilities.getEditText().getText().toString(),
                         actvFaculties.getText().toString(),
                         tilDegree.getEditText().getText().toString(),
-                        studyLevel,
+                        radioBtnSelectedLevel.getText().toString(),
                         tilGpa.getEditText().getText().toString());
             }
         });
@@ -225,5 +224,38 @@ public class QuizPageTwo extends AppCompatActivity {
         String ID = user.getID();
         users.child(ID).child("Quiz").child("QuizPage2").setValue(QP2Answers);
         startActivity(new Intent(QuizPageTwo.this, QuizPageThree.class));
+    }
+
+    private boolean validateTextInput(TextInputLayout textInput) {
+        String input = textInput.getEditText().getText().toString().trim();
+        String inputName = (String) textInput.getHint();
+        if (input.isEmpty()) {
+            textInput.setError(inputName + " is required");
+            return false;
+        } else {
+            textInput.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validateSubjects() {
+        if (selectedSubjectsList.isEmpty()) {
+            tvSubjects.setError("Subjects is required");
+            return false;
+        } else {
+            tvSubjects.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validateStudyLevel() {
+        int isSelected = radioGrpStudyLevel.getCheckedRadioButtonId();
+        if (isSelected <= 0) {
+            radioBtnPhd.setError("Study level is required");
+            return false;
+        } else {
+            radioBtnPhd.setError(null);
+            return true;
+        }
     }
 }
