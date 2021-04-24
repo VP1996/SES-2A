@@ -2,9 +2,9 @@ package com.example.ses_2a_team_autoset;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.text.InputType;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -29,7 +29,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 
 public class QuizPageTwo extends AppCompatActivity {
     Button btnLogout, btnNext;
@@ -66,7 +65,11 @@ public class QuizPageTwo extends AppCompatActivity {
             "Science and Mathematics"
     };
     ArrayList<String> facultiesList = new ArrayList<String>(Arrays.asList(facultiesArray));
-    ArrayAdapter<String> facultiesAdapter;
+    ArrayAdapter<String> facultiesAdapter, actvAdapter;
+
+    String[] classesArray = {"Tut1", "Tut2", "Tut3"};
+    ArrayList<String> classesList = new ArrayList<String>(Arrays.asList(classesArray));
+    ArrayList<TextInputLayout> classesLayoutList = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -136,15 +139,15 @@ public class QuizPageTwo extends AppCompatActivity {
                 //Initialise alert dialog
                 AlertDialog.Builder builder = new AlertDialog.Builder(QuizPageTwo.this);
                 builder.setTitle("Select Subjects");
-                builder.setCancelable(true);
                 builder.setMultiChoiceItems(subjectsArray, selectedSubjects, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                    public void onClick(DialogInterface dialog, int position, boolean isChecked) {
                         if (isChecked) {
-                            subjectsIndexList.add(which);
-                            Collections.sort(subjectsIndexList);
+                            if (!subjectsIndexList.contains(position))
+                                subjectsIndexList.add(position);
                         } else {
-                            subjectsIndexList.remove(which);
+                            subjectsIndexList.remove((Integer.valueOf(position)));
+                            selectedSubjectsList.remove((Integer.valueOf(position)));
                         }
                     }
                 });
@@ -152,6 +155,8 @@ public class QuizPageTwo extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         mLayout.removeAllViews();
+                        classesLayoutList.clear();
+                        selectedSubjectsList.clear();
                         StringBuilder stringBuilder = new StringBuilder();
                         for (int i = 0; i < subjectsIndexList.size(); i++) {
                             selectedSubjectsList.add(subjectsArray[subjectsIndexList.get(i)]);
@@ -164,7 +169,9 @@ public class QuizPageTwo extends AppCompatActivity {
                         tvSubjects.setText(stringBuilder.toString());
 
                         for (int i = 0; i < subjectsIndexList.size(); i++) {
-                            mLayout.addView(createNewTextViewSelectClasses(subjectsArray[subjectsIndexList.get(i)]));
+                            TextInputLayout tilClass = createNewTextViewSelectClasses(subjectsArray[subjectsIndexList.get(i)]);
+                            classesLayoutList.add(tilClass);
+                            mLayout.addView(tilClass);
                         }
                     }
                 });
@@ -178,6 +185,7 @@ public class QuizPageTwo extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         mLayout.removeAllViews();
+                        classesLayoutList.clear();
                         for (int i = 0; i < selectedSubjects.length; i++) {
                             //Remove all selections
                             selectedSubjects[i] = false;
@@ -196,20 +204,26 @@ public class QuizPageTwo extends AppCompatActivity {
         actvFaculties.setThreshold(1);
     }
 
-    private TextView createNewTextViewSelectClasses(String text) {
+    private TextInputLayout createNewTextViewSelectClasses(String text) {
         final LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         lparams.bottomMargin = 20;
-        final TextView textView = new TextView(this);
-        textView.setLayoutParams(lparams);
-        textView.setBackgroundResource(android.R.drawable.editbox_background);
-        textView.getBackground().setColorFilter(Color.parseColor("#E0E0E0"), PorterDuff.Mode.SRC_ATOP);
-        textView.setCompoundDrawablesWithIntrinsicBounds(0, 0, android.R.drawable.arrow_down_float, 0);
-        textView.setPadding(60, 60, 60, 60);
-        textView.setTextSize(16);
-        textView.setText(text);
-        return textView;
+        TextInputLayout textInputLayout = new TextInputLayout(new ContextThemeWrapper(this, R.style.Widget_MaterialComponents_TextInputLayout_FilledBox_ExposedDropdownMenu));
+        textInputLayout.setBoxBackgroundMode(TextInputLayout.BOX_BACKGROUND_FILLED);
+        textInputLayout.setLayoutParams(lparams);
+        AutoCompleteTextView actv = new AutoCompleteTextView(textInputLayout.getContext());
+        actv.setHint(text);
+        actv.setPadding(40, 60, 40, 60);
+        actv.setInputType(InputType.TYPE_NULL);
+        actv.setTextSize(16);
+
+        actvAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.menu_item, classesList);
+        actv.setAdapter(actvAdapter);
+        actv.setThreshold(1);
+
+        textInputLayout.addView(actv, lparams);
+        return textInputLayout;
     }
 
     private void saveQuizPage2Answers(ArrayList<String> subjects, String availabilities, String faculty, String degree, String studyLevel, String gpa) {
@@ -223,6 +237,17 @@ public class QuizPageTwo extends AppCompatActivity {
 
         String ID = user.getID();
         users.child(ID).child("Quiz").child("QuizPage2").setValue(QP2Answers);
+
+        for (int i = 0; i < subjects.size(); i ++) {
+            String classString = classesLayoutList.get(i).getEditText().getText().toString();
+            String subjectString = selectedSubjectsList.get(i);
+
+            users.child(ID).child("Quiz").child("QuizPage2").child("subjects")
+                    .child(String.valueOf(i)).child("subjectName").setValue(subjectString);
+            users.child(ID).child("Quiz").child("QuizPage2").child("subjects")
+                    .child(String.valueOf(i)).child("class").setValue(classString);
+        }
+
         startActivity(new Intent(QuizPageTwo.this, QuizPageThree.class));
     }
 

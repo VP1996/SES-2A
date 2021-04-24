@@ -51,7 +51,7 @@ public class HomeScreenStudent  extends AppCompatActivity {
                     for (int i = 0; i < count; i++){
                         String temp = String.valueOf(i);
                         reffy1 = FirebaseDatabase.getInstance().getReference().child("Users").child(ID).child("Quiz")
-                                .child("QuizPage2").child("subjects").child(temp);
+                                .child("QuizPage2").child("subjects").child(temp).child("subjectName");
                         reffy1.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
