@@ -26,12 +26,12 @@
 
 
         <Button
-            android:id="@+id/btn_profile_student"
+            android:id="@+id/btn_logout_student"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:layout_marginRight="12dp"
-            android:text="Profile"
+            android:text="Log out"
             android:layout_alignParentRight="true"
             />
     </RelativeLayout>
@@ -70,33 +70,13 @@
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/myRecyclerstudent"/>
+            android:id="@+id/myRecyclerViewForClassesStud"
+            android:background="@android:color/darker_gray"
+            />
 
 
     </RelativeLayout>
 
-
-
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:padding="4dp"
-        android:scrollbars="vertical"
-       android:orientation="horizontal"
-        tools:context=".SubjectClassesStudent">
-    <Button
-        android:id="@+id/btn_logout_student"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginLeft="12dp"
-        android:text="Log out"
-        android:layout_centerHorizontal="true" />
-</RelativeLayout>
 
     </LinearLayout>
 

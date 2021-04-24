@@ -5,6 +5,8 @@ public class CurrentUser {
     private static String FirstName;
     private static String LastName;
     private static String ID;
+    private static String Type;
+
 
     //private String Subject1;
     public static String getFirstName() {
@@ -24,6 +26,12 @@ public class CurrentUser {
     }
     public void setID(String ID) {
         CurrentUser.ID = ID;
+    }
+    public static String getType() {
+        return CurrentUser.Type;
+    }
+    public void setType(String Type) {
+        CurrentUser.Type = Type;
     }
 
 }

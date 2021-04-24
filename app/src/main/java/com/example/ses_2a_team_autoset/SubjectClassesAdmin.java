@@ -7,85 +7,119 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class SubjectClassesAdmin extends AppCompatActivity {
-    Button btnlogout, btnback, btnmailbox;
+
+    Button btnlogout, btnback;
     public TextView ClassName;
+    private AdapterForClasses mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView mRecyclerView;
 
-
-    private FirebaseRecyclerOptions<Staffdetails> options;
-    private FirebaseRecyclerAdapter<Staffdetails, sAdapter> adapter;
-    DatabaseReference reference;
+    FirebaseDatabase reference;
+    String currentuser;
     RecyclerView recyclerView;
+    CurrentUser user;
+    DatabaseReference users, subjects, ref1;
+
+
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.subjclass_admin);
-
-       reference = FirebaseDatabase.getInstance().getReference().child("Users");
-
-        RecyclerView recyclerView =  findViewById(R.id.myRecyclerstaff);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        options=new FirebaseRecyclerOptions.Builder<Staffdetails>().setQuery(reference, Staffdetails.class).build();
-        adapter= new FirebaseRecyclerAdapter<Staffdetails, SubjectClassesAdmin.sAdapter>(options) {
-            @Override
-            protected void onBindViewHolder(@NonNull SubjectClassesAdmin.sAdapter holder, int position, @NonNull Staffdetails model) {
-
-                holder.time.setText(model.getTime());
-                holder.id.setText(model.getId());
-                holder.group.setText(model.getGroup());
-                holder.name.setText(model.getName());
-
-
-            }
-
-            @NonNull
-            @Override
-            public SubjectClassesAdmin.sAdapter onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View s = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardviewstaff, parent, false);
-                return new SubjectClassesAdmin.sAdapter(s);
-            }
-        };
-
         Bundle bundle = getIntent().getExtras();
         String subject = bundle.getString("subject");
+        String ID = user.getID();
+
+        ref1 = FirebaseDatabase.getInstance().getReference();
+        ArrayList<AddSubjectToClassesView> classlist = new ArrayList<>(); // edit this for subject
+
+        ref1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    float count = dataSnapshot.child("Subjects").child(subject).child("Tut1").getChildrenCount();
+                    for (int i = 1; i <= count; i++){
+                        String temp = "Act " + String.valueOf(i);      // act + String
+
+                        ref1 = FirebaseDatabase.getInstance().getReference().child("Subjects").child(subject).child("Tut1").child(temp);
+                        ref1.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if(dataSnapshot.exists()){
+
+                                    // build tutorial and act string
+                                    String act =  "Tut1" + " - " + dataSnapshot.getKey();
+                                    // build day and time string
+                                    String dayNTime = "Time: " + dataSnapshot.child("DayNTime").getValue().toString();
+                                    // build location string
+                                    String location = "Location: " + dataSnapshot.child("Location").getValue().toString();
+                                    // build Group string
+                                    String group = "Allowed Group Sizes: " + dataSnapshot.child("GroupSizes").getValue().toString();
+
+                                    classlist.add(new AddSubjectToClassesView(act,dayNTime,location,group));
+
+
+                                    mRecyclerView = findViewById(R.id.myRecyclerViewForClassesAdmin);
+                                    mRecyclerView.setHasFixedSize(true);
+                                    mLayoutManager = new LinearLayoutManager(SubjectClassesAdmin.this);
+                                    mAdapter = new AdapterForClasses(classlist);
+                                    mRecyclerView.setLayoutManager(mLayoutManager);
+                                    mRecyclerView.setAdapter(mAdapter);
+
+                                }else {
+                                    Toast.makeText(SubjectClassesAdmin.this, "Not found", Toast.LENGTH_SHORT).show();
+                                }
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                Toast.makeText(SubjectClassesAdmin.this, "Not found", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }else {
+                    Toast.makeText(SubjectClassesAdmin.this, "Not found", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+
+
+
+
+
+
 
         ClassName = findViewById(R.id.SubjectName);
         btnback = findViewById(R.id.btn_back_admin);
         btnlogout = findViewById(R.id.btn_logout_admin);
-        btnmailbox = findViewById(R.id.btn_mailbox_admin);
 
-        btnlogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(SubjectClassesAdmin.this, Login.class));
-            }
-        });
-        btnback.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(SubjectClassesAdmin.this, HomeScreenStaff.class));
-            }
-        });
-        btnmailbox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(SubjectClassesAdmin.this, Mailbox.class));
-            }
-        });
         ClassName.setText(subject);
+
         btnlogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,32 +132,12 @@ public class SubjectClassesAdmin extends AppCompatActivity {
                 startActivity(new Intent(SubjectClassesAdmin.this, HomeScreenStaff.class));
             }
         });
-        btnmailbox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(SubjectClassesAdmin.this, Mailbox.class));
 
-            }
-        });
-        adapter.startListening();
-        recyclerView.setAdapter(adapter);
+
+
+
+
 
     }
-
-
-    private class sAdapter extends RecyclerView.ViewHolder {
-
-        TextView time, id, group, name;
-        public sAdapter(@NonNull View itemView) {
-            super(itemView);
-
-            time= itemView.findViewById(R.id.time);
-            id= itemView.findViewById(R.id.id);
-            group = itemView.findViewById(R.id.group);
-            name = itemView.findViewById(R.id.name);
-
-        }
-    }
-
 
 }
