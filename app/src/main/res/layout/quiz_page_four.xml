@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/btn_logout_quizFour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:text="Log out"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/title_quizFour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="Quiz"
+                android:textColor="#673AB7"
+                android:textSize="36sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/subtitle_quizFour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Scenario Questions"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/title_quizFour" />
+
+            <TextView
+                android:id="@+id/tv_scenario1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginRight="32dp"
+                android:gravity="left"
+                android:text="1. It is now Week 4 of the semester, and one of your group members has not been responding to communications in both the group chat and emails about an assessment due in 2 weeks. What would most likely be your first step? "
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/subtitle_quizFour" />
+
+            <RadioGroup
+                android:id="@+id/rgQuizFourQ1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginRight="32dp"
+                android:gravity="left"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_scenario1">
+
+                <RadioButton
+                    android:id="@+id/radioBtn_scenario1_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Inform the tutor about what has happened. The tutor should be aware of the situation as soon as possible so that the group's mark will not be affected." />
+
+                <RadioButton
+                    android:id="@+id/radioBtn_scenario1_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Have a meeting with the rest of the group to come to a consensus on what to do." />
+
+                <RadioButton
+                    android:id="@+id/radioBtn_scenario1_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Try reaching out a couple more times the student before making a decision." />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/tv_scenario2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginRight="32dp"
+                android:gravity="left"
+                android:text="2. A group member reaches out to you asking to cover their task for the week as they are unable to complete it due to personal reasons. You have gotten along well with this team member since the beginning of the semester. What would you say?"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rgQuizFourQ1" />
+
+            <RadioGroup
+                android:id="@+id/rgQuizFourQ2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginRight="32dp"
+                android:gravity="left"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_scenario2">
+
+                <RadioButton
+                    android:id="@+id/radioBtn_scenario2_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Agree. It is important to help out your teammates when you can."/>
+
+                <RadioButton
+                    android:id="@+id/radioBtn_scenario2_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Disagree. It is their responsibility to complete the task."/>
+
+                <RadioButton
+                    android:id="@+id/radioBtn_scenario2_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Suggest to bring this up to the rest of the group so that the task will be divided fairly among the group."/>
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/tv_scenario3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginRight="32dp"
+                android:gravity="left"
+                android:text="3. A group member is struggling with their task and have not met the group's deadlines. They have not asked any help but rather asked an extension of the deadline. This extension will delay the group and might result in the group needing to rush the final parts of the project. You have already completed your tasks, and have more pressing deadlines with other subjects. What do you do?"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rgQuizFourQ2" />
+
+            <RadioGroup
+                android:id="@+id/rgQuizFourQ3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginRight="32dp"
+                android:gravity="left"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_scenario3">
+
+                <RadioButton
+                    android:id="@+id/radioBtn_scenario3_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Reach out to the group member asking if they need help. It is better that the project is completed according to the current deadlines."/>
+
+                <RadioButton
+                    android:id="@+id/radioBtn_scenario3_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Agree to the deadline extension. You do not have time to worry about the problem, and have faith in the group member's abilities."/>
+
+                <RadioButton
+                    android:id="@+id/radioBtn_scenario3_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Talk to the rest of the group about it. Maybe another group member can support them instead."/>
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/tv_scenario4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginRight="32dp"
+                android:gravity="left"
+                android:text="4. You have been rushing to complete an individual assignment (Assessment A) by the due date. The day before it is due, the tutor announces that the deadline has been extended by 3 days. You are satisfied with the quality of the assignment but know it can be improved in those 3 days. However, you have another assignment (Assessment B) due next week which needs a significant amount of time and effort. What would you do? "
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rgQuizFourQ3" />
+
+            <RadioGroup
+                android:id="@+id/rgQuizFourQ4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginRight="32dp"
+                android:gravity="left"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_scenario4">
+
+                <RadioButton
+                    android:id="@+id/radioBtn_scenario4_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Focus on Assessment A. This is an opportunity to get some extra marks."/>
+
+                <RadioButton
+                    android:id="@+id/radioBtn_scenario4_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Submit Assessment A as it is. You know you will be fine with the mark you will receive and focusing on Assessment B is more important."/>
+
+                <RadioButton
+                    android:id="@+id/radioBtn_scenario4_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Switch back and forth between Assessments A and B. You have faith in your time management skills and know you will be able to focus on both."/>
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/btn_next_quizFour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Next"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rgQuizFourQ4" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</RelativeLayout>
