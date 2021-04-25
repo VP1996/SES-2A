@@ -86,183 +86,201 @@
                     android:textColor="@color/white"
                     android:textSize="24sp" />
 
-                <TextView
-                    android:id="@+id/tv_studentEmail"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layout_profileEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_studentName"
                     android:layout_marginLeft="32dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginRight="32dp"
-                    android:gravity="center_vertical"
-                    android:text="Student Email"
-                    android:paddingLeft="16dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:background="#EEEEEE"
-                    android:textSize="18sp" />
+                    android:hint="Email"
+                    android:layout_below="@+id/tv_studentName">
 
-                <TextView
-                    android:id="@+id/tv_studentAge"
-                    android:layout_width="wrap_content"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/input_profileEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:focusable="false" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layout_profileAge"
+                    android:layout_width="55dp"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_studentEmail"
                     android:layout_marginLeft="32dp"
                     android:layout_marginTop="16dp"
-                    android:gravity="center_vertical"
-                    android:text="Age"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:background="#EEEEEE"
-                    android:textSize="18sp" />
+                    android:hint="Age"
+                    android:layout_below="@+id/layout_profileEmail">
 
-                <TextView
-                    android:id="@+id/tv_studentPhoneNumber"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_profileAge"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:focusable="false" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layout_profilePhone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_studentEmail"
-                    android:layout_toRightOf="@+id/tv_studentAge"
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginRight="32dp"
-                    android:gravity="center_vertical"
-                    android:text="Phone Number"
-                    android:paddingLeft="16dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:background="#EEEEEE"
-                    android:textSize="18sp" />
+                    android:hint="Phone Number"
+                    android:layout_below="@+id/layout_profileEmail"
+                    android:layout_toRightOf="@+id/layout_profileAge">
 
-                <TextView
-                    android:id="@+id/tv_studentAddress"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/input_profilePhone"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:focusable="false" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layout_profileAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_studentPhoneNumber"
                     android:layout_marginLeft="32dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginRight="32dp"
-                    android:gravity="center_vertical"
-                    android:text="Student Address"
-                    android:paddingLeft="16dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:background="#EEEEEE"
-                    android:textSize="18sp" />
+                    android:hint="Address"
+                    android:layout_below="@+id/layout_profilePhone">
 
-                <TextView
-                    android:id="@+id/tv_studentCulturalBackground"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/input_profileAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layout_profileCulturalBackground"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_studentAddress"
                     android:layout_marginLeft="32dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginRight="32dp"
-                    android:gravity="center_vertical"
-                    android:text="Cultural Background"
-                    android:paddingLeft="16dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:background="#EEEEEE"
-                    android:textSize="18sp" />
+                    android:hint="Cultural Background"
+                    android:layout_below="@+id/layout_profileAddress">
 
-                <TextView
-                    android:id="@+id/tv_studentFaculty"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/input_profileCulturalBackground"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:focusable="false" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layout_profileFaculty"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_studentCulturalBackground"
                     android:layout_marginLeft="32dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginRight="32dp"
-                    android:gravity="center_vertical"
-                    android:text="Student Faculty"
-                    android:paddingLeft="16dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:background="#EEEEEE"
-                    android:textSize="18sp" />
+                    android:hint="Faculty"
+                    android:layout_below="@+id/layout_profileCulturalBackground">
 
-                <TextView
-                    android:id="@+id/tv_studentDegree"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/input_profileFaculty"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layout_profileDegree"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_studentFaculty"
                     android:layout_marginLeft="32dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginRight="32dp"
-                    android:gravity="center_vertical"
-                    android:text="Student Degree"
-                    android:paddingLeft="16dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:background="#EEEEEE"
-                    android:textSize="18sp" />
+                    android:hint="Degree and major"
+                    android:layout_below="@+id/layout_profileFaculty">
 
-                <TextView
-                    android:id="@+id/tv_studentGpa"
-                    android:layout_width="wrap_content"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/input_profileDegree"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layout_profileGpa"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_studentDegree"
                     android:layout_marginLeft="32dp"
                     android:layout_marginTop="16dp"
-                    android:gravity="center_vertical"
-                    android:text="GPA"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:background="#EEEEEE"
-                    android:textSize="18sp" />
+                    android:hint="GPA/WAM"
+                    android:layout_below="@+id/layout_profileDegree">
 
-                <TextView
-                    android:id="@+id/tv_studentLevel"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/input_profileGpa"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:focusable="false" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layout_profileStudentLevel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_studentDegree"
-                    android:layout_toRightOf="@+id/tv_studentGpa"
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginRight="32dp"
-                    android:gravity="center_vertical"
-                    android:text="Student Level"
-                    android:paddingLeft="16dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:background="#EEEEEE"
-                    android:textSize="18sp" />
+                    android:hint="Student Level"
+                    android:layout_below="@+id/layout_profileDegree"
+                    android:layout_toRightOf="@+id/layout_profileGpa">
 
-                <TextView
-                    android:id="@+id/tv_studentSubjects"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/input_profileStudentLevel"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:focusable="false" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layout_profileSubjects"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_studentLevel"
                     android:layout_marginLeft="32dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginRight="32dp"
-                    android:gravity="center_vertical"
-                    android:text="Student Subjects"
-                    android:paddingLeft="16dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:background="#EEEEEE"
-                    android:textSize="18sp" />
+                    android:hint="Subjects and Classes"
+                    android:layout_below="@+id/layout_profileStudentLevel">
 
-                <TextView
-                    android:id="@+id/tv_studentAvailabilities"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/input_profileSubjects"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layout_profileAvailabilities"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_studentSubjects"
                     android:layout_marginLeft="32dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginRight="32dp"
-                    android:gravity="center_vertical"
-                    android:text="Student Availabilities"
-                    android:paddingLeft="16dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:background="#EEEEEE"
-                    android:textSize="18sp" />
+                    android:hint="Availabilities"
+                    android:layout_below="@+id/layout_profileSubjects">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/input_profileAvailabilities"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false" />
+
+                </com.google.android.material.textfield.TextInputLayout>
             </RelativeLayout>
 
             <LinearLayout

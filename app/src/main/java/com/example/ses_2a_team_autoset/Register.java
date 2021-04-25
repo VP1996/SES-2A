@@ -38,8 +38,6 @@ public class Register extends AppCompatActivity {
         btRegister = findViewById(R.id.signup_btn);
         btGoBack = findViewById(R.id.goback_btn);
 
-
-
         btGoBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
