@@ -8,6 +8,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -92,6 +93,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="3hrs" />
+
                 <RadioButton
                     android:id="@+id/radioBtn_q1_4"
                     android:layout_width="wrap_content"
@@ -143,11 +145,11 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_q2_desc">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/input_q2"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:inputType="number"/>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_q2"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:inputType="number" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
