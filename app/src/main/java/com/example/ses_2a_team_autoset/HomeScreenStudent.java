@@ -1,5 +1,7 @@
 package com.example.ses_2a_team_autoset;
 
+
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -25,7 +27,7 @@ public class HomeScreenStudent  extends AppCompatActivity {
     private AdapterForSubjects mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     public TextView welcomeTXT;
-    String currentUser;
+    String currentuser;
 
     CurrentUser user;
 
@@ -40,7 +42,7 @@ public class HomeScreenStudent  extends AppCompatActivity {
         setContentView(R.layout.homescreen_student);
         String ID = user.getID();
 
-        reff1 = FirebaseDatabase.getInstance().getReference().child("Users").child(ID).child("Quiz").child("QuizPage2").child("subjects");
+        reff1 = FirebaseDatabase.getInstance().getReference().child("Users").child(ID).child("Subjects");
         ArrayList<AddSubjectToSubjectView> subjectList = new ArrayList<>();
 
         reff1.addValueEventListener(new ValueEventListener() {
@@ -48,15 +50,15 @@ public class HomeScreenStudent  extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
                     float count = dataSnapshot.getChildrenCount();
-                    for (int i = 0; i < count; i++){
-                        String temp = String.valueOf(i);
-                        reffy1 = FirebaseDatabase.getInstance().getReference().child("Users").child(ID).child("Quiz")
-                                .child("QuizPage2").child("subjects").child(temp).child("subjectName");
+                    for (int i = 1; i <= count; i++){
+                        String temp = String.valueOf(i);      // act + String
+                        reffy1 = FirebaseDatabase.getInstance().getReference().child("Users").child(ID).child("Subjects").child(temp);
                         reffy1.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 if(dataSnapshot.exists()){
                                     subjectList.add(new AddSubjectToSubjectView(dataSnapshot.getValue().toString()));
+
 
                                     mRecyclerView = findViewById(R.id.rvStudent1);
                                     mRecyclerView.setHasFixedSize(true);
@@ -73,6 +75,9 @@ public class HomeScreenStudent  extends AppCompatActivity {
                                             startActivity(intent);
                                         }
                                     });
+
+
+
                                 }else {
                                     Toast.makeText(HomeScreenStudent.this, "Not found", Toast.LENGTH_SHORT).show();
                                 }
@@ -100,8 +105,8 @@ public class HomeScreenStudent  extends AppCompatActivity {
         btProfile = findViewById(R.id.btn_Profile);
         btLogOut = findViewById(R.id.btn_logout);
 
-        currentUser = "Welcome " + user.getFirstName()+" "+ user.getLastName();
-        welcomeTXT.setText(currentUser);
+        currentuser = "Welcome " + user.getFirstName()+" "+ user.getLastName();
+        welcomeTXT.setText(currentuser);
 
         btLogOut.setOnClickListener(new View.OnClickListener() {
             @Override

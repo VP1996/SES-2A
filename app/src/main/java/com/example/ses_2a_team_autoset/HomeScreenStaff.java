@@ -31,7 +31,7 @@ public class HomeScreenStaff extends AppCompatActivity {
 
     CurrentUser user;
 
-    Button btSubjectList,btLogOut,btRegisterNewStudent,btRequests;
+    Button btSubjectList,btLogOut,btRegisterNewStudent,btRequests,btCreateGroups;
     //Firebase
     private DatabaseReference reff1;
     private DatabaseReference reffy1;
@@ -100,6 +100,7 @@ public class HomeScreenStaff extends AppCompatActivity {
         btLogOut = findViewById(R.id.btn_logout);
         btRequests = findViewById(R.id.btn_replytoreq);
         btRegisterNewStudent = findViewById(R.id.btn_regnew);
+        btCreateGroups = findViewById(R.id.btn_SetGroups);
 
         currentUser = "Welcome " + user.getFirstName()+" "+ user.getLastName();
         welcomeTXT.setText(currentUser);
@@ -112,6 +113,12 @@ public class HomeScreenStaff extends AppCompatActivity {
         });
 
         btRequests.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(HomeScreenStaff.this, "LOL no....", Toast.LENGTH_SHORT).show();
+            }
+        });
+        btCreateGroups.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(HomeScreenStaff.this, "LOL no....", Toast.LENGTH_SHORT).show();
