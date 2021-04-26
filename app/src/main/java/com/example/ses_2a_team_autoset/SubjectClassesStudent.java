@@ -30,10 +30,11 @@ public class SubjectClassesStudent extends AppCompatActivity {
     public TextView ClassName;
     FirebaseDatabase reference;
     String currentuser;
+    String classname,subjName;
     String currentGroup = "Pending";
     RecyclerView recyclerView;
-     CurrentUser user;
-   DatabaseReference users, subjects, ref1;
+    CurrentUser user;
+   DatabaseReference users, subjects, ref1,ref2;
 
     @Override
 
@@ -52,66 +53,75 @@ public class SubjectClassesStudent extends AppCompatActivity {
         //subjects = FirebaseDatabase.getInstance().getReference().child("Subjects");
         //users = FirebaseDatabase.getInstance().getReference().child("Users");// do another reference
         ref1 = FirebaseDatabase.getInstance().getReference();
+        ref2 = FirebaseDatabase.getInstance().getReference();
         ArrayList<AddSubjectToClassesView> classlist = new ArrayList<>(); // edit this for subject
 
         ref1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
-                    float count = dataSnapshot.child("Subjects").child(subject).child("Tut1").getChildrenCount();
+                    float count = dataSnapshot.child("Subjects").child(subject).getChildrenCount();
                     for (int i = 1; i <= count; i++){
-                        String temp = "Act " + String.valueOf(i);      // act + String
+                        String temp = "Tut" + String.valueOf(i);      // act + String
+                        float count69 = dataSnapshot.child("Users").child(ID).child("Quiz").child("QuizPage2").child("subjects").getChildrenCount();
+                        for (int t = 0; t < count69; t++){
+                        String fdsfsdf = String.valueOf(t);
+                            subjName = dataSnapshot.child("Users").child(ID).child("Quiz").child("QuizPage2").child("subjects").child(fdsfsdf).child("subjectName").getValue().toString();
+                            if(subjName.equals(subject)){
+                                classname = dataSnapshot.child("Users").child(ID).child("Quiz").child("QuizPage2").child("subjects").child(fdsfsdf).child("class").getValue().toString();
+                                if (classname.equals(temp)){
+                                ref1 = FirebaseDatabase.getInstance().getReference().child("Subjects").child(subject).child(temp);
+                                ref1.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        if(dataSnapshot.exists()){
 
-                        ref1 = FirebaseDatabase.getInstance().getReference().child("Subjects").child(subject).child("Tut1").child(temp);
-                        ref1.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                if(dataSnapshot.exists()){
+                                            // build tutorial and act string
+                                            String act =  dataSnapshot.getKey();
+                                            // build day and time string
+                                            String dayNTime = "Time: " + dataSnapshot.child("DayNTime").getValue().toString();
+                                            // build location string
+                                            String location = "Location: " + dataSnapshot.child("Location").getValue().toString();
+                                            // build Group string
 
-                                    // build tutorial and act string
-                                    String act =  "Tut1" + " - " + dataSnapshot.getKey();
-                                    // build day and time string
-                                    String dayNTime = "Time: " + dataSnapshot.child("DayNTime").getValue().toString();
-                                    // build location string
-                                    String location = "Location: " + dataSnapshot.child("Location").getValue().toString();
-                                    // build Group string
-
-                                    float countAgain = dataSnapshot.child("Groups").getChildrenCount();
-                                    for (int x = 1; x <= countAgain; x++){
-                                        String tempAGAIN = "Group"+String.valueOf(x);
-                                        float countAgain1 = dataSnapshot.child("Groups").child(tempAGAIN).getChildrenCount();
-                                        for (int g = 1; g <= countAgain1; g++){
-                                            String fsd = String.valueOf(g);
-                                            String temp1 = dataSnapshot.child("Groups").child(tempAGAIN).child(fsd).getValue().toString();
-                                            if(temp1.equals(ID)){
-                                                currentGroup = tempAGAIN;
+                                            float countAgain = dataSnapshot.child("Groups").getChildrenCount();
+                                            for (int x = 1; x <= countAgain; x++){
+                                                String tempAGAIN = "Group"+String.valueOf(x);
+                                                float countAgain1 = dataSnapshot.child("Groups").child(tempAGAIN).getChildrenCount();
+                                                for (int g = 1; g <= countAgain1; g++){
+                                                    String fsd = String.valueOf(g);
+                                                    String temp1 = dataSnapshot.child("Groups").child(tempAGAIN).child(fsd).getValue().toString();
+                                                    if(temp1.equals(ID)){
+                                                        currentGroup = tempAGAIN;
+                                                    }
+                                                }
                                             }
+
+                                            String group = "Group: " + currentGroup;
+
+                                            classlist.add(new AddSubjectToClassesView(act,dayNTime,location,group));
+
+
+                                            mRecyclerView = findViewById(R.id.myRecyclerViewForClassesStud);
+                                            mRecyclerView.setHasFixedSize(true);
+                                            mLayoutManager = new LinearLayoutManager(SubjectClassesStudent.this);
+                                            mAdapter = new AdapterForClasses(classlist);
+                                            mRecyclerView.setLayoutManager(mLayoutManager);
+                                            mRecyclerView.setAdapter(mAdapter);
+
+                                        }else {
+                                            Toast.makeText(SubjectClassesStudent.this, "Not found", Toast.LENGTH_SHORT).show();
                                         }
+
                                     }
 
-                                    String group = "Group: " + currentGroup;
-
-                                    classlist.add(new AddSubjectToClassesView(act,dayNTime,location,group));
-
-
-                                    mRecyclerView = findViewById(R.id.myRecyclerViewForClassesStud);
-                                    mRecyclerView.setHasFixedSize(true);
-                                    mLayoutManager = new LinearLayoutManager(SubjectClassesStudent.this);
-                                    mAdapter = new AdapterForClasses(classlist);
-                                    mRecyclerView.setLayoutManager(mLayoutManager);
-                                    mRecyclerView.setAdapter(mAdapter);
-
-                                }else {
-                                    Toast.makeText(SubjectClassesStudent.this, "Not found", Toast.LENGTH_SHORT).show();
-                                }
-
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-                                Toast.makeText(SubjectClassesStudent.this, "Not found", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        Toast.makeText(SubjectClassesStudent.this, "Not found", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }}
+                        }
                     }
                 }else {
                     Toast.makeText(SubjectClassesStudent.this, "Not found", Toast.LENGTH_SHORT).show();

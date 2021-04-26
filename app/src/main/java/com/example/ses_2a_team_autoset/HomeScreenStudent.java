@@ -42,7 +42,7 @@ public class HomeScreenStudent  extends AppCompatActivity {
         setContentView(R.layout.homescreen_student);
         String ID = user.getID();
 
-        reff1 = FirebaseDatabase.getInstance().getReference().child("Users").child(ID).child("Subjects");
+        reff1 = FirebaseDatabase.getInstance().getReference().child("Users").child(ID).child("Quiz");
         ArrayList<AddSubjectToSubjectView> subjectList = new ArrayList<>();
 
         reff1.addValueEventListener(new ValueEventListener() {
@@ -50,15 +50,14 @@ public class HomeScreenStudent  extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
                     float count = dataSnapshot.getChildrenCount();
-                    for (int i = 1; i <= count; i++){
+                    for (int i = 0; i < count; i++){
                         String temp = String.valueOf(i);      // act + String
-                        reffy1 = FirebaseDatabase.getInstance().getReference().child("Users").child(ID).child("Subjects").child(temp);
+                        reffy1 = FirebaseDatabase.getInstance().getReference().child("Users").child(ID).child("Quiz").child("QuizPage2").child("subjects").child(temp);
                         reffy1.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 if(dataSnapshot.exists()){
-                                    subjectList.add(new AddSubjectToSubjectView(dataSnapshot.getValue().toString()));
-
+                                    subjectList.add(new AddSubjectToSubjectView(dataSnapshot.child("subjectName").getValue().toString()));
 
                                     mRecyclerView = findViewById(R.id.rvStudent1);
                                     mRecyclerView.setHasFixedSize(true);
