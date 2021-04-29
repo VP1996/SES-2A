@@ -16,7 +16,8 @@
         android:text="Sample"
         android:textColor="@android:color/black"
         android:textSize="20sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
+
     <Button
         android:id="@+id/btn_regnew"
         android:layout_width="wrap_content"
