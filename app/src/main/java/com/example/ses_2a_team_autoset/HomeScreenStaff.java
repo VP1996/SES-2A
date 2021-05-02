@@ -115,9 +115,11 @@ public class HomeScreenStaff extends AppCompatActivity {
         btRequests.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(HomeScreenStaff.this, "LOL no....", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(HomeScreenStaff.this, Mailbox.class));
+
             }
         });
+
         btCreateGroups.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
