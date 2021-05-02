@@ -23,60 +23,73 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class ListOfGroups extends AppCompatActivity {
-    private RecyclerView mRecyclerView;
-    private AdapterForSubjects mAdapter;
+
+    Button btnlogout, btnback;
+    public TextView SubjectName,ClassName;
+    private AdapterForListOfGroups mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    public TextView welcomeTXT;
-    String currentUser;
+    private RecyclerView mRecyclerView;
 
+    FirebaseDatabase reference;
+    String StudentsinGroup = "";
+    RecyclerView recyclerView;
     CurrentUser user;
+    DatabaseReference users, subjects, ref1;
 
-    Button btSubjectList,btLogOut,btRegisterNewStudent,btRequests,btCreateGroups;
-    //Firebase
-    private DatabaseReference reff1;
-    private DatabaseReference reffy1;
 
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.homescreen_staff);
+        setContentView(R.layout.subjclass_admin);
+        Bundle bundle = getIntent().getExtras();
+        String subject = bundle.getString("subject");
+        String classType = bundle.getString("classType");
         String ID = user.getID();
 
-        reff1 = FirebaseDatabase.getInstance().getReference().child("Users").child(ID).child("Subjects");
-        ArrayList<AddSubjectToSubjectView> subjectList = new ArrayList<>();
+        ref1 = FirebaseDatabase.getInstance().getReference();
+        ArrayList<AddGroupToGroupListView> groupList = new ArrayList<>(); // edit this for subject
 
-        reff1.addValueEventListener(new ValueEventListener() {
+        ref1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
-                    float count = dataSnapshot.getChildrenCount();
+                    float count = dataSnapshot.child("Subjects").child(subject).child(classType).child("Groups").getChildrenCount();
                     for (int i = 1; i <= count; i++){
-                        String temp = String.valueOf(i);
-                        reffy1 = FirebaseDatabase.getInstance().getReference().child("Users").child(ID).child("Subjects").child(temp);
-                        reffy1.addValueEventListener(new ValueEventListener() {
+                        String temp = "Group" + String.valueOf(i);      // act + String
+
+                        ref1 = FirebaseDatabase.getInstance().getReference().child("Subjects").child(subject).child(classType).child("Groups").child(temp);
+                        ref1.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 if(dataSnapshot.exists()){
-                                    subjectList.add(new AddSubjectToSubjectView(dataSnapshot.getValue().toString()));
+                                    String GroupNumber = dataSnapshot.getKey();
+                                    float countAgain = dataSnapshot.getChildrenCount();
+                                    for(int f = 1;f<=countAgain;f++){
+                                        String temp1 = String.valueOf(f);
+                                        StudentsinGroup = StudentsinGroup + temp1+ ", ";
+                                    }
 
-                                    mRecyclerView = findViewById(R.id.rvAdmin1);
+
+
+                                    groupList.add(new AddGroupToGroupListView(GroupNumber,StudentsinGroup));
+
+
+
+
+                                    mRecyclerView = findViewById(R.id.myRecyclerViewForListOfGroups);
                                     mRecyclerView.setHasFixedSize(true);
                                     mLayoutManager = new LinearLayoutManager(ListOfGroups.this);
-                                    mAdapter = new AdapterForSubjects(subjectList);
+                                    mAdapter = new AdapterForListOfGroups(groupList);
                                     mRecyclerView.setLayoutManager(mLayoutManager);
                                     mRecyclerView.setAdapter(mAdapter);
-                                    mAdapter.setOnItemClickListener(new AdapterForSubjects.OnItemClickListener() {
-                                        @Override
-                                        public void onItemClick(int position) {
-                                            String subject = subjectList.get(position).getSubject1();
-                                            Intent intent = new Intent(ListOfGroups.this, SubjectClassesAdmin.class);
-                                            intent.putExtra("subject", subject);
-                                            startActivity(intent);
-                                        }
-                                    });
+
+
+
                                 }else {
                                     Toast.makeText(ListOfGroups.this, "Not found", Toast.LENGTH_SHORT).show();
                                 }
+
                             }
 
                             @Override
@@ -96,41 +109,32 @@ public class ListOfGroups extends AppCompatActivity {
             }
         });
 
-        welcomeTXT = findViewById(R.id.welcometxt);
-        btLogOut = findViewById(R.id.btn_logout);
-        btRequests = findViewById(R.id.btn_replytoreq);
-        btRegisterNewStudent = findViewById(R.id.btn_regnew);
-        btCreateGroups = findViewById(R.id.btn_SetGroups);
+        SubjectName = findViewById(R.id.SubjectName);
+        ClassName = findViewById(R.id.ClassType);
+        btnback = findViewById(R.id.btn_back_admin);
+        btnlogout = findViewById(R.id.btn_logout_admin);
 
-        currentUser = "Welcome " + user.getFirstName()+" "+ user.getLastName();
-        welcomeTXT.setText(currentUser);
+        SubjectName.setText(subject);
+        ClassName.setText(classType);
 
-        btLogOut.setOnClickListener(new View.OnClickListener() {
+        btnlogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(ListOfGroups.this, Login.class));
             }
         });
-
-        btRequests.setOnClickListener(new View.OnClickListener() {
+        btnback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ListOfGroups.this, Mailbox.class));
-
+                startActivity(new Intent(ListOfGroups.this, HomeScreenStaff.class));
             }
         });
 
-        btCreateGroups.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(ListOfGroups.this, CreateNewGroups.class));
-            }
-        });
-        btRegisterNewStudent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(ListOfGroups.this, Register.class));
-            }
-        });
+
+
+
+
+
     }
+
 }
