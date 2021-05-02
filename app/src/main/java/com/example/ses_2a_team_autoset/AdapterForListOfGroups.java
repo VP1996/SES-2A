@@ -36,7 +36,7 @@ public class AdapterForListOfGroups extends RecyclerView.Adapter<AdapterForListO
     @NonNull
     @Override
     public AFSViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_of_groups, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_listofgroups, parent, false);
         AFSViewHolder afsvh = new AFSViewHolder(v);
         return afsvh;
     }

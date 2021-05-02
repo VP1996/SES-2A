@@ -17,8 +17,7 @@ public class RequestPage extends AppCompatActivity {
     EditText etFullName,etStudentID,etClass,etCurrentG,etExpectedG, etReason;
     Button btSubmit,btGoBack;
     NewRequestMail newEmail;
-    FirebaseDatabase database;
-    DatabaseReference users;
+    DatabaseReference Reff1;
 
 
 
@@ -26,11 +25,12 @@ public class RequestPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.request);
 
-        database = FirebaseDatabase.getInstance("https://ses-2a-studybuddies-default-rtdb.firebaseio.com/");
-        users = database.getReference("Users");
+        Reff1 = FirebaseDatabase.getInstance().getReference();
 
-        //String subject = bundle.getString("subject");
-        String subject = "jeff";
+        Bundle bundle = getIntent().getExtras();
+        String subject = bundle.getString("subject");
+        String classType = bundle.getString("classType");
+
         etFullName = findViewById(R.id.et_FullName);
         etStudentID = findViewById(R.id.et_StudentID);
         etClass = findViewById(R.id.et_Class);
@@ -39,6 +39,7 @@ public class RequestPage extends AppCompatActivity {
         etReason = findViewById(R.id.et_Reason);
         btSubmit = findViewById(R.id.submit_btn);
         btGoBack = findViewById(R.id.go_btn);
+        etClass.setText(classType);
 
 
 
@@ -51,9 +52,6 @@ public class RequestPage extends AppCompatActivity {
                         return;
                     }else if(TextUtils.isEmpty(etStudentID.getText().toString().trim())) {
                         etStudentID.setError("Student ID is Required.");
-                        return;
-                    }else if(TextUtils.isEmpty(etClass.getText().toString().trim())) {
-                        etClass.setError("Class Name is Required.");
                         return;
                     }else if(TextUtils.isEmpty(etCurrentG.getText().toString().trim())) {
                         etCurrentG.setError("Current Group Number is Required.");
@@ -68,7 +66,7 @@ public class RequestPage extends AppCompatActivity {
                         NewEmail(
                                 etFullName.getText().toString(),
                                 etStudentID.getText().toString(),
-                                etClass.getText().toString(),
+                                classType,
                                 etCurrentG.getText().toString(),
                                 etExpectedG.getText().toString(),
                                 etReason.getText().toString(),
@@ -80,12 +78,14 @@ public class RequestPage extends AppCompatActivity {
         btGoBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(RequestPage.this, SubjectClassesAdmin.class));
+                Intent intent = new Intent(RequestPage.this, SubjectClassesStudent.class);
+                intent.putExtra("subject", subject);
+                startActivity(intent);
             }
         });
     }
 
-    private void NewEmail(String FullName, String ClassType, String StudentID, String CurrentGroup, String ExpectedGroup,String Reason, String subject) {
+    private void NewEmail(String FullName, String StudentID, String ClassType, String CurrentGroup, String ExpectedGroup,String Reason, String subject) {
         newEmail = new NewRequestMail();
         newEmail.setFullName(FullName);
         newEmail.setClassType(ClassType);
@@ -95,7 +95,7 @@ public class RequestPage extends AppCompatActivity {
         newEmail.setExpectedGroup(ExpectedGroup);
         newEmail.setReason(Reason);
 
-        users.child(StudentID).setValue(newEmail);
+        Reff1.child("Mailbox").child(subject).child(StudentID).setValue(newEmail);
         Toast.makeText(RequestPage.this, "Request Sent", Toast.LENGTH_SHORT).show();
         reload();
     }

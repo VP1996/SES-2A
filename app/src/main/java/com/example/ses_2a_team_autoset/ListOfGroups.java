@@ -31,7 +31,6 @@ public class ListOfGroups extends AppCompatActivity {
     private RecyclerView mRecyclerView;
 
     FirebaseDatabase reference;
-    String StudentsinGroup = "";
     RecyclerView recyclerView;
     CurrentUser user;
     DatabaseReference users, subjects, ref1;
@@ -41,7 +40,7 @@ public class ListOfGroups extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.subjclass_admin);
+        setContentView(R.layout.list_of_groups);
         Bundle bundle = getIntent().getExtras();
         String subject = bundle.getString("subject");
         String classType = bundle.getString("classType");
@@ -56,7 +55,8 @@ public class ListOfGroups extends AppCompatActivity {
                 if(dataSnapshot.exists()){
                     float count = dataSnapshot.child("Subjects").child(subject).child(classType).child("Groups").getChildrenCount();
                     for (int i = 1; i <= count; i++){
-                        String temp = "Group" + String.valueOf(i);      // act + String
+                        String temp = "Group" + String.valueOf(i);
+
 
                         ref1 = FirebaseDatabase.getInstance().getReference().child("Subjects").child(subject).child(classType).child("Groups").child(temp);
                         ref1.addValueEventListener(new ValueEventListener() {
@@ -65,10 +65,14 @@ public class ListOfGroups extends AppCompatActivity {
                                 if(dataSnapshot.exists()){
                                     String GroupNumber = dataSnapshot.getKey();
                                     float countAgain = dataSnapshot.getChildrenCount();
+                                    String StudentsinGroup = "";
                                     for(int f = 1;f<=countAgain;f++){
                                         String temp1 = String.valueOf(f);
-                                        StudentsinGroup = StudentsinGroup + temp1+ ", ";
+                                        StudentsinGroup = StudentsinGroup +  dataSnapshot.child(temp1).getValue().toString()+ ", ";
                                     }
+
+                                    StudentsinGroup = StudentsinGroup.substring(0, StudentsinGroup.lastIndexOf(", "));
+
 
 
 
@@ -126,7 +130,9 @@ public class ListOfGroups extends AppCompatActivity {
         btnback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ListOfGroups.this, HomeScreenStaff.class));
+                Intent intent = new Intent(ListOfGroups.this, SubjectClassesAdmin.class);
+                intent.putExtra("subject", subject);
+                startActivity(intent);
             }
         });
 

@@ -53,7 +53,7 @@ public class NewRequestMail {
     public String getReason() {
         return Reason;
     }
-    public void setReason(String Quiz) {
+    public void setReason(String Reason) {
         this.Reason = Reason;
     }
 

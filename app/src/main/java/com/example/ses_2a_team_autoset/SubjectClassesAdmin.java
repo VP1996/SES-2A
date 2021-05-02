@@ -86,7 +86,7 @@ public class SubjectClassesAdmin extends AppCompatActivity {
                                     mAdapter.setOnItemClickListener(new AdapterForClasses.OnItemClickListener() {
                                         @Override
                                         public void onItemClick(int position) {
-                                            String classType = act;
+                                            String classType = classlist.get(position).getTutorialAct();
                                             Intent intent = new Intent(SubjectClassesAdmin.this, ListOfGroups.class);
                                             intent.putExtra("classType", classType);
                                             intent.putExtra("subject", subject);
