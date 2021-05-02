@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Mailbox">
+    tools:context=".SubjectClassesAdmin">
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -14,9 +14,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        tools:context=".Mailbox">
+        tools:context=".SubjectClassesAdmin">
         <Button
-            android:id="@+id/btn_back_mailbox"
+            android:id="@+id/btn_back_admin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -24,6 +24,16 @@
             android:text="Back"
             android:layout_alignParentLeft="true" />
 
+
+        <Button
+            android:id="@+id/btn_logout_admin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginRight="12dp"
+            android:text="Log out"
+            android:layout_alignParentRight="true"
+            />
     </RelativeLayout>
 
     <RelativeLayout
@@ -34,11 +44,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
-            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:layout_marginLeft="12dp"
+            android:layout_margin="5dp"
             android:text="Mailbox"
             android:textColor="#673AB7"
             android:textSize="36sp"
@@ -47,25 +55,26 @@
 
     </RelativeLayout>
 
-
-
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        tools:context=".Mailbox">
-        <Button
-            android:id="@+id/btn_logout_mailbox"
-            android:layout_width="wrap_content"
+        android:orientation="horizontal">
+
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginLeft="12dp"
-            android:text="Log out"
-            android:layout_centerHorizontal="true" />
+            android:id="@+id/rvMailbox"
+            android:background="@android:color/darker_gray"
+            />
+
+
     </RelativeLayout>
+
 
 </LinearLayout>
 
