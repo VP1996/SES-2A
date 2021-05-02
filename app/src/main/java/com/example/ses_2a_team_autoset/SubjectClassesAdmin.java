@@ -54,18 +54,18 @@ public class SubjectClassesAdmin extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
-                    float count = dataSnapshot.child("Subjects").child(subject).child("Tut1").getChildrenCount();
+                    float count = dataSnapshot.child("Subjects").child(subject).getChildrenCount();
                     for (int i = 1; i <= count; i++){
-                        String temp = "Act " + String.valueOf(i);      // act + String
+                        String temp = "Tut" + String.valueOf(i);      // act + String
 
-                        ref1 = FirebaseDatabase.getInstance().getReference().child("Subjects").child(subject).child("Tut1").child(temp);
+                        ref1 = FirebaseDatabase.getInstance().getReference().child("Subjects").child(subject).child(temp);
                         ref1.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 if(dataSnapshot.exists()){
 
                                     // build tutorial and act string
-                                    String act =  "Tut1" + " - " + dataSnapshot.getKey();
+                                    String act = dataSnapshot.getKey();
                                     // build day and time string
                                     String dayNTime = "Time: " + dataSnapshot.child("DayNTime").getValue().toString();
                                     // build location string
@@ -82,6 +82,17 @@ public class SubjectClassesAdmin extends AppCompatActivity {
                                     mAdapter = new AdapterForClasses(classlist);
                                     mRecyclerView.setLayoutManager(mLayoutManager);
                                     mRecyclerView.setAdapter(mAdapter);
+
+                                    mAdapter.setOnItemClickListener(new AdapterForClasses.OnItemClickListener() {
+                                        @Override
+                                        public void onItemClick(int position) {
+                                            String classType = act;
+                                            Intent intent = new Intent(SubjectClassesAdmin.this, ListOfGroups.class);
+                                            intent.putExtra("classType", classType);
+                                            intent.putExtra("subject", subject);
+                                            startActivity(intent);
+                                        }
+                                    });
 
                                 }else {
                                     Toast.makeText(SubjectClassesAdmin.this, "Not found", Toast.LENGTH_SHORT).show();
@@ -105,14 +116,6 @@ public class SubjectClassesAdmin extends AppCompatActivity {
 
             }
         });
-
-
-
-
-
-
-
-
 
         ClassName = findViewById(R.id.SubjectName);
         btnback = findViewById(R.id.btn_back_admin);

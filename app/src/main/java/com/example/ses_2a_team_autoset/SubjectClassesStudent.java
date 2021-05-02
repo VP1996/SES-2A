@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class SubjectClassesStudent extends AppCompatActivity {
 
 
-    Button btnlogout, btnback, btnprofile;
+    Button btnlogout, btnback;
     private AdapterForClasses mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView mRecyclerView;
@@ -55,6 +55,7 @@ public class SubjectClassesStudent extends AppCompatActivity {
         ref1 = FirebaseDatabase.getInstance().getReference();
         ref2 = FirebaseDatabase.getInstance().getReference();
         ArrayList<AddSubjectToClassesView> classlist = new ArrayList<>(); // edit this for subject
+
 
         ref1.addValueEventListener(new ValueEventListener() {
             @Override
@@ -109,6 +110,17 @@ public class SubjectClassesStudent extends AppCompatActivity {
                                             mRecyclerView.setLayoutManager(mLayoutManager);
                                             mRecyclerView.setAdapter(mAdapter);
 
+                                            mAdapter.setOnItemClickListener(new AdapterForClasses.OnItemClickListener() {
+                                                @Override
+                                                public void onItemClick(int position) {
+                                                    String classType = act;
+                                                    Intent intent = new Intent(SubjectClassesStudent.this, RequestPage.class);
+                                                    intent.putExtra("classType", classType);
+                                                    intent.putExtra("subject", subject);
+                                                    startActivity(intent);
+                                                }
+                                            });
+
                                         }else {
                                             Toast.makeText(SubjectClassesStudent.this, "Not found", Toast.LENGTH_SHORT).show();
                                         }
@@ -134,7 +146,6 @@ public class SubjectClassesStudent extends AppCompatActivity {
             }
         });
 
-
         ClassName = findViewById(R.id.SubjectName);
         btnback = findViewById(R.id.btn_back_student);
         btnlogout = findViewById(R.id.btn_logout_student);
@@ -157,6 +168,7 @@ public class SubjectClassesStudent extends AppCompatActivity {
 
 
     }
+
 
 
 }

@@ -22,7 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class HomeScreenStaff extends AppCompatActivity {
+public class ListOfGroups extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private AdapterForSubjects mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -61,7 +61,7 @@ public class HomeScreenStaff extends AppCompatActivity {
 
                                     mRecyclerView = findViewById(R.id.rvAdmin1);
                                     mRecyclerView.setHasFixedSize(true);
-                                    mLayoutManager = new LinearLayoutManager(HomeScreenStaff.this);
+                                    mLayoutManager = new LinearLayoutManager(ListOfGroups.this);
                                     mAdapter = new AdapterForSubjects(subjectList);
                                     mRecyclerView.setLayoutManager(mLayoutManager);
                                     mRecyclerView.setAdapter(mAdapter);
@@ -69,24 +69,24 @@ public class HomeScreenStaff extends AppCompatActivity {
                                         @Override
                                         public void onItemClick(int position) {
                                             String subject = subjectList.get(position).getSubject1();
-                                            Intent intent = new Intent(HomeScreenStaff.this, SubjectClassesAdmin.class);
+                                            Intent intent = new Intent(ListOfGroups.this, SubjectClassesAdmin.class);
                                             intent.putExtra("subject", subject);
                                             startActivity(intent);
                                         }
                                     });
                                 }else {
-                                    Toast.makeText(HomeScreenStaff.this, "Not found", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ListOfGroups.this, "Not found", Toast.LENGTH_SHORT).show();
                                 }
                             }
 
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {
-                                Toast.makeText(HomeScreenStaff.this, "Not found", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ListOfGroups.this, "Not found", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
                 }else {
-                    Toast.makeText(HomeScreenStaff.this, "Not found", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ListOfGroups.this, "Not found", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -108,14 +108,14 @@ public class HomeScreenStaff extends AppCompatActivity {
         btLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(HomeScreenStaff.this, Login.class));
+                startActivity(new Intent(ListOfGroups.this, Login.class));
             }
         });
 
         btRequests.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(HomeScreenStaff.this, Mailbox.class));
+                startActivity(new Intent(ListOfGroups.this, Mailbox.class));
 
             }
         });
@@ -123,13 +123,13 @@ public class HomeScreenStaff extends AppCompatActivity {
         btCreateGroups.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(HomeScreenStaff.this, CreateNewGroups.class));
+                startActivity(new Intent(ListOfGroups.this, CreateNewGroups.class));
             }
         });
         btRegisterNewStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(HomeScreenStaff.this, Register.class));
+                startActivity(new Intent(ListOfGroups.this, Register.class));
             }
         });
     }

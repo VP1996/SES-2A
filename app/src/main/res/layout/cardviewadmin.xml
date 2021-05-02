@@ -53,13 +53,14 @@
         android:textStyle="bold"
         android:id="@+id/group"
         />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="View groups and students"
-        android:id="@+id/vGNS"
-        android:visibility="visible"
-        />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="View Groups"
+            android:id="@+id/requestButton"
+            android:visibility="visible"
+            />
+
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>
