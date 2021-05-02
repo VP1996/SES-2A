@@ -7,11 +7,15 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class QuizPageFour extends AppCompatActivity {
     Button btnLogout, btnNext;
@@ -30,6 +34,7 @@ public class QuizPageFour extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance("https://ses-2a-studybuddies-default-rtdb.firebaseio.com/");
         users = database.getReference("Users");
+
 
         btnLogout = findViewById(R.id.btn_logout_quizFour);
         btnNext = findViewById(R.id.btn_next_quizFour);

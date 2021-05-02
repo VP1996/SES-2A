@@ -28,7 +28,15 @@
         android:textStyle="bold"
         android:id="@+id/mStudentName"
         />
-    <TextView
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:text="Class"
+            android:textStyle="bold"
+            android:id="@+id/mSubClass"
+            />
+        <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="15dp"
@@ -36,6 +44,7 @@
         android:textStyle="bold"
         android:id="@+id/mReason"
         />
+
 
     <TextView
         android:layout_width="match_parent"

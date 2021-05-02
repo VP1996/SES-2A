@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 public class SubjectClassesAdmin extends AppCompatActivity {
 
-    Button btnlogout, btnback;
+    Button btnMailbox, btnback;
     public TextView ClassName;
     private AdapterForClasses mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -119,14 +119,16 @@ public class SubjectClassesAdmin extends AppCompatActivity {
 
         ClassName = findViewById(R.id.SubjectName);
         btnback = findViewById(R.id.btn_back_admin);
-        btnlogout = findViewById(R.id.btn_logout_admin);
+        btnMailbox = findViewById(R.id.btn_mailbox);
 
         ClassName.setText(subject);
 
-        btnlogout.setOnClickListener(new View.OnClickListener() {
+        btnMailbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(SubjectClassesAdmin.this, Login.class));
+                Intent intent = new Intent(SubjectClassesAdmin.this, Mailbox.class);
+                intent.putExtra("subject", subject);
+                startActivity(intent);
             }
         });
         btnback.setOnClickListener(new View.OnClickListener() {

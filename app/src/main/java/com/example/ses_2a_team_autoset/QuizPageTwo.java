@@ -44,7 +44,7 @@ public class QuizPageTwo extends AppCompatActivity {
     CurrentUser user;
     FirebaseDatabase database;
     DatabaseReference users;
-    DatabaseReference subjects;
+    DatabaseReference subjects,reff1;
 
     ArrayList<Integer> subjectsIndexList = new ArrayList<>();
     ArrayList<String> subjectsList = new ArrayList<>();
@@ -79,7 +79,6 @@ public class QuizPageTwo extends AppCompatActivity {
         database = FirebaseDatabase.getInstance("https://ses-2a-studybuddies-default-rtdb.firebaseio.com/");
         users = database.getReference("Users");
         subjects = database.getReference("Subjects");
-
         btnLogout = findViewById(R.id.btn_logout_quizTwo);
         btnNext = findViewById(R.id.btn_next_quizTwo);
         tvSubjects = findViewById(R.id.tv_subjects);
@@ -235,6 +234,8 @@ public class QuizPageTwo extends AppCompatActivity {
         QP2Answers.setStudyLevel(studyLevel);
         QP2Answers.setGPA(gpa);
 
+        //reff1 = FirebaseDatabase.getInstance().getReference();
+
         String ID = user.getID();
         users.child(ID).child("Quiz").child("QuizPage2").setValue(QP2Answers);
 
@@ -246,6 +247,9 @@ public class QuizPageTwo extends AppCompatActivity {
                     .child(String.valueOf(i)).child("subjectName").setValue(subjectString);
             users.child(ID).child("Quiz").child("QuizPage2").child("subjects")
                     .child(String.valueOf(i)).child("class").setValue(classString);
+            //reff1.child("Subjects").child(subjectString).child(classString).child("Groups").child("Group1").child("1").setValue(ID);
+
+
         }
 
         startActivity(new Intent(QuizPageTwo.this, QuizPageThree.class));

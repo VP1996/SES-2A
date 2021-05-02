@@ -24,14 +24,13 @@
             android:text="Back"
             android:layout_alignParentLeft="true" />
 
-
         <Button
-            android:id="@+id/btn_logout_admin"
+            android:id="@+id/btn_mailbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:layout_marginRight="12dp"
-            android:text="Log out"
+            android:text="Mailbox"
             android:layout_alignParentRight="true"
             />
     </RelativeLayout>

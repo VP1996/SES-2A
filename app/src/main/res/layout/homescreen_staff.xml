@@ -29,12 +29,7 @@
         android:layout_height="wrap_content"
         android:text="Set Groups"
         android:textColor="@android:color/white" />
-    <Button
-        android:id="@+id/btn_replytoreq"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Reply to requests"
-        android:textColor="@android:color/white" />
+
     <Button
         android:id="@+id/btn_logout"
         android:layout_width="wrap_content"

@@ -31,9 +31,9 @@ public class HomeScreenStaff extends AppCompatActivity {
 
     CurrentUser user;
 
-    Button btSubjectList,btLogOut,btRegisterNewStudent,btRequests,btCreateGroups;
+    Button btSubjectList,btLogOut,btRegisterNewStudent,btCreateGroups;
     //Firebase
-    private DatabaseReference reff1;
+    private DatabaseReference reffff1;
     private DatabaseReference reffy1;
 
     @Override
@@ -42,18 +42,18 @@ public class HomeScreenStaff extends AppCompatActivity {
         setContentView(R.layout.homescreen_staff);
         String ID = user.getID();
 
-        reff1 = FirebaseDatabase.getInstance().getReference().child("Users").child(ID).child("Subjects");
+        reffff1 = FirebaseDatabase.getInstance().getReference().child("Users").child(ID).child("Subjects");
         ArrayList<AddSubjectToSubjectView> subjectList = new ArrayList<>();
 
-        reff1.addValueEventListener(new ValueEventListener() {
+        reffff1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
                     float count = dataSnapshot.getChildrenCount();
                     for (int i = 1; i <= count; i++){
                         String temp = String.valueOf(i);
-                        reffy1 = FirebaseDatabase.getInstance().getReference().child("Users").child(ID).child("Subjects").child(temp);
-                        reffy1.addValueEventListener(new ValueEventListener() {
+                        reffff1 = FirebaseDatabase.getInstance().getReference().child("Users").child(ID).child("Subjects").child(temp);
+                        reffff1.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 if(dataSnapshot.exists()){
@@ -98,7 +98,6 @@ public class HomeScreenStaff extends AppCompatActivity {
 
         welcomeTXT = findViewById(R.id.welcometxt);
         btLogOut = findViewById(R.id.btn_logout);
-        btRequests = findViewById(R.id.btn_replytoreq);
         btRegisterNewStudent = findViewById(R.id.btn_regnew);
         btCreateGroups = findViewById(R.id.btn_SetGroups);
 
@@ -109,14 +108,6 @@ public class HomeScreenStaff extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(HomeScreenStaff.this, Login.class));
-            }
-        });
-
-        btRequests.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(HomeScreenStaff.this, Mailbox.class));
-
             }
         });
 
