@@ -47,7 +47,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_fullName"
+                android:id="@+id/layout_fullName_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -64,13 +64,12 @@
                     android:id="@+id/input_fullName"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:text="Name Name"
                     android:inputType="textPersonName"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_email"
+                android:id="@+id/layout_email_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -81,26 +80,25 @@
                 android:hint="Email"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layout_fullName">
+                app:layout_constraintTop_toBottomOf="@+id/layout_fullName_edit">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/input_email"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:text="studentEmail@student.uts.edu.au"
                     android:inputType="textEmailAddress"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <RadioGroup
-                android:id="@+id/radioGroup"
+                android:id="@+id/radGrpGender_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layout_email">
+                app:layout_constraintTop_toBottomOf="@+id/layout_email_edit">
 
                 <TextView
                     android:id="@+id/textView_gender"
@@ -110,27 +108,26 @@
                     android:text="Gender: " />
 
                 <RadioButton
-                    android:id="@+id/radioBtn_female"
+                    android:id="@+id/radioBtn_female_edit"
                     android:layout_width="85dp"
                     android:layout_height="wrap_content"
-                    android:checked="true"
                     android:text="Female" />
 
                 <RadioButton
-                    android:id="@+id/radioBtn_male"
+                    android:id="@+id/radioBtn_male_edit"
                     android:layout_width="75dp"
                     android:layout_height="wrap_content"
                     android:text="Male" />
 
                 <RadioButton
-                    android:id="@+id/radioBtn_other"
+                    android:id="@+id/radioBtn_other_edit"
                     android:layout_width="85dp"
                     android:layout_height="wrap_content"
                     android:text="Other" />
             </RadioGroup>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_age"
+                android:id="@+id/layout_age_edit"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -138,19 +135,18 @@
                 android:layout_marginTop="16dp"
                 android:hint="Age"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/radioGroup">
+                app:layout_constraintTop_toBottomOf="@+id/radGrpGender_edit">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/input_age"
                     android:layout_width="75dp"
                     android:layout_height="60dp"
-                    android:text="22"
                     android:inputType="number" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_phone"
+                android:id="@+id/layout_phone_edit"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -160,20 +156,19 @@
                 android:layout_marginRight="32dp"
                 android:hint="Phone Number"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/layout_age"
-                app:layout_constraintTop_toBottomOf="@+id/radioGroup">
+                app:layout_constraintStart_toEndOf="@+id/layout_age_edit"
+                app:layout_constraintTop_toBottomOf="@+id/radGrpGender_edit">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/input_phone"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:text="123456789"
                     android:inputType="phone" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_address"
+                android:id="@+id/layout_address_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -184,19 +179,18 @@
                 android:hint="Address"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layout_age">
+                app:layout_constraintTop_toBottomOf="@+id/layout_age_edit">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/input_address"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:text="Student address"
                     android:inputType="textPostalAddress"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_background"
+                android:id="@+id/layout_background_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -207,24 +201,36 @@
                 android:hint="Cultural Background"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layout_address">
+                app:layout_constraintTop_toBottomOf="@+id/layout_address_edit">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/input_background"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:text="Student Cultural Background"
                     android:inputType="text"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
-                android:id="@+id/tv_subjects"
+                android:id="@+id/tv_subjectInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="To change subjects or tutorials, please re-select all your subjects and tutorials using the dropdown lists below."
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginRight="32dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layout_background_edit"/>
+
+            <TextView
+                android:id="@+id/tv_subjects_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
                 android:layout_marginLeft="30dp"
-                android:layout_marginTop="16dp"
                 android:layout_marginEnd="30dp"
                 android:layout_marginRight="30dp"
                 android:background="@android:drawable/editbox_background"
@@ -237,33 +243,44 @@
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layout_background" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_subjectInfo" />
+
+            <LinearLayout
+                android:id="@+id/llSelectClasses_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_subjects_edit">
+            </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_availabilities"
+                android:id="@+id/layout_availabilities_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginLeft="32dp"
-                android:layout_marginTop="16dp"
                 android:layout_marginEnd="32dp"
                 android:layout_marginRight="32dp"
                 android:hint="Availabilities"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_subjects">
+                app:layout_constraintTop_toBottomOf="@+id/llSelectClasses_edit">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/input_availabilities"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:text="Monday and Tuesday"
                     android:inputType="text"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/menu_faculties"
+                android:id="@+id/menu_faculties_edit"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -274,21 +291,20 @@
                 android:layout_marginRight="32dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layout_availabilities">
+                app:layout_constraintTop_toBottomOf="@+id/layout_availabilities_edit">
 
                 <AutoCompleteTextView
-                    android:id="@+id/actv_faculties"
+                    android:id="@+id/actv_faculties_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Select your faculty"
                     android:textSize="16sp"
-                    android:text="Engineering"
                     android:inputType="none" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_major"
+                android:id="@+id/layout_major_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -299,19 +315,18 @@
                 android:hint="Degree and major"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/menu_faculties">
+                app:layout_constraintTop_toBottomOf="@+id/menu_faculties_edit">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/input_major"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:text="Software Engineering"
                     android:inputType="text"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <RadioGroup
-                android:id="@+id/radioGroupQuizTwo"
+                android:id="@+id/radioGrpStudyLevel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -323,30 +338,29 @@
                 android:gravity="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layout_major">
+                app:layout_constraintTop_toBottomOf="@+id/layout_major_edit">
 
                 <RadioButton
-                    android:id="@+id/radioBtn_ug"
+                    android:id="@+id/radioBtn_ug_edit"
                     android:layout_width="135dp"
                     android:layout_height="wrap_content"
-                    android:checked="true"
                     android:text="Undergraduate" />
 
                 <RadioButton
-                    android:id="@+id/radioBtn_pg"
+                    android:id="@+id/radioBtn_pg_edit"
                     android:layout_width="125dp"
                     android:layout_height="wrap_content"
                     android:text="Postgraduate" />
 
                 <RadioButton
-                    android:id="@+id/radioBtn_phd"
+                    android:id="@+id/radioBtn_phd_edit"
                     android:layout_width="85dp"
                     android:layout_height="wrap_content"
                     android:text="PhD" />
             </RadioGroup>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_gpa"
+                android:id="@+id/layout_gpa_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -357,13 +371,12 @@
                 android:hint="Current GPA/WAM"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/radioGroupQuizTwo">
+                app:layout_constraintTop_toBottomOf="@+id/radioGrpStudyLevel">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/input_gpa"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:text="GPA 6.0"
                     android:inputType="text"/>
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -376,7 +389,8 @@
                 android:text="Save changes"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layout_gpa" />
+                app:layout_constraintTop_toBottomOf="@+id/layout_gpa_edit" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
