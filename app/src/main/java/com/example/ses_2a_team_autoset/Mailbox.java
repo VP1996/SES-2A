@@ -33,7 +33,8 @@ public class Mailbox extends AppCompatActivity {
     String classname,subjName;
     RecyclerView recyclerView;
     CurrentUser user;
-    DatabaseReference users, subjects, ref1,ref2;
+    int Countmembers = 0;
+    DatabaseReference ref3, ref1,ref2;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +47,10 @@ public class Mailbox extends AppCompatActivity {
         ArrayList<String> StudentsInMailList = new ArrayList<>();
         ref1 = FirebaseDatabase.getInstance().getReference();
         ref1 = FirebaseDatabase.getInstance().getReference().child("Mailbox").child(subject);
+        ref2 = FirebaseDatabase.getInstance().getReference();
+        ref2 = FirebaseDatabase.getInstance().getReference().child("Subjects").child(subject);
+        ref3 = FirebaseDatabase.getInstance().getReference();
+        ref3 = FirebaseDatabase.getInstance().getReference().child("Subjects").child(subject);
         ArrayList<AddMailToMailboxView> maillist = new ArrayList<>();
 
 
@@ -61,7 +66,7 @@ public class Mailbox extends AppCompatActivity {
                         String ExpectedGroup = "Requested Group Number: "+snapshot.child("expectedGroup").getValue().toString();
                         String Reason = "Comment: "+snapshot.child("reason").getValue().toString();
 
-                        maillist.add(new AddMailToMailboxView(FullNameSID,SubjectClassType,CurrentGroup,ExpectedGroup,Reason));
+                        maillist.add(new AddMailToMailboxView(FullNameSID,SubjectClassType,CurrentGroup,ExpectedGroup,Reason,SID));
 
                         mRecyclerView = findViewById(R.id.rvMailbox);
                         mRecyclerView.setHasFixedSize(true);
@@ -73,12 +78,69 @@ public class Mailbox extends AppCompatActivity {
                     mAdapter.setOnItemClickListener(new AdapterForMailbox.OnItemClickListener() {
                         @Override
                         public void onApprove(int position) {
-                            Toast.makeText(Mailbox.this, "Approved", Toast.LENGTH_SHORT).show();
+                            String StudentID = maillist.get(position).getStudentID();
+                            String ClassType = dataSnapshot.child(StudentID).child("classType").getValue().toString();
+                            String CGroup = "Group" + dataSnapshot.child(StudentID).child("currentGroup").getValue().toString();
+                            String NewGroup = "Group" + dataSnapshot.child(StudentID).child("expectedGroup").getValue().toString();
+
+                            ref2 = FirebaseDatabase.getInstance().getReference().child("Subjects").child(subject).child(ClassType).child("Groups").child(CGroup);
+                            ref2.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if(snapshot.exists()){
+                                        for (DataSnapshot ds : snapshot.getChildren()) {
+                                            String member = ds.getValue().toString();
+                                            if(member.equals(StudentID)){
+                                                ds.getRef().setValue("1");
+                                                ref3 = FirebaseDatabase.getInstance().getReference().child("Subjects").child(subject).child(ClassType).child("Groups").child(NewGroup);
+                                                ref3.addValueEventListener(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                        if(snapshot.exists()){
+                                                            for (DataSnapshot ds2 : snapshot.getChildren()) {
+                                                                String member = ds2.getValue().toString();
+                                                                if(member.equals("1") && Countmembers==0 ){
+                                                                    Countmembers = 1;
+                                                                    ds2.getRef().setValue(StudentID);
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                                    }
+                                                });
+                                                Toast.makeText(Mailbox.this, "Approved", Toast.LENGTH_SHORT).show();
+                                                dataSnapshot.child(StudentID).getRef().removeValue();
+                                                reload();
+
+                                            }else {
+                                                Toast.makeText(Mailbox.this, "Student Not Found", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+
+
+
+
 
                         }
                         @Override
                         public void onDeclive(int position) {
                             Toast.makeText(Mailbox.this, "Declined", Toast.LENGTH_SHORT).show();
+                            String StudentID = maillist.get(position).getStudentID();
+                            dataSnapshot.child(StudentID).getRef().removeValue();
+                            reload();
+
                         }
                     });
 
@@ -112,4 +174,12 @@ public class Mailbox extends AppCompatActivity {
             }
         });
 
+    }
+    public void reload() {
+        Intent intent = getIntent();
+        overridePendingTransition(0, 0);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(intent);
     }}

@@ -6,14 +6,16 @@ public class AddMailToMailboxView {
     private String CurrentGroup;
     private String ExpectedGroup;
     private String Reason;
+    private String StudentID;
 
 
-    public AddMailToMailboxView(String text1, String text2, String text3, String text4, String text5) {
+    public AddMailToMailboxView(String text1, String text2, String text3, String text4, String text5, String text6) {
         FullNameStudentID = text1;
         SubjectClassType = text2;
         CurrentGroup = text3;
         ExpectedGroup = text4;
         Reason = text5;
+        StudentID = text6;
     }
 
     public String getFullNameStudentID() {
@@ -30,5 +32,8 @@ public class AddMailToMailboxView {
     }
     public String getReason() {
         return Reason;
+    }
+    public String getStudentID() {
+        return StudentID;
     }
 }
