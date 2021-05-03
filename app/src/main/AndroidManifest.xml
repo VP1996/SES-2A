@@ -42,9 +42,9 @@
             android:label="@string/app_name"/>
         <activity android:name=".QuizPageFour"
             android:label="@string/app_name"/>
-        <activity android:name=".CreateNewGroups"
-            android:label="@string/app_name"/>
         <activity android:name=".ListOfGroups"
+            android:label="@string/app_name"/>
+        <activity android:name=".CreateNewGroups"
             android:label="@string/app_name"/>
 
 
