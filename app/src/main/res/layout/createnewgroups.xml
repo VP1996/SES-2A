@@ -47,18 +47,28 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/title_creategroups" />
 
-            <LinearLayout
-                android:id="@+id/llSelectClasses"
+            <TextView
+                android:id="@+id/tv_classes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginRight="32dp"
-                android:orientation="vertical"
+                android:layout_marginStart="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginRight="30dp"
+                android:background="@android:drawable/editbox_background"
+                android:backgroundTint="#E0E0E0"
+                android:drawableRight="@android:drawable/arrow_down_float"
+                android:drawablePadding="16dp"
+                android:hint="Select Classes"
+                android:padding="23dp"
+                android:text="Select Classes"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_subjects">
-            </LinearLayout>
+                app:layout_constraintTop_toBottomOf="@+id/tv_subjects" />
+
+
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/GRoupSizes"
@@ -66,12 +76,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginLeft="32dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="32dp"
                 android:layout_marginRight="32dp"
                 android:hint="Group Size"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/llSelectClasses">
+                app:layout_constraintTop_toBottomOf="@+id/tv_classes">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/input_availabilities"

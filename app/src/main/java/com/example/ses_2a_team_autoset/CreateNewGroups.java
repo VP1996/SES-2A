@@ -33,23 +33,25 @@ import java.util.Arrays;
 public class CreateNewGroups extends AppCompatActivity {
 
     Button btnGoBack, btnSubmit;
-    TextView tvSubjects;
+    TextView tvSubjects,tvClasses;
     boolean[] selectedSubjects;
+    boolean[] selectedClasses;
     TextInputLayout tGroupSize,tNumberOfGroups;
-    LinearLayout mLayout;
-    CurrentUser user;
     FirebaseDatabase database;
-    DatabaseReference users,reff1;
+    DatabaseReference reffff,reff1;
     ArrayList<Integer> subjectsIndexList = new ArrayList<>();
     ArrayList<String> subjectsList = new ArrayList<>();
     ArrayList<String> selectedSubjectsList = new ArrayList<>();
 
+    String[] classesArray = {"Tut1", "Tut2", "Tut3"};
+    ArrayList<String> classesList = new ArrayList<String>(Arrays.asList(classesArray));
+
+    ArrayList<Integer> classesIndexList = new ArrayList<>();
+    ArrayList<String> selectedClassesList = new ArrayList<>();
+
     String[] subjectsArray;
 
 
-    String[] classesArray = {"Tut1", "Tut2", "Tut3"};
-    ArrayList<String> classesList = new ArrayList<String>(Arrays.asList(classesArray));
-    ArrayList<TextInputLayout> classesLayoutList = new ArrayList<>();
     ArrayAdapter<String> actvAdapter;
 
 
@@ -62,10 +64,10 @@ public class CreateNewGroups extends AppCompatActivity {
         btnGoBack = findViewById(R.id.btn_goBack);
         btnSubmit = findViewById(R.id.btn_submit);
         tvSubjects = findViewById(R.id.tv_subjects);
+        tvClasses = findViewById(R.id.tv_classes);
         tGroupSize = findViewById(R.id.GRoupSizes);//NumberOfGroups
         tNumberOfGroups = findViewById(R.id.NumberOfGroups);
 
-        mLayout = findViewById(R.id.llSelectClasses);
 
         reff1.addValueEventListener(new ValueEventListener() {
             @Override
@@ -74,7 +76,9 @@ public class CreateNewGroups extends AppCompatActivity {
                     subjectsList.add(dataSnapshot.getKey().toString());
                 }
                 selectedSubjects = new boolean[subjectsList.size()];
+                selectedClasses = new boolean[classesList.size()];
                 subjectsArray = subjectsList.toArray(new String[subjectsList.size()]);
+                classesArray = classesList.toArray(new String[classesList.size()]);
             }
 
             @Override
@@ -93,10 +97,10 @@ public class CreateNewGroups extends AppCompatActivity {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!validateSubjects() | !validateTextInput(tNumberOfGroups)| !validateTextInput(tGroupSize) )
+                if (!validateSubjects() | !validateClasses() | !validateTextInput(tNumberOfGroups)| !validateTextInput(tGroupSize) )
                     return;
 
-                saveDataG(selectedSubjectsList,
+                saveDataG(selectedSubjectsList, selectedClassesList,
                         tGroupSize.getEditText().getText().toString(),
                         tNumberOfGroups.getEditText().getText().toString());
             }
@@ -123,8 +127,6 @@ public class CreateNewGroups extends AppCompatActivity {
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mLayout.removeAllViews();
-                        classesLayoutList.clear();
                         selectedSubjectsList.clear();
                         StringBuilder stringBuilder = new StringBuilder();
                         for (int i = 0; i < subjectsIndexList.size(); i++) {
@@ -137,11 +139,6 @@ public class CreateNewGroups extends AppCompatActivity {
                         }
                         tvSubjects.setText(stringBuilder.toString());
 
-                        for (int i = 0; i < subjectsIndexList.size(); i++) {
-                            TextInputLayout tilClass = createNewTextViewSelectClasses(subjectsArray[subjectsIndexList.get(i)]);
-                            classesLayoutList.add(tilClass);
-                            mLayout.addView(tilClass);
-                        }
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -153,13 +150,68 @@ public class CreateNewGroups extends AppCompatActivity {
                 builder.setNeutralButton("Clear All", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mLayout.removeAllViews();
-                        classesLayoutList.clear();
                         for (int i = 0; i < selectedSubjects.length; i++) {
                             //Remove all selections
                             selectedSubjects[i] = false;
                             subjectsIndexList.clear();
                             tvSubjects.setText("");
+                        }
+                    }
+                });
+                //Show dialog
+                builder.show();
+            }
+        });
+
+        tvClasses.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Initialise alert dialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(CreateNewGroups.this);
+                builder.setTitle("Select Classes");
+                builder.setMultiChoiceItems(classesArray, selectedClasses, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int position, boolean isChecked) {
+                        if (isChecked) {
+                            if (!classesIndexList.contains(position))
+                                classesIndexList.add(position);
+                        } else {
+                            classesIndexList.remove((Integer.valueOf(position)));
+                            selectedClassesList.remove((Integer.valueOf(position)));
+                        }
+                    }
+                });
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        selectedClassesList.clear();
+                        StringBuilder stringBuilder = new StringBuilder();
+                        for (int i = 0; i < classesIndexList.size(); i++) {
+                            selectedClassesList.add(classesArray[classesIndexList.get(i)]);
+                            //Concat array value
+                            stringBuilder.append(classesArray[classesIndexList.get(i)]);
+                            if (i != classesIndexList.size() - 1) {
+                                stringBuilder.append(", ");
+                            }
+                        }
+                        tvClasses.setText(stringBuilder.toString());
+
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.setNeutralButton("Clear All", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        for (int i = 0; i < selectedClasses.length; i++) {
+                            //Remove all selections
+                            selectedClasses[i] = false;
+                            classesIndexList.clear();
+                            tvClasses.setText("");
                         }
                     }
                 });
@@ -192,26 +244,25 @@ public class CreateNewGroups extends AppCompatActivity {
         return textInputLayout;
     }
 
-    private void saveDataG(ArrayList<String> subjects, String GroupSizes,String NumberOfGroups) {
+    private void saveDataG(ArrayList<String> subjects, ArrayList<String> classes, String GroupSizes,String NumberOfGroups) {
 
         int sGroupSizes = Integer. parseInt(GroupSizes);
         int sNumberOfGroups = Integer. parseInt(NumberOfGroups);
 
         for (int i = 0; i < subjects.size(); i ++) {
-            String classString = classesLayoutList.get(i).getEditText().getText().toString();
-            String subjectString = selectedSubjectsList.get(i);
-            reff1.child(subjectString).child(classString).child("GroupSizes").setValue(GroupSizes);
+            for (int tut = 0; tut < classes.size(); tut ++) {
 
-
-            for(int f = 1; f <= sNumberOfGroups;f++){
-
-                for(int x = 1; x <= sGroupSizes;x++){
-                    String gn = "Group"+String.valueOf(f);
-                    reff1.child(subjectString).child(classString).child("Groups").child(gn).child(String.valueOf(x)).setValue("1");
-
+                String classString = selectedClassesList.get(tut);
+                String subjectString = selectedSubjectsList.get(i);
+                reff1.child(subjectString).child(classString).child("GroupSizes").setValue(GroupSizes);
+                reff1.child(subjectString).child(classString).child("Groups").getRef().removeValue();
+                for(int f = 1; f <= sNumberOfGroups;f++){
+                    for(int x = 1; x <= sGroupSizes;x++){
+                        String gn = "Group"+String.valueOf(f);
+                        reff1.child(subjectString).child(classString).child("Groups").child(gn).child(String.valueOf(x)).setValue("1");
+                    }
                 }
             }
-
         }
         Toast.makeText(CreateNewGroups.this, "New Groups Added", Toast.LENGTH_SHORT).show();
         reload();
@@ -235,6 +286,15 @@ public class CreateNewGroups extends AppCompatActivity {
             return false;
         } else {
             tvSubjects.setError(null);
+            return true;
+        }
+    }
+    private boolean validateClasses() {
+        if (selectedClassesList.isEmpty()) {
+            tvClasses.setError("Classes are required");
+            return false;
+        } else {
+            tvClasses.setError(null);
             return true;
         }
     }
