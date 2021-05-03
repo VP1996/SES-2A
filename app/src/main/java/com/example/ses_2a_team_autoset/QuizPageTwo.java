@@ -39,18 +39,16 @@ public class QuizPageTwo extends AppCompatActivity {
     RadioGroup radioGrpStudyLevel;
     LinearLayout mLayout;
     AutoCompleteTextView actvFaculties;
-
     QP2Answers QP2Answers;
     CurrentUser user;
     FirebaseDatabase database;
     DatabaseReference users;
-    DatabaseReference subjects,reff1;
-
+    DatabaseReference subjects,reff1,reff2;
     ArrayList<Integer> subjectsIndexList = new ArrayList<>();
     ArrayList<String> subjectsList = new ArrayList<>();
     ArrayList<String> selectedSubjectsList = new ArrayList<>();
     String[] subjectsArray;
-
+    boolean alreadyExecuted  = false;
     String[] facultiesArray = {
             "Business",
             "Communication",
@@ -79,6 +77,8 @@ public class QuizPageTwo extends AppCompatActivity {
         database = FirebaseDatabase.getInstance("https://ses-2a-studybuddies-default-rtdb.firebaseio.com/");
         users = database.getReference("Users");
         subjects = database.getReference("Subjects");
+        reff1 = FirebaseDatabase.getInstance().getReference().child("Subjects");
+        reff2 = FirebaseDatabase.getInstance().getReference();
         btnLogout = findViewById(R.id.btn_logout_quizTwo);
         btnNext = findViewById(R.id.btn_next_quizTwo);
         tvSubjects = findViewById(R.id.tv_subjects);
@@ -234,21 +234,40 @@ public class QuizPageTwo extends AppCompatActivity {
         QP2Answers.setStudyLevel(studyLevel);
         QP2Answers.setGPA(gpa);
 
-        //reff1 = FirebaseDatabase.getInstance().getReference();
-
         String ID = user.getID();
         users.child(ID).child("Quiz").child("QuizPage2").setValue(QP2Answers);
 
         for (int i = 0; i < subjects.size(); i ++) {
             String classString = classesLayoutList.get(i).getEditText().getText().toString();
             String subjectString = selectedSubjectsList.get(i);
+            alreadyExecuted = false;
+            reff1 = FirebaseDatabase.getInstance().getReference().child("Subjects").child(subjectString).child(classString);
+            reff1.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if(snapshot.exists()){
+                        int gs = Integer. parseInt(snapshot.child("GroupSizes").getValue().toString());
+                        int NOfG = (int)snapshot.child("Groups").getChildrenCount();
+                        for(int z = 1;z<=NOfG;z++){
+                            String GropN = "Group"+z;
+                            for(int x = 1; x <= gs;x++){
+                                String member = snapshot.child("Groups").child(GropN).child(String.valueOf(x)).getValue().toString();
+                                if(member.equals("1") && !alreadyExecuted ){
+                                    alreadyExecuted = true;
+                                    snapshot.child("Groups").child(GropN).child(String.valueOf(x)).getRef().setValue(ID);
+                                }
+                            }
+                        }
+                    }
+                }
 
-            users.child(ID).child("Quiz").child("QuizPage2").child("subjects")
-                    .child(String.valueOf(i)).child("subjectName").setValue(subjectString);
-            users.child(ID).child("Quiz").child("QuizPage2").child("subjects")
-                    .child(String.valueOf(i)).child("class").setValue(classString);
-            //reff1.child("Subjects").child(subjectString).child(classString).child("Groups").child("Group1").child("1").setValue(ID);
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
+                }
+            });
+            users.child(ID).child("Quiz").child("QuizPage2").child("subjects").child(String.valueOf(i)).child("subjectName").setValue(subjectString);
+            users.child(ID).child("Quiz").child("QuizPage2").child("subjects").child(String.valueOf(i)).child("class").setValue(classString);
 
         }
 
