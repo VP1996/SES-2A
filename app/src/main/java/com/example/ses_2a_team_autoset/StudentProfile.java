@@ -73,12 +73,14 @@ public class StudentProfile extends AppCompatActivity {
 
                     String subjects = "";
                     for (DataSnapshot dataSnapshot : snapshot.child(ID).child("Quiz").child("QuizPage2").child("subjects").getChildren()) {
-                        String subjectName = dataSnapshot.child("subjectName").getValue().toString();
-                        String subjectClass = dataSnapshot.child("class").getValue().toString();
-                        if (subjects == "")
-                            subjects = subjectName + "-" + subjectClass;
-                        else
-                            subjects = subjects + ", " + subjectName + "-" + subjectClass;
+                        if (dataSnapshot.child("subjectName").exists() && dataSnapshot.child("class").exists()) {
+                            String subjectName = dataSnapshot.child("subjectName").getValue().toString();
+                            String subjectClass = dataSnapshot.child("class").getValue().toString();
+                            if (subjects == "")
+                                subjects = subjectName + "-" + subjectClass;
+                            else
+                                subjects = subjects + ", " + subjectName + "-" + subjectClass;
+                        }
                     }
                     tilSubjects.getEditText().setText(subjects);
                 }

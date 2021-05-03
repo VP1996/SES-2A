@@ -62,7 +62,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/title_quiz_answers" />
 
             <RadioGroup
-                android:id="@+id/rgQuizThreeQ1"
+                android:id="@+id/rgQuizThreeQ1_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -78,7 +78,6 @@
                     android:id="@+id/radioBtn_q1_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
                     android:text="1hr" />
 
                 <RadioButton
@@ -112,7 +111,7 @@
                 android:text="2. Would you like to be matched with a friend?"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rgQuizThreeQ1" />
+                app:layout_constraintTop_toBottomOf="@+id/rgQuizThreeQ1_edit" />
 
             <TextView
                 android:id="@+id/tv_q2_desc"
@@ -130,7 +129,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_q2" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_q2"
+                android:id="@+id/layout_q2_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -147,7 +146,6 @@
                 android:id="@+id/input_q2"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:text="112233"
                 android:inputType="number"/>
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -165,10 +163,10 @@
                 android:text="3. How serious do you prefer your group to be?"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layout_q2" />
+                app:layout_constraintTop_toBottomOf="@+id/layout_q2_edit" />
 
             <RadioGroup
-                android:id="@+id/rgQuizThreeQ3"
+                android:id="@+id/rgQuizThreeQ3_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -190,7 +188,6 @@
                     android:id="@+id/radioBtn_q3_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
                     android:text="Studious with breaks" />
 
                 <RadioButton
@@ -213,10 +210,10 @@
                 android:text="4. Do you prefer online or in-person?"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rgQuizThreeQ3" />
+                app:layout_constraintTop_toBottomOf="@+id/rgQuizThreeQ3_edit" />
 
             <RadioGroup
-                android:id="@+id/rgQuizThreeQ4"
+                android:id="@+id/rgQuizThreeQ4_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -244,7 +241,6 @@
                     android:id="@+id/radioBtn_q4_3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
                     android:text="Both" />
             </RadioGroup>
 
@@ -261,10 +257,10 @@
                 android:text="5. What grade are you aiming for?"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rgQuizThreeQ4" />
+                app:layout_constraintTop_toBottomOf="@+id/rgQuizThreeQ4_edit" />
 
             <RadioGroup
-                android:id="@+id/rgQuizThreeQ5"
+                android:id="@+id/rgQuizThreeQ5_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -298,7 +294,6 @@
                     android:id="@+id/radioBtn_q5_4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
                     android:text="High Distinction" />
             </RadioGroup>
 
@@ -315,10 +310,10 @@
                 android:text="6. How much discussion should your study group have?"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rgQuizThreeQ5" />
+                app:layout_constraintTop_toBottomOf="@+id/rgQuizThreeQ5_edit" />
 
             <RadioGroup
-                android:id="@+id/rgQuizThreeQ6"
+                android:id="@+id/rgQuizThreeQ6_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -346,7 +341,6 @@
                     android:id="@+id/radioBtn_q6_3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
                     android:text="Lots of social conversation" />
 
             </RadioGroup>
@@ -364,10 +358,10 @@
                 android:text="7. What is your preferred learning style?"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rgQuizThreeQ6" />
+                app:layout_constraintTop_toBottomOf="@+id/rgQuizThreeQ6_edit" />
 
             <RadioGroup
-                android:id="@+id/rgQuizThreeQ7"
+                android:id="@+id/rgQuizThreeQ7_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -383,7 +377,6 @@
                     android:id="@+id/radioBtn_q7_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
                     android:text="Visual" />
 
                 <RadioButton
@@ -419,10 +412,10 @@
                 android:text="8. What team role do you prefer?"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rgQuizThreeQ7" />
+                app:layout_constraintTop_toBottomOf="@+id/rgQuizThreeQ7_edit" />
 
             <RadioGroup
-                android:id="@+id/rgQuizThreeQ8"
+                android:id="@+id/rgQuizThreeQ8_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -438,7 +431,6 @@
                     android:id="@+id/radioBtn_q8_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
                     android:text="Leader" />
 
                 <RadioButton
@@ -474,10 +466,10 @@
                 android:text="9. What is your preferred communication platform? "
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rgQuizThreeQ8" />
+                app:layout_constraintTop_toBottomOf="@+id/rgQuizThreeQ8_edit" />
 
             <RadioGroup
-                android:id="@+id/rgQuizThreeQ9"
+                android:id="@+id/rgQuizThreeQ9_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -493,7 +485,6 @@
                     android:id="@+id/radioBtn_q9_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
                     android:text="Facebook Messenger" />
 
                 <RadioButton
@@ -535,10 +526,10 @@
                 android:text="10. Do you prefer studying in the morning or night?"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rgQuizThreeQ9" />
+                app:layout_constraintTop_toBottomOf="@+id/rgQuizThreeQ9_edit" />
 
             <RadioGroup
-                android:id="@+id/rgQuizThreeQ10"
+                android:id="@+id/rgQuizThreeQ10_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -566,7 +557,6 @@
                     android:id="@+id/radioBtn_q10_3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
                     android:text="Neither (more productive during the day)" />
 
             </RadioGroup>
@@ -584,10 +574,10 @@
                 android:text="11. In which building do you prefer studying at UTS?"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rgQuizThreeQ10" />
+                app:layout_constraintTop_toBottomOf="@+id/rgQuizThreeQ10_edit" />
 
             <RadioGroup
-                android:id="@+id/rgQuizThreeQ11"
+                android:id="@+id/rgQuizThreeQ11_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -603,7 +593,6 @@
                     android:id="@+id/radioBtn_q11_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
                     android:text="Building 11" />
 
                 <RadioButton
@@ -639,10 +628,10 @@
                 android:text="12. It is now Week 4 of the semester, and one of your group members has not been responding to communications in both the group chat and emails about an assessment due in 2 weeks. What would most likely be your first step? "
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rgQuizThreeQ11" />
+                app:layout_constraintTop_toBottomOf="@+id/rgQuizThreeQ11_edit" />
 
             <RadioGroup
-                android:id="@+id/rgQuizFourQ1"
+                android:id="@+id/rgQuizFourQ1_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -659,7 +648,6 @@
                     android:id="@+id/radioBtn_scenario1_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
                     android:text="Inform the tutor about what has happened. The tutor should be aware of the situation as soon as possible so that the group's mark will not be affected." />
 
                 <RadioButton
@@ -688,10 +676,10 @@
                 android:text="13. A group member reaches out to you asking to cover their task for the week as they are unable to complete it due to personal reasons. You have gotten along well with this team member since the beginning of the semester. What would you say?"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rgQuizFourQ1" />
+                app:layout_constraintTop_toBottomOf="@+id/rgQuizFourQ1_edit" />
 
             <RadioGroup
-                android:id="@+id/rgQuizFourQ2"
+                android:id="@+id/rgQuizFourQ2_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -720,7 +708,6 @@
                     android:id="@+id/radioBtn_scenario2_3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
                     android:text="Suggest to bring this up to the rest of the group so that the task will be divided fairly among the group."/>
             </RadioGroup>
 
@@ -737,10 +724,10 @@
                 android:text="14. A group member is struggling with their task and have not met the group's deadlines. They have not asked any help but rather asked an extension of the deadline. This extension will delay the group and might result in the group needing to rush the final parts of the project. You have already completed your tasks, and have more pressing deadlines with other subjects. What do you do?"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rgQuizFourQ2" />
+                app:layout_constraintTop_toBottomOf="@+id/rgQuizFourQ2_edit" />
 
             <RadioGroup
-                android:id="@+id/rgQuizFourQ3"
+                android:id="@+id/rgQuizFourQ3_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -769,7 +756,6 @@
                     android:id="@+id/radioBtn_scenario3_3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
                     android:text="Talk to the rest of the group about it. Maybe another group member can support them instead."/>
             </RadioGroup>
 
@@ -786,10 +772,10 @@
                 android:text="15. You have been rushing to complete an individual assignment (Assessment A) by the due date. The day before it is due, the tutor announces that the deadline has been extended by 3 days. You are satisfied with the quality of the assignment but know it can be improved in those 3 days. However, you have another assignment (Assessment B) due next week which needs a significant amount of time and effort. What would you do? "
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rgQuizFourQ3" />
+                app:layout_constraintTop_toBottomOf="@+id/rgQuizFourQ3_edit" />
 
             <RadioGroup
-                android:id="@+id/rgQuizFourQ4"
+                android:id="@+id/rgQuizFourQ4_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -812,7 +798,6 @@
                     android:id="@+id/radioBtn_scenario4_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
                     android:text="Submit Assessment A as it is. You know you will be fine with the mark you will receive and focusing on Assessment B is more important."/>
 
                 <RadioButton
@@ -830,7 +815,7 @@
                 android:text="Save changes"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rgQuizFourQ4" />
+                app:layout_constraintTop_toBottomOf="@+id/rgQuizFourQ4_edit" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

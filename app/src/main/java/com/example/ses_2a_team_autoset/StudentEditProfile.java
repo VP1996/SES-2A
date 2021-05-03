@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.InputType;
 import android.view.ContextThemeWrapper;
 import android.view.View;
@@ -44,7 +45,7 @@ public class StudentEditProfile extends AppCompatActivity {
 
     CurrentUser user;
     FirebaseDatabase database;
-    DatabaseReference users, subjects;
+    DatabaseReference studentRef, subjectsRef;
     QP1Answers QP1Answers;
     QP2Answers QP2Answers;
 
@@ -81,8 +82,8 @@ public class StudentEditProfile extends AppCompatActivity {
         setContentView(R.layout.student_edit_profile);
 
         database = FirebaseDatabase.getInstance("https://ses-2a-studybuddies-default-rtdb.firebaseio.com/");
-        users = database.getReference("Users");
-        subjects = database.getReference("Subjects");
+        studentRef = FirebaseDatabase.getInstance().getReference("Users");
+        subjectsRef = FirebaseDatabase.getInstance().getReference("Subjects");
 
         String ID = user.getID();
 
@@ -104,7 +105,7 @@ public class StudentEditProfile extends AppCompatActivity {
         mLayout = findViewById(R.id.llSelectClasses_edit);
         actvFaculties = findViewById(R.id.actv_faculties_edit);
 
-        users.addValueEventListener(new ValueEventListener() {
+        studentRef.addValueEventListener(new ValueEventListener() {
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -166,7 +167,7 @@ public class StudentEditProfile extends AppCompatActivity {
             }
         });
 
-        subjects.addValueEventListener(new ValueEventListener() {
+        subjectsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -287,7 +288,7 @@ public class StudentEditProfile extends AppCompatActivity {
                         radioBtnSelectedLevel.getText().toString(),
                         tilGpa.getEditText().getText().toString());
 
-                startActivity(new Intent(StudentEditProfile.this, StudentEditProfile.class));
+                Toast.makeText(StudentEditProfile.this, "Changes Saved", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -339,8 +340,8 @@ public class StudentEditProfile extends AppCompatActivity {
         QP2Answers.setGPA(gpa);
 
         String ID = user.getID();
-        users.child(ID).child("Quiz").child("QuizPage1").setValue(QP1Answers);
-        users.child(ID).child("Quiz").child("QuizPage2").setValue(QP2Answers);
+        studentRef.child(ID).child("Quiz").child("QuizPage1").setValue(QP1Answers);
+        studentRef.child(ID).child("Quiz").child("QuizPage2").setValue(QP2Answers);
 
         for (int i = 0; i < subjects.size(); i ++) {
             String classString = "";
@@ -354,9 +355,9 @@ public class StudentEditProfile extends AppCompatActivity {
                 subjectString = storedSubjectsList.get(i);
             }
 
-            users.child(ID).child("Quiz").child("QuizPage2").child("subjects")
+            studentRef.child(ID).child("Quiz").child("QuizPage2").child("subjects")
                     .child(String.valueOf(i)).child("subjectName").setValue(subjectString);
-            users.child(ID).child("Quiz").child("QuizPage2").child("subjects")
+            studentRef.child(ID).child("Quiz").child("QuizPage2").child("subjects")
                     .child(String.valueOf(i)).child("class").setValue(classString);
         }
     }
