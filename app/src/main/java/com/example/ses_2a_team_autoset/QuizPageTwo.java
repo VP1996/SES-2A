@@ -237,6 +237,8 @@ public class QuizPageTwo extends AppCompatActivity {
         String ID = user.getID();
         users.child(ID).child("Quiz").child("QuizPage2").setValue(QP2Answers);
 
+        /////this part
+
         for (int i = 0; i < subjects.size(); i ++) {
             String classString = classesLayoutList.get(i).getEditText().getText().toString();
             String subjectString = selectedSubjectsList.get(i);
@@ -262,6 +264,7 @@ public class QuizPageTwo extends AppCompatActivity {
                         }
                     }
                 }
+                /////this part
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
