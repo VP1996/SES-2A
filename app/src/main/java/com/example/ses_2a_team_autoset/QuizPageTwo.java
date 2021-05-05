@@ -43,12 +43,12 @@ public class QuizPageTwo extends AppCompatActivity {
     CurrentUser user;
     FirebaseDatabase database;
     DatabaseReference users;
+    int count = 1;
     DatabaseReference subjects,reff1,reff2;
     ArrayList<Integer> subjectsIndexList = new ArrayList<>();
     ArrayList<String> subjectsList = new ArrayList<>();
     ArrayList<String> selectedSubjectsList = new ArrayList<>();
     String[] subjectsArray;
-    boolean alreadyExecuted  = false;
     String[] facultiesArray = {
             "Business",
             "Communication",
@@ -240,7 +240,6 @@ public class QuizPageTwo extends AppCompatActivity {
         for (int i = 0; i < subjects.size(); i ++) {
             String classString = classesLayoutList.get(i).getEditText().getText().toString();
             String subjectString = selectedSubjectsList.get(i);
-            alreadyExecuted = false;
             reff1 = FirebaseDatabase.getInstance().getReference().child("Subjects").child(subjectString).child(classString);
             reff1.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -252,10 +251,13 @@ public class QuizPageTwo extends AppCompatActivity {
                             String GropN = "Group"+z;
                             for(int x = 1; x <= gs;x++){
                                 String member = snapshot.child("Groups").child(GropN).child(String.valueOf(x)).getValue().toString();
-                                if(member.equals("1") && !alreadyExecuted ){
-                                    alreadyExecuted = true;
+                                if(member.equals("1") && count==1 ){
+                                    count = 0;
                                     snapshot.child("Groups").child(GropN).child(String.valueOf(x)).getRef().setValue(ID);
                                 }
+                            }
+                            if(z==NOfG && count==0){
+                                count = 1;
                             }
                         }
                     }
