@@ -51,13 +51,13 @@ public class StudentEditProfile extends AppCompatActivity {
     ArrayList<Integer> subjectsIndexList = new ArrayList<>();
     ArrayList<String> subjectsList = new ArrayList<>();
     ArrayList<String> selectedSubjectsList = new ArrayList<>();
-    ArrayList<String> storedSubjectsList = new ArrayList<>();
-    ArrayList<String> storedClassesList = new ArrayList<>();
     String[] subjectsArray;
-    boolean[] selectedSubjects;
+    boolean[] isSubjectsSelected;
+
     String[] classesArray = {"Tut1", "Tut2", "Tut3"};
     ArrayList<String> classesList = new ArrayList<String>(Arrays.asList(classesArray));
     ArrayList<TextInputLayout> classesLayoutList = new ArrayList<>();
+
     ArrayAdapter<String> facultiesAdapter, classAdapter;
     String[] facultiesArray = {
             "Business",
@@ -73,8 +73,13 @@ public class StudentEditProfile extends AppCompatActivity {
             "Science and Mathematics"
     };
     ArrayList<String> facultiesList = new ArrayList<String>(Arrays.asList(facultiesArray));
-    String storedFaculty = "";
 
+    String fullName, email, age, phone, address, culturalBack, faculty, degree,
+            gpa, availabilities, gender, studyLevel;
+    ArrayList<String> subjectsNameList = new ArrayList<>();
+    ArrayList<String> subjectsClassesList = new ArrayList<>();
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,7 +96,7 @@ public class StudentEditProfile extends AppCompatActivity {
         btnSave = findViewById(R.id.btn_save_edit_profile);
         tilFullName = findViewById(R.id.layout_fullName_edit);
         tilEmail = findViewById(R.id.layout_email_edit);
-        tilAge  = findViewById(R.id.layout_age_edit);
+        tilAge = findViewById(R.id.layout_age_edit);
         tilPhone = findViewById(R.id.layout_phone_edit);
         tilAddress = findViewById(R.id.layout_address_edit);
         tilCulturalBack = findViewById(R.id.layout_background_edit);
@@ -104,67 +109,7 @@ public class StudentEditProfile extends AppCompatActivity {
         mLayout = findViewById(R.id.llSelectClasses_edit);
         actvFaculties = findViewById(R.id.actv_faculties_edit);
 
-        studentRef.addValueEventListener(new ValueEventListener() {
-            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.child(ID).child("Quiz").exists()) {
-                    tilFullName.getEditText().setText(snapshot.child(ID).child("Quiz").child("QuizPage1").child("fullName").getValue().toString());
-                    tilEmail.getEditText().setText(snapshot.child(ID).child("Quiz").child("QuizPage1").child("email").getValue().toString());
-                    tilAge.getEditText().setText(snapshot.child(ID).child("Quiz").child("QuizPage1").child("age").getValue().toString());
-                    tilPhone.getEditText().setText(snapshot.child(ID).child("Quiz").child("QuizPage1").child("phoneNumber").getValue().toString());
-                    tilAddress.getEditText().setText(snapshot.child(ID).child("Quiz").child("QuizPage1").child("address").getValue().toString());
-                    tilCulturalBack.getEditText().setText(snapshot.child(ID).child("Quiz").child("QuizPage1").child("culturalBackground").getValue().toString());
-                    tilDegree.getEditText().setText(snapshot.child(ID).child("Quiz").child("QuizPage2").child("degree").getValue().toString());
-                    tilGpa.getEditText().setText(snapshot.child(ID).child("Quiz").child("QuizPage2").child("gpa").getValue().toString());
-                    tilAvailabilities.getEditText().setText(snapshot.child(ID).child("Quiz").child("QuizPage2").child("availabilities").getValue().toString());
-
-                    storedFaculty = snapshot.child(ID).child("Quiz").child("QuizPage2").child("faculty").getValue().toString();
-                    actvFaculties.setText(storedFaculty, false);
-
-                    String gender = snapshot.child(ID).child("Quiz").child("QuizPage1").child("gender").getValue().toString();
-                    if (gender.equals("Female"))
-                        radGrpGender.check(R.id.radioBtn_female_edit);
-                    if (gender.equals("Male"))
-                        radGrpGender.check(R.id.radioBtn_male_edit);
-                    if (gender.equals("Other"))
-                        radGrpGender.check(R.id.radioBtn_other_edit);
-
-                    String studyLevel = snapshot.child(ID).child("Quiz").child("QuizPage2").child("studyLevel").getValue().toString();
-                    if (studyLevel.equals("Undergraduate"))
-                        radGrpStudyLevel.check(R.id.radioBtn_ug_edit);
-                    if (studyLevel.equals("Postgraduate"))
-                        radGrpStudyLevel.check(R.id.radioBtn_pg_edit);
-                    if (studyLevel.equals("PhD"))
-                        radGrpStudyLevel.check(R.id.radioBtn_phd_edit);
-
-                    for (DataSnapshot subject : snapshot.child(ID).child("Quiz").child("QuizPage2").child("subjects").getChildren()) {
-                        storedSubjectsList.add(subject.child("subjectName").getValue().toString());
-                        storedClassesList.add(subject.child("class").getValue().toString());
-                    }
-
-                    // Display the subjects and tutorials stored in database
-                    StringBuilder stringBuilder = new StringBuilder();
-                    for (int i = 0; i < storedSubjectsList.size(); i++) {
-                        stringBuilder.append(storedSubjectsList.get(i));
-                        if (i != storedSubjectsList.size() - 1) {
-                            stringBuilder.append(", ");
-                        }
-                        TextInputLayout tilClass = createNewTextViewSelectClasses(storedSubjectsList.get(i));
-                        classesLayoutList.add(tilClass);
-                        mLayout.addView(tilClass);
-                        tilClass.getEditText().setText(storedClassesList.get(i));
-                    }
-                    tvSubjects.setText(stringBuilder.toString());
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(StudentEditProfile.this, "No student found", Toast.LENGTH_SHORT).show();
-            }
-        });
+        getAllStudentData();
 
         subjectsRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -172,7 +117,7 @@ public class StudentEditProfile extends AppCompatActivity {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     subjectsList.add(dataSnapshot.getKey().toString());
                 }
-                selectedSubjects = new boolean[subjectsList.size()];
+                isSubjectsSelected = new boolean[subjectsList.size()];
                 subjectsArray = subjectsList.toArray(new String[subjectsList.size()]);
             }
 
@@ -188,7 +133,7 @@ public class StudentEditProfile extends AppCompatActivity {
                 //Initialise alert dialog
                 AlertDialog.Builder builder = new AlertDialog.Builder(StudentEditProfile.this);
                 builder.setTitle("Select Subjects");
-                builder.setMultiChoiceItems(subjectsArray, selectedSubjects, new DialogInterface.OnMultiChoiceClickListener() {
+                builder.setMultiChoiceItems(subjectsArray, isSubjectsSelected, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int position, boolean isChecked) {
                         if (isChecked) {
@@ -235,9 +180,9 @@ public class StudentEditProfile extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         mLayout.removeAllViews();
                         classesLayoutList.clear();
-                        for (int i = 0; i < selectedSubjects.length; i++) {
+                        for (int i = 0; i < isSubjectsSelected.length; i++) {
                             //Remove all selections
-                            selectedSubjects[i] = false;
+                            isSubjectsSelected[i] = false;
                             subjectsIndexList.clear();
                             tvSubjects.setText("");
                         }
@@ -271,7 +216,7 @@ public class StudentEditProfile extends AppCompatActivity {
                 if (!selectedSubjectsList.isEmpty())
                     toBeStoredSubjectsList = new ArrayList<>(selectedSubjectsList);
                 else
-                    toBeStoredSubjectsList = new ArrayList<>(storedSubjectsList);
+                    toBeStoredSubjectsList = new ArrayList<>(subjectsNameList);
 
                 saveEdit(tilFullName.getEditText().getText().toString(),
                         tilEmail.getEditText().getText().toString(),
@@ -286,8 +231,6 @@ public class StudentEditProfile extends AppCompatActivity {
                         tilDegree.getEditText().getText().toString(),
                         radioBtnSelectedLevel.getText().toString(),
                         tilGpa.getEditText().getText().toString());
-
-                Toast.makeText(StudentEditProfile.this, "Changes Saved", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -342,16 +285,15 @@ public class StudentEditProfile extends AppCompatActivity {
         studentRef.child(ID).child("Quiz").child("QuizPage1").setValue(QP1Answers);
         studentRef.child(ID).child("Quiz").child("QuizPage2").setValue(QP2Answers);
 
-        for (int i = 0; i < subjects.size(); i ++) {
+        for (int i = 0; i < subjects.size(); i++) {
             String classString = "";
             String subjectString = "";
             if (!selectedSubjectsList.isEmpty()) {
                 classString = classesLayoutList.get(i).getEditText().getText().toString();
                 subjectString = selectedSubjectsList.get(i);
-            }
-            else {
-                classString = storedClassesList.get(i);
-                subjectString = storedSubjectsList.get(i);
+            } else {
+                classString = subjectsClassesList.get(i);
+                subjectString = subjectsNameList.get(i);
             }
 
             studentRef.child(ID).child("Quiz").child("QuizPage2").child("subjects")
@@ -359,5 +301,66 @@ public class StudentEditProfile extends AppCompatActivity {
             studentRef.child(ID).child("Quiz").child("QuizPage2").child("subjects")
                     .child(String.valueOf(i)).child("class").setValue(classString);
         }
+        startActivity(new Intent(StudentEditProfile.this, StudentProfile.class));
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    private void getAllStudentData() {
+        Intent studentData = getIntent();
+        fullName = studentData.getStringExtra("fullName");
+        email = studentData.getStringExtra("email");
+        age = studentData.getStringExtra("age");
+        phone = studentData.getStringExtra("phone");
+        address = studentData.getStringExtra("address");
+        culturalBack = studentData.getStringExtra("culturalBack");
+        degree = studentData.getStringExtra("degree");
+        gpa = studentData.getStringExtra("gpa");
+        availabilities = studentData.getStringExtra("availabilities");
+        gender = studentData.getStringExtra("gender");
+        studyLevel = studentData.getStringExtra("studyLevel");
+        faculty = studentData.getStringExtra("faculty");
+        subjectsNameList = studentData.getStringArrayListExtra("subjectsName");
+        subjectsClassesList = studentData.getStringArrayListExtra("subjectsClass");
+
+        tilFullName.getEditText().setText(fullName);
+        tilEmail.getEditText().setText(email);
+        tilAge.getEditText().setText(age);
+        tilPhone.getEditText().setText(phone);
+        tilAddress.getEditText().setText(address);
+        tilCulturalBack.getEditText().setText(culturalBack);
+        tilDegree.getEditText().setText(degree);
+        tilGpa.getEditText().setText(gpa);
+        tilAvailabilities.getEditText().setText(availabilities);
+        actvFaculties.setText(faculty, false);
+
+        // Check gender radio button
+        if (gender.equals("Female"))
+            radGrpGender.check(R.id.radioBtn_female_edit);
+        if (gender.equals("Male"))
+            radGrpGender.check(R.id.radioBtn_male_edit);
+        if (gender.equals("Other"))
+            radGrpGender.check(R.id.radioBtn_other_edit);
+
+        // Check study level button
+        if (studyLevel.equals("Undergraduate"))
+            radGrpStudyLevel.check(R.id.radioBtn_ug_edit);
+        if (studyLevel.equals("Postgraduate"))
+            radGrpStudyLevel.check(R.id.radioBtn_pg_edit);
+        if (studyLevel.equals("PhD"))
+            radGrpStudyLevel.check(R.id.radioBtn_phd_edit);
+
+        // Display the subjects and tutorials stored in database
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < subjectsNameList.size(); i++) {
+            stringBuilder.append(subjectsNameList.get(i));
+            if (i != subjectsNameList.size() - 1) {
+                stringBuilder.append(", ");
+            }
+            TextInputLayout tilClass = createNewTextViewSelectClasses(subjectsNameList.get(i));
+            classesLayoutList.add(tilClass);
+            mLayout.addView(tilClass);
+            tilClass.getEditText().setText(subjectsClassesList.get(i));
+        }
+        tvSubjects.setText(stringBuilder.toString());
     }
 }

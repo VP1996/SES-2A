@@ -18,11 +18,20 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class StudentProfile extends AppCompatActivity {
     Button btnLogout, btnHome, btnEditProfile, btnEditQuiz;
     TextView tvName;
     TextInputLayout tilEmail, tilAge, tilPhone, tilAddress, tilCulturalBack, tilFaculty, tilDegree, tilGpa,
             tilStudyLevel, tilSubjects, tilAvailabilities;
+
+    String fullName, email, age, phone, address, culturalBack, faculty, degree,
+            gpa, studyLevel, availabilities, gender;
+    String subjects = "";
+
+    ArrayList<String> subjectsNameList = new ArrayList<>();
+    ArrayList<String> subjectsClassesList = new ArrayList<>();
 
     CurrentUser user;
     FirebaseDatabase database;
@@ -59,29 +68,45 @@ public class StudentProfile extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.child(ID).child("Quiz").exists()) {
-                    tvName.setText(snapshot.child(ID).child("Quiz").child("QuizPage1").child("fullName").getValue().toString());
-                    tilEmail.getEditText().setText(snapshot.child(ID).child("Quiz").child("QuizPage1").child("email").getValue().toString());
-                    tilAge.getEditText().setText(snapshot.child(ID).child("Quiz").child("QuizPage1").child("age").getValue().toString());
-                    tilPhone.getEditText().setText(snapshot.child(ID).child("Quiz").child("QuizPage1").child("phoneNumber").getValue().toString());
-                    tilAddress.getEditText().setText(snapshot.child(ID).child("Quiz").child("QuizPage1").child("address").getValue().toString());
-                    tilCulturalBack.getEditText().setText(snapshot.child(ID).child("Quiz").child("QuizPage1").child("culturalBackground").getValue().toString());
-                    tilFaculty.getEditText().setText(snapshot.child(ID).child("Quiz").child("QuizPage2").child("faculty").getValue().toString());
-                    tilDegree.getEditText().setText(snapshot.child(ID).child("Quiz").child("QuizPage2").child("degree").getValue().toString());
-                    tilGpa.getEditText().setText(snapshot.child(ID).child("Quiz").child("QuizPage2").child("gpa").getValue().toString());
-                    tilStudyLevel.getEditText().setText(snapshot.child(ID).child("Quiz").child("QuizPage2").child("studyLevel").getValue().toString());
-                    tilAvailabilities.getEditText().setText(snapshot.child(ID).child("Quiz").child("QuizPage2").child("availabilities").getValue().toString());
+                    fullName = snapshot.child(ID).child("Quiz").child("QuizPage1").child("fullName").getValue().toString();
+                    email = snapshot.child(ID).child("Quiz").child("QuizPage1").child("email").getValue().toString();
+                    age = snapshot.child(ID).child("Quiz").child("QuizPage1").child("age").getValue().toString();
+                    phone = snapshot.child(ID).child("Quiz").child("QuizPage1").child("phoneNumber").getValue().toString();
+                    address = snapshot.child(ID).child("Quiz").child("QuizPage1").child("address").getValue().toString();
+                    culturalBack = snapshot.child(ID).child("Quiz").child("QuizPage1").child("culturalBackground").getValue().toString();
+                    faculty = snapshot.child(ID).child("Quiz").child("QuizPage2").child("faculty").getValue().toString();
+                    degree = snapshot.child(ID).child("Quiz").child("QuizPage2").child("degree").getValue().toString();
+                    gpa = snapshot.child(ID).child("Quiz").child("QuizPage2").child("gpa").getValue().toString();
+                    studyLevel = snapshot.child(ID).child("Quiz").child("QuizPage2").child("studyLevel").getValue().toString();
+                    availabilities = snapshot.child(ID).child("Quiz").child("QuizPage2").child("availabilities").getValue().toString();
+                    gender = snapshot.child(ID).child("Quiz").child("QuizPage1").child("gender").getValue().toString();
 
-                    String subjects = "";
                     for (DataSnapshot dataSnapshot : snapshot.child(ID).child("Quiz").child("QuizPage2").child("subjects").getChildren()) {
                         if (dataSnapshot.child("subjectName").exists() && dataSnapshot.child("class").exists()) {
                             String subjectName = dataSnapshot.child("subjectName").getValue().toString();
                             String subjectClass = dataSnapshot.child("class").getValue().toString();
+                            subjectsNameList.add(subjectName);
+                            subjectsClassesList.add(subjectClass);
+
                             if (subjects == "")
                                 subjects = subjectName + "-" + subjectClass;
                             else
                                 subjects = subjects + ", " + subjectName + "-" + subjectClass;
                         }
                     }
+
+
+                    tvName.setText(fullName);
+                    tilEmail.getEditText().setText(email);
+                    tilAge.getEditText().setText(age);
+                    tilPhone.getEditText().setText(phone);
+                    tilAddress.getEditText().setText(address);
+                    tilCulturalBack.getEditText().setText(culturalBack);
+                    tilFaculty.getEditText().setText(faculty);
+                    tilDegree.getEditText().setText(degree);
+                    tilGpa.getEditText().setText(gpa);
+                    tilStudyLevel.getEditText().setText(studyLevel);
+                    tilAvailabilities.getEditText().setText(availabilities);
                     tilSubjects.getEditText().setText(subjects);
                 }
             }
@@ -109,7 +134,23 @@ public class StudentProfile extends AppCompatActivity {
         btnEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(StudentProfile.this, StudentEditProfile.class));
+                Intent intent = new Intent(v.getContext(), StudentEditProfile.class);
+                intent.putExtra("fullName", fullName);
+                intent.putExtra("email", email);
+                intent.putExtra("age", age);
+                intent.putExtra("phone", phone);
+                intent.putExtra("address", address);
+                intent.putExtra("culturalBack", culturalBack);
+                intent.putExtra("faculty", faculty);
+                intent.putExtra("degree", degree);
+                intent.putExtra("gpa", gpa);
+                intent.putExtra("studyLevel", studyLevel);
+                intent.putExtra("availabilities", availabilities);
+                intent.putExtra("subjectsName", subjectsNameList);
+                intent.putExtra("subjectsClass", subjectsClassesList);
+                intent.putExtra("gender", gender);
+                startActivity(intent);
+                //startActivity(new Intent(StudentProfile.this, StudentEditProfile.class));
             }
         });
 
