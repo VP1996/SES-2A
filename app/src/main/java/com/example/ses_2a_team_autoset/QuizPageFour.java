@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +18,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class QuizPageFour extends AppCompatActivity {
     Button btnLogout, btnNext;
     RadioGroup radioGrpQ1, radioGrpQ2, radioGrpQ3, radioGrpQ4;
@@ -25,7 +28,10 @@ public class QuizPageFour extends AppCompatActivity {
     QP4Answers QP4Answers;
     CurrentUser user;
     FirebaseDatabase database;
-    DatabaseReference users;
+    DatabaseReference users, subjectsInstanceRef;
+
+    ArrayList<String> studentSubjectsList = new ArrayList<>();
+    ArrayList<String> studentClassesList = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,7 +40,9 @@ public class QuizPageFour extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance("https://ses-2a-studybuddies-default-rtdb.firebaseio.com/");
         users = database.getReference("Users");
+        subjectsInstanceRef = FirebaseDatabase.getInstance().getReference().child("Subjects");
 
+        String ID = user.getID();
 
         btnLogout = findViewById(R.id.btn_logout_quizFour);
         btnNext = findViewById(R.id.btn_next_quizFour);
@@ -42,6 +50,26 @@ public class QuizPageFour extends AppCompatActivity {
         radioGrpQ2 = findViewById(R.id.rgQuizFourQ2);
         radioGrpQ3 = findViewById(R.id.rgQuizFourQ3);
         radioGrpQ4 = findViewById(R.id.rgQuizFourQ4);
+
+        users.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for (DataSnapshot dataSnapshot : snapshot.child(ID).child("Quiz").child("QuizPage2").child("subjects").getChildren()) {
+                        if (dataSnapshot.child("subjectName").exists() && dataSnapshot.child("class").exists()) {
+                            studentSubjectsList.add(dataSnapshot.child("subjectName").getValue().toString());
+                            studentClassesList.add(dataSnapshot.child("class").getValue().toString());
+                        }
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(QuizPageFour.this, "No student found", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,6 +107,42 @@ public class QuizPageFour extends AppCompatActivity {
         String ID = user.getID();
         users.child(ID).child("Quiz").child("QuizPage4").setValue(QP4Answers);
         users.child(ID).child("quizTaken").setValue("1");
+
+        for (int i = 0; i < studentSubjectsList.size(); i++) {
+            String subjectName = studentSubjectsList.get(i);
+            String className = studentClassesList.get(i);
+
+            subjectsInstanceRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        // Get the group size set for the particular class of this subject
+                        int groupSize = Integer.parseInt(snapshot.child(subjectName).child(className).child("GroupSizes").getValue().toString());
+
+                        // Get the number of groups in a particular class
+                        int numberOfGroups = (int) snapshot.child(subjectName).child(className).child("Groups").getChildrenCount();
+
+                        loop:
+                        for (int j = 1; j <= numberOfGroups; j++) {
+                            String groupNumber = "Group" + j;
+                            for (int k = 1; k <= groupSize; k++) {
+                                String groupMember = snapshot.child(subjectName).child(className).child("Groups").child(groupNumber).child(String.valueOf(k)).getValue().toString();
+                                if (groupMember.equals("1")) {
+                                    snapshot.child(subjectName).child(className).child("Groups").child(groupNumber).child(String.valueOf(k)).getRef().setValue(ID);
+                                    break loop;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+
         startActivity(new Intent(QuizPageFour.this, HomeScreenStudent.class));
     }
 
