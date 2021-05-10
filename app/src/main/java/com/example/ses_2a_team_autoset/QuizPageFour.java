@@ -138,7 +138,7 @@ public class QuizPageFour extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
+                    Toast.makeText(QuizPageFour.this, "No subjects found", Toast.LENGTH_SHORT).show();
                 }
             });
         }
