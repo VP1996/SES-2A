@@ -28,17 +28,16 @@ public class HomeScreenAdmin extends AppCompatActivity {
     DatabaseReference myRef = database.getReference();    //use this for the firebase reference
 
 
-    int results[]={1,2,3,4,5,6,7,8,9,10,11,12,13}; // Temp Answer Array
-
+    int results[]={1,2,3,4,5,6,7,8,9,10,11,12,13,14,15}; // Temp Answer Array
+    ArrayList<String> subjects= new ArrayList<>();
     //array list to store students
     ArrayList<Iterator<DataSnapshot>> Students = new ArrayList<>();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homescreen_admin);
-        Log.d("error message", "working");
+        Log.d("Error Message", "Working");
 
         Button btsort = (Button) findViewById(R.id.btn_sort);
 
@@ -51,30 +50,47 @@ public class HomeScreenAdmin extends AppCompatActivity {
                 int g = 0;
                 //loop through each student and fetch each multiple choice quiz answers
 
-                /*
-                for (int i = 0; i < Students.length; i++) {
-                    sortAlgo(results);
-                    results[0] = students[i].QuizPage3.mcq1;
-                    results[1] = students[i].QuizPage3.mcq2;
-                    results[2] = students[i].QuizPage3.mcq3;
-                    results[3] = students[i].QuizPage3.mcq4;
-                    results[4] = students[i].QuizPage3.mcq5;
-                    results[5] = students[i].QuizPage3.mcq6;
-                    results[6] = students[i].QuizPage3.mcq7;
-                    results[7] = students[i].QuizPage3.mcq8;
-                    results[8] = students[i].QuizPage3.mcq9;
-                    results[9] = students[i].QuizPage4.mcq1;
-                    results[10] = students[i].QuizPage4.mcq2;
-                    results[11] = students[i].QuizPage4.mcq3;
-                    results[12] = students[i].QuizPage4.mcq4;
+
+                for (int i = 0; i < Students.size(); i++) {
+                    results[0] = Students.QuizPage3.mcq1;
+                    results[1] = Students.QuizPage3.mcq2;
+                    results[2] = Students.QuizPage3.mcq3;
+                    results[3] = Students.QuizPage3.mcq4;
+                    results[4] = Students.QuizPage3.mcq5;
+                    results[5] = Students.QuizPage3.mcq6;
+                    results[6] = Students.QuizPage3.mcq7;
+                    results[7] = Students.QuizPage3.mcq8;
+                    results[8] = Students.QuizPage3.mcq9;
+                    results[9] = Students.QuizPage4.mcq1;
+                    results[10] = Students.QuizPage4.mcq2;
+                    results[11] = Students.QuizPage4.mcq3;
+                    results[12] = Students.QuizPage4.mcq4;
+                    long value = sortAlgo(results);
+                    System.out.println(value);
                     if (g == 4) {
                         g = 1;
                     }
                     myRef.child("Subjects").child("Software Engineering Studio 1A").child("Group" + g);
                     g++;
                 }
-                 */
+
             }
+        });
+    }
+
+    public void getSubjects(){
+        myRef.child("Users").addValueEventListener(new ValueEventListener(){
+           @Override
+           public void onDataChange(DataSnapshot dataSnapshot){
+               for(DataSnapshot snapshot: dataSnapshot.getChildren()){
+
+               }
+           }
+
+           @Override
+            public void onCancelled(@NonNull DatabaseError error){
+
+           }
         });
     }
 
@@ -82,10 +98,9 @@ public class HomeScreenAdmin extends AppCompatActivity {
         myRef.child("Users").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Iterator<DataSnapshot> items = dataSnapshot.getChildren().iterator();
-                while (items.hasNext()) {
-                    Iterator<DataSnapshot> ID = items;
-                    Students.add(ID);
+                for(DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    Person person = snapshot.getValue(Person.class);
+                    System.out.println(person.email);
                 }
             }
 
@@ -96,7 +111,7 @@ public class HomeScreenAdmin extends AppCompatActivity {
         });
     }
 
-    public void sortAlgo(int results[]){
+    public long sortAlgo(int results[]){
             long score =0;
             score=scorer(results);
             int arrLength =results.length;
@@ -107,13 +122,15 @@ public class HomeScreenAdmin extends AppCompatActivity {
             }
 
             long score1 = scorer(hashString(strResults,arrLength));
-            //System.out.println("Score of result test: " + score); // whichever on is higher has to be used
-            //System.out.println("Score of second test: " +score1);
+            
+            return score1;
     }
+
+    //function to give the score of the user
     public long scorer(int[] arr){
             int magExp = 1;
             int mod = 1000000007;
-            int prime = 31;
+            int prime = 5;
             long score =arr[0];
             for(int i=1;i<arr.length;i++){
                 score+=(arr[i]*Math.pow(prime,magExp)) % mod;
@@ -121,15 +138,21 @@ public class HomeScreenAdmin extends AppCompatActivity {
             }
             return score;
     }
+
+    //function to compute the integer value of the string
     public int[] hashString(char arr[], int length){
             int hash[];
             hash = new int[length];
-            System.out.println("Translated array: " );
-            for(int i = 0;i<length;i++){
-                hash[i] = arr[i] -'a' + 1;
-                System.out.print(hash[i]);
+            for(int i = 0; i < length; i++){
+                if(arr[i] <= 'Z' && arr[i] >= 'A') {
+                    hash[i] = arr[i] - 'A' + 1;
+                }else if(arr[i] <= 'z' && arr[i] >= 'a'){
+                    hash[i] = arr[i] - 'a' + 1;
+                }else{
+                    hash[i] = arr[i];
+                }
             }
-            System.out.println(" ");
+
             return hash;
     }
 }
