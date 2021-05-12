@@ -118,7 +118,7 @@ public class QuizPageTwo extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!validateSubjects() | !validateTextInput(tilAvailabilities) | !validateTextInput(tilFaculties) |
-                        !validateTextInput(tilDegree) | !validateStudyLevel() | !validateTextInput(tilGpa))
+                        !validateTextInput(tilDegree) | !validateStudyLevel() | !validateTextInput(tilGpa) | !validateAllTutFields())
                     return;
 
                 radioBtnSelectedLevel = findViewById(radioGrpStudyLevel.getCheckedRadioButtonId());
@@ -279,5 +279,24 @@ public class QuizPageTwo extends AppCompatActivity {
             radioBtnPhd.setError(null);
             return true;
         }
+    }
+
+    private boolean validateAllTutFields() {
+        int errorCount = 0;
+        for (int i = 0; i < classesLayoutList.size(); i++) {
+            String input = classesLayoutList.get(i).getEditText().getText().toString().trim();
+            String inputName = (String) classesLayoutList.get(i).getHint();
+            if (input.isEmpty()) {
+                classesLayoutList.get(i).setError(inputName + " is required");
+                errorCount++;
+            } else {
+                classesLayoutList.get(i).setError(null);
+            }
+        }
+
+        if (errorCount != 0)
+            return false;
+        else
+            return true;
     }
 }

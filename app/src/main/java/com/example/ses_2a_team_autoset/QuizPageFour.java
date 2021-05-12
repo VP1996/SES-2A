@@ -60,7 +60,6 @@ public class QuizPageFour extends AppCompatActivity {
                             studentSubjectsList.add(dataSnapshot.child("subjectName").getValue().toString());
                             studentClassesList.add(dataSnapshot.child("class").getValue().toString());
                         }
-
                     }
                 }
             }
