@@ -28,7 +28,4 @@ public class AddSubjectToClassesView {
 
 }
 
-
-
-
 // 6 values because 2 for top , 2time is day and time, 1 location and 1 for group

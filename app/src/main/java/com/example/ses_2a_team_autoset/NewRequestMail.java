@@ -10,10 +10,6 @@ public class NewRequestMail {
     private String ExpectedGroup;
     private String Reason;
 
-
-
-
-
     public String getFullName() {
         return FullName;
     }

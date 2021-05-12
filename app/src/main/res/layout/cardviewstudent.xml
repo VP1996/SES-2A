@@ -60,7 +60,5 @@
         android:id="@+id/requestButton"
         android:visibility="visible"
         />
-
-
     </LinearLayout>
 </androidx.cardview.widget.CardView>
