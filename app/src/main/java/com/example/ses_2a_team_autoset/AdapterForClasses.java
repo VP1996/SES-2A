@@ -1,6 +1,5 @@
 package com.example.ses_2a_team_autoset;
 
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,20 +20,20 @@ public class AdapterForClasses extends RecyclerView.Adapter<AdapterForClasses.AF
     public interface OnItemClickListener {
         void onItemClick(int position);
     }
+
     public void setOnItemClickListener(OnItemClickListener listener) {
         mListener2 = listener;
     }
 
-    public static class AFSViewHolder extends RecyclerView.ViewHolder{
+    public static class AFSViewHolder extends RecyclerView.ViewHolder {
         public TextView mtime, mlocation, mgroup, mtut;
         public Button bRequest;
-        CurrentUser user;
+
         public AFSViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
-            String Type = user.getType();
-            bRequest= itemView.findViewById(R.id.requestButton);
-            mtime= itemView.findViewById(R.id.time);
-            mlocation= itemView.findViewById(R.id.location);
+            bRequest = itemView.findViewById(R.id.requestButton);
+            mtime = itemView.findViewById(R.id.time);
+            mlocation = itemView.findViewById(R.id.location);
             mgroup = itemView.findViewById(R.id.group);
             mtut = itemView.findViewById(R.id.tut);
 
@@ -52,6 +51,7 @@ public class AdapterForClasses extends RecyclerView.Adapter<AdapterForClasses.AF
 
         }
     }
+
     public AdapterForClasses(ArrayList<AddSubjectToClassesView> classlist) {
         mClassList = classlist;
     }
@@ -61,10 +61,10 @@ public class AdapterForClasses extends RecyclerView.Adapter<AdapterForClasses.AF
     @Override
     public AFSViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         String Type = user.getType();
-        if(Type.equals("Student")){
+        if (Type.equals("Student")) {
             v = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardviewstudent, parent, false);
 
-        }else if (Type.equals("Staff")){
+        } else if (Type.equals("Staff")) {
             v = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardviewadmin, parent, false);
         }
         AFSViewHolder afsvh = new AFSViewHolder(v, mListener2);//for student
@@ -80,11 +80,15 @@ public class AdapterForClasses extends RecyclerView.Adapter<AdapterForClasses.AF
         holder.mtime.setText(currentItem.getDaytime());
         holder.mlocation.setText(currentItem.getLocation());
         holder.mgroup.setText(currentItem.getGroup());
-                                                            // 4 of these for all of them .....
+
+        // If the group is pending, disable "Request change" button
+        if (holder.mgroup.getText().toString().contains("Pending"))
+            holder.bRequest.setEnabled(false);
+
     }
 
     @Override
     public int getItemCount() {
-        return  mClassList.size();
+        return mClassList.size();
     }
 }

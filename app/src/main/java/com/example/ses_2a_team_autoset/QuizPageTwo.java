@@ -40,11 +40,12 @@ public class QuizPageTwo extends AppCompatActivity {
     LinearLayout mLayout;
     AutoCompleteTextView actvFaculties;
     QP2Answers QP2Answers;
+
     CurrentUser user;
     FirebaseDatabase database;
     DatabaseReference users;
-    int count = 1;
-    DatabaseReference subjects,reff1,reff2;
+    DatabaseReference subjectsRef;
+
     ArrayList<Integer> subjectsIndexList = new ArrayList<>();
     ArrayList<String> subjectsList = new ArrayList<>();
     ArrayList<String> selectedSubjectsList = new ArrayList<>();
@@ -76,9 +77,8 @@ public class QuizPageTwo extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance("https://ses-2a-studybuddies-default-rtdb.firebaseio.com/");
         users = database.getReference("Users");
-        subjects = database.getReference("Subjects");
-        reff1 = FirebaseDatabase.getInstance().getReference().child("Subjects");
-        reff2 = FirebaseDatabase.getInstance().getReference();
+        subjectsRef = database.getReference("Subjects");
+
         btnLogout = findViewById(R.id.btn_logout_quizTwo);
         btnNext = findViewById(R.id.btn_next_quizTwo);
         tvSubjects = findViewById(R.id.tv_subjects);
@@ -91,7 +91,7 @@ public class QuizPageTwo extends AppCompatActivity {
         actvFaculties = findViewById(R.id.actv_faculties);
         mLayout = findViewById(R.id.llSelectClasses);
 
-        subjects.addValueEventListener(new ValueEventListener() {
+        subjectsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -118,7 +118,7 @@ public class QuizPageTwo extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!validateSubjects() | !validateTextInput(tilAvailabilities) | !validateTextInput(tilFaculties) |
-                        !validateTextInput(tilDegree) | !validateStudyLevel() | !validateTextInput(tilGpa))
+                        !validateTextInput(tilDegree) | !validateStudyLevel() | !validateTextInput(tilGpa) | !validateAllTutFields())
                     return;
 
                 radioBtnSelectedLevel = findViewById(radioGrpStudyLevel.getCheckedRadioButtonId());
@@ -237,43 +237,12 @@ public class QuizPageTwo extends AppCompatActivity {
         String ID = user.getID();
         users.child(ID).child("Quiz").child("QuizPage2").setValue(QP2Answers);
 
-        /////this part
-
-        for (int i = 0; i < subjects.size(); i ++) {
+        for (int i = 0; i < subjects.size(); i++) {
             String classString = classesLayoutList.get(i).getEditText().getText().toString();
             String subjectString = selectedSubjectsList.get(i);
-            reff1 = FirebaseDatabase.getInstance().getReference().child("Subjects").child(subjectString).child(classString);
-            reff1.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if(snapshot.exists()){
-                        int gs = Integer. parseInt(snapshot.child("GroupSizes").getValue().toString());
-                        int NOfG = (int)snapshot.child("Groups").getChildrenCount();
-                        for(int z = 1;z<=NOfG;z++){
-                            String GropN = "Group"+z;
-                            for(int x = 1; x <= gs;x++){
-                                String member = snapshot.child("Groups").child(GropN).child(String.valueOf(x)).getValue().toString();
-                                if(member.equals("1") && count==1 ){
-                                    count = 0;
-                                    snapshot.child("Groups").child(GropN).child(String.valueOf(x)).getRef().setValue(ID);
-                                }
-                            }
-                            if(z==NOfG && count==0){
-                                count = 1;
-                            }
-                        }
-                    }
-                }
-                /////this part
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
             users.child(ID).child("Quiz").child("QuizPage2").child("subjects").child(String.valueOf(i)).child("subjectName").setValue(subjectString);
             users.child(ID).child("Quiz").child("QuizPage2").child("subjects").child(String.valueOf(i)).child("class").setValue(classString);
-
         }
 
         startActivity(new Intent(QuizPageTwo.this, QuizPageThree.class));
@@ -310,5 +279,24 @@ public class QuizPageTwo extends AppCompatActivity {
             radioBtnPhd.setError(null);
             return true;
         }
+    }
+
+    private boolean validateAllTutFields() {
+        int errorCount = 0;
+        for (int i = 0; i < classesLayoutList.size(); i++) {
+            String input = classesLayoutList.get(i).getEditText().getText().toString().trim();
+            String inputName = (String) classesLayoutList.get(i).getHint();
+            if (input.isEmpty()) {
+                classesLayoutList.get(i).setError(inputName + " is required");
+                errorCount++;
+            } else {
+                classesLayoutList.get(i).setError(null);
+            }
+        }
+
+        if (errorCount != 0)
+            return false;
+        else
+            return true;
     }
 }

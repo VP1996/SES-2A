@@ -1,7 +1,6 @@
 package com.example.ses_2a_team_autoset;
 
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -22,16 +21,16 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class HomeScreenStudent  extends AppCompatActivity {
+public class HomeScreenStudent extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private AdapterForSubjects mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     public TextView welcomeTXT;
-    String currentuser;
+    String currentUser;
 
     CurrentUser user;
 
-    Button btProfile,btLogOut;
+    Button btProfile, btLogOut;
     //Firebase
     private DatabaseReference reff1;
     private DatabaseReference reffy1;
@@ -48,15 +47,15 @@ public class HomeScreenStudent  extends AppCompatActivity {
         reff1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
+                if (dataSnapshot.exists()) {
                     float count = dataSnapshot.getChildrenCount();
-                    for (int i = 0; i < count; i++){
+                    for (int i = 0; i < count; i++) {
                         String temp = String.valueOf(i);      // act + String
                         reffy1 = FirebaseDatabase.getInstance().getReference().child("Users").child(ID).child("Quiz").child("QuizPage2").child("subjects").child(temp);
                         reffy1.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                if(dataSnapshot.exists()){
+                                if (dataSnapshot.exists()) {
                                     subjectList.add(new AddSubjectToSubjectView(dataSnapshot.child("subjectName").getValue().toString()));
 
                                     mRecyclerView = findViewById(R.id.rvStudent1);
@@ -76,8 +75,7 @@ public class HomeScreenStudent  extends AppCompatActivity {
                                     });
 
 
-
-                                }else {
+                                } else {
                                     Toast.makeText(HomeScreenStudent.this, "Not found", Toast.LENGTH_SHORT).show();
                                 }
 
@@ -89,7 +87,7 @@ public class HomeScreenStudent  extends AppCompatActivity {
                             }
                         });
                     }
-                }else {
+                } else {
                     Toast.makeText(HomeScreenStudent.this, "Not found", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -104,8 +102,8 @@ public class HomeScreenStudent  extends AppCompatActivity {
         btProfile = findViewById(R.id.btn_Profile);
         btLogOut = findViewById(R.id.btn_logout);
 
-        currentuser = "Welcome " + user.getFirstName()+" "+ user.getLastName();
-        welcomeTXT.setText(currentuser);
+        currentUser = "Welcome " + user.getFirstName() + " " + user.getLastName();
+        welcomeTXT.setText(currentUser);
 
         btLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
