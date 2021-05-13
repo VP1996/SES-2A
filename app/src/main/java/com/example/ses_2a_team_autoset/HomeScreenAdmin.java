@@ -31,7 +31,8 @@ public class HomeScreenAdmin extends AppCompatActivity {
     int results[]={1,2,3,4,5,6,7,8,9,10,11,12,13,14,15}; // Temp Answer Array
     ArrayList<String> subjects= new ArrayList<>();
     //array list to store students
-    ArrayList<Iterator<DataSnapshot>> Students = new ArrayList<>();
+    ArrayList<ArrayList<String>> Students = new ArrayList<>(17);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,10 @@ public class HomeScreenAdmin extends AppCompatActivity {
         Log.d("Error Message", "Working");
 
         Button btsort = (Button) findViewById(R.id.btn_sort);
+
+        for (int i = 0; i < 16; i++) {
+            Students.add(new ArrayList());
+        }
 
         //Sorting button
         btsort.setOnClickListener(new View.OnClickListener() {
@@ -50,34 +55,40 @@ public class HomeScreenAdmin extends AppCompatActivity {
                 int g = 0;
                 //loop through each student and fetch each multiple choice quiz answers
 
-
-                for (int i = 0; i < Students.size(); i++) {
-                    results[0] = Students.QuizPage3.mcq1;
-                    results[1] = Students.QuizPage3.mcq2;
-                    results[2] = Students.QuizPage3.mcq3;
-                    results[3] = Students.QuizPage3.mcq4;
-                    results[4] = Students.QuizPage3.mcq5;
-                    results[5] = Students.QuizPage3.mcq6;
-                    results[6] = Students.QuizPage3.mcq7;
-                    results[7] = Students.QuizPage3.mcq8;
-                    results[8] = Students.QuizPage3.mcq9;
-                    results[9] = Students.QuizPage4.mcq1;
-                    results[10] = Students.QuizPage4.mcq2;
-                    results[11] = Students.QuizPage4.mcq3;
-                    results[12] = Students.QuizPage4.mcq4;
-                    long value = sortAlgo(results);
-                    System.out.println(value);
-                    if (g == 4) {
-                        g = 1;
-                    }
-                    myRef.child("Subjects").child("Software Engineering Studio 1A").child("Group" + g);
-                    g++;
+                for (int i = 0; i < Students.get(0).size(); i++){
+                        results[0] = Integer.parseInt(Students.get(2).get(i));
+                        results[1] = Integer.parseInt(Students.get(3).get(i));
+                        results[2] = Integer.parseInt(Students.get(4).get(i));
+                        results[3] = Integer.parseInt(Students.get(5).get(i));
+                        results[4] = Integer.parseInt(Students.get(6).get(i));
+                        results[5] = Integer.parseInt(Students.get(7).get(i));
+                        results[6] = Integer.parseInt(Students.get(8).get(i));
+                        results[7] = Integer.parseInt(Students.get(9).get(i));
+                        results[8] = Integer.parseInt(Students.get(10).get(i));
+                        results[9] = Integer.parseInt(Students.get(11).get(i));
+                        results[10] = Integer.parseInt(Students.get(12).get(i));
+                        results[11] = Integer.parseInt(Students.get(13).get(i));
+                        results[12] = Integer.parseInt(Students.get(14).get(i));
+                        long value = sortAlgo(results);
+                        System.out.println(value);
+                        Students.get(16).add(Long.toString(value)); //Adds scores to ArrayList
                 }
+
+                inputSubjects();
+
 
             }
         });
     }
 
+    public void inputSubjects(){
+        myRef.child("Subjects").addValueEventListener(new ValueEventListener(){
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+            }
+        });
+    }
     public void getSubjects(){
         myRef.child("Users").addValueEventListener(new ValueEventListener(){
            @Override
@@ -94,13 +105,36 @@ public class HomeScreenAdmin extends AppCompatActivity {
         });
     }
 
-    public void getData(){ //Gets student Ids from firebase
+    public void getData(){ //Gets all data for the sort algo
         myRef.child("Users").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
-                    Person person = snapshot.getValue(Person.class);
-                    System.out.println(person.email);
+                    CurrentUser currentUser = snapshot.getValue(CurrentUser.class);
+                    QP2Answers qp2 = snapshot.getValue(QP2Answers.class);
+                    QP3Answers qp3 = snapshot.getValue(QP3Answers.class);
+                    QP4Answers qp4 = snapshot.getValue(QP4Answers.class);
+
+                    for (String subject: qp2.getSubjects()) {
+                        Students.get(0).add(currentUser.getID());
+                        Students.get(1).add(qp3.getMcq1());
+                        Students.get(2).add(qp3.getMcq3());
+                        Students.get(3).add(qp3.getMcq4());
+                        Students.get(4).add(qp3.getMcq5());
+                        Students.get(5).add(qp3.getMcq6());
+                        Students.get(6).add(qp3.getMcq7());
+                        Students.get(7).add(qp3.getMcq8());
+                        Students.get(8).add(qp3.getMcq9());   //Adds question answer to ArrayList
+                        Students.get(9).add(qp3.getMcq10());
+                        Students.get(10).add(qp3.getMcq11());
+                        Students.get(11).add(qp4.getMcq1());
+                        Students.get(12).add(qp4.getMcq2());
+                        Students.get(13).add(qp4.getMcq3());
+                        Students.get(14).add(qp4.getMcq4());
+                        Students.get(15).add(subject); //Adds specific subject
+                    }
+
+
                 }
             }
 
