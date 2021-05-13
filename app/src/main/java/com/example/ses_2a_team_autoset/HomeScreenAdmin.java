@@ -32,13 +32,10 @@ public class HomeScreenAdmin extends AppCompatActivity {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();    //use this for the firebase reference
 
-
     int results[]={1,2,3,4,5,6,7,8,9,10,11,12,13,14,15}; // Temp Answer Array
-    ArrayList<String> subjects= new ArrayList<>();
-    //array list to store students
+    ArrayList<String> subjects= new ArrayList<>(); //array list to store students
+
     ArrayList<ArrayList<String>> Students = new ArrayList<>(18);
-    ArrayList<String> selectedClassesList = new ArrayList<>();
-    ArrayList<String> selectedSubjectsList = new ArrayList<>();
     ArrayList<ArrayList<String>> SES1A = new ArrayList<>();
     ArrayList<ArrayList<String>> SES2A = new ArrayList<>();
     ArrayList<ArrayList<String>> SES1B = new ArrayList<>();
@@ -88,22 +85,19 @@ public class HomeScreenAdmin extends AppCompatActivity {
                         System.out.println(value);
                         Students.get(16).add(Long.toString(value)); //Adds scores to ArrayList
                 }
-                Collections.sort(Students, new Comparator<ArrayList<String>>() {
+                Collections.sort(Students, new Comparator<ArrayList<String>>() { // sorts entire student list by their compatibility score
                     @Override
                     public int compare(ArrayList<String> o1, ArrayList<String> o2) {
                         return o1.get(16).compareTo(o2.get(16));
                     }
                 });
 
-                addSubjects();
-                inputSubjects();
-
-
+                addSubjects(); // creates arraylist for each ses
+                inputSubjects(); // Inputs student ids to groups in firebase
 
             }
         });
     }
-
 
     public void addSubjects(){
         for (int i = 0; i < TUTNUM; i++) {
@@ -186,29 +180,13 @@ public class HomeScreenAdmin extends AppCompatActivity {
                 for (stu = 0; stu < Subjects.get(i).size(); stu++)
                     count = 1;
                     while(count < groupsize + 1){
-                        myRef.child(subNames[i]).child("Tut" + Integer.toString(tut + 1)).child("Groups").child("Group"+ Integer.toString(gn)).child(String.valueOf(count)).setValue(Subjects.get(i).get(tut).get(stu)); //Student id here
+                        myRef.child("Subjects").child(subNames[i]).child("Tut" + Integer.toString(tut + 1)).child("Groups").child("Group"+ Integer.toString(gn)).child(String.valueOf(count)).setValue(Subjects.get(i).get(tut).get(stu)); //Student id here
                         count++;
                     }
                     gn++;
             }
         }
         Toast.makeText(HomeScreenAdmin.this, "New Groups Added", Toast.LENGTH_SHORT).show();
-    }
-
-    public void getSubjects(){
-        myRef.child("Users").addValueEventListener(new ValueEventListener(){
-           @Override
-           public void onDataChange(DataSnapshot dataSnapshot){
-               for(DataSnapshot snapshot: dataSnapshot.getChildren()){
-
-               }
-           }
-
-           @Override
-            public void onCancelled(@NonNull DatabaseError error){
-
-           }
-        });
     }
 
     public void getData(){ //Gets all data for the sort algo
@@ -241,14 +219,10 @@ public class HomeScreenAdmin extends AppCompatActivity {
                         Students.get(15).add(subject); //Adds specific subject
                         Students.get(16).add(std.getTut());
                     }
-
-
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     }
