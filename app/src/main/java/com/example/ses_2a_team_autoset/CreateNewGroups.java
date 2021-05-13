@@ -30,105 +30,79 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class QuizPageTwo extends AppCompatActivity {
-    Button btnLogout, btnNext;
-    TextView tvSubjects;
+public class CreateNewGroups extends AppCompatActivity {
+
+    Button btnGoBack, btnSubmit;
+    TextView tvSubjects,tvClasses;
     boolean[] selectedSubjects;
-    TextInputLayout tilFaculties, tilAvailabilities, tilDegree, tilGpa;
-    RadioButton radioBtnSelectedLevel, radioBtnPhd;
-    RadioGroup radioGrpStudyLevel;
-    LinearLayout mLayout;
-    AutoCompleteTextView actvFaculties;
-    QP2Answers QP2Answers;
-
-    CurrentUser user;
+    boolean[] selectedClasses;
+    TextInputLayout tGroupSize,tNumberOfGroups;
     FirebaseDatabase database;
-    DatabaseReference users;
-    DatabaseReference subjectsRef;
-
+    DatabaseReference reffff,reff1;
     ArrayList<Integer> subjectsIndexList = new ArrayList<>();
     ArrayList<String> subjectsList = new ArrayList<>();
     ArrayList<String> selectedSubjectsList = new ArrayList<>();
-    String[] subjectsArray;
-    String[] facultiesArray = {
-            "Business",
-            "Communication",
-            "Creative Intelligence and Innovation",
-            "Design Architecture and Building",
-            "Education",
-            "Engineering",
-            "Health",
-            "Information Technology",
-            "International Studies",
-            "Law",
-            "Science and Mathematics"
-    };
-    ArrayList<String> facultiesList = new ArrayList<String>(Arrays.asList(facultiesArray));
-    ArrayAdapter<String> facultiesAdapter, actvAdapter;
 
     String[] classesArray = {"Tut1", "Tut2", "Tut3"};
     ArrayList<String> classesList = new ArrayList<String>(Arrays.asList(classesArray));
-    ArrayList<TextInputLayout> classesLayoutList = new ArrayList<>();
+
+    ArrayList<Integer> classesIndexList = new ArrayList<>();
+    ArrayList<String> selectedClassesList = new ArrayList<>();
+
+    String[] subjectsArray;
+
+
+    ArrayAdapter<String> actvAdapter;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.quiz_page_two);
+        setContentView(R.layout.createnewgroups);
 
-        database = FirebaseDatabase.getInstance("https://ses-2a-studybuddies-default-rtdb.firebaseio.com/");
-        users = database.getReference("Users");
-        subjectsRef = database.getReference("Subjects");
-
-        btnLogout = findViewById(R.id.btn_logout_quizTwo);
-        btnNext = findViewById(R.id.btn_next_quizTwo);
+        reff1 = FirebaseDatabase.getInstance().getReference().child("Subjects");
+        btnGoBack = findViewById(R.id.btn_goBack);
+        btnSubmit = findViewById(R.id.btn_submit);
         tvSubjects = findViewById(R.id.tv_subjects);
-        tilAvailabilities = findViewById(R.id.layout_availabilities);
-        tilFaculties = findViewById(R.id.menu_faculties);
-        tilDegree = findViewById(R.id.layout_degree);
-        tilGpa = findViewById(R.id.layout_gpa);
-        radioBtnPhd = findViewById(R.id.radioBtn_phd);
-        radioGrpStudyLevel = findViewById(R.id.radioGroupQuizTwo);
-        actvFaculties = findViewById(R.id.actv_faculties);
-        mLayout = findViewById(R.id.llSelectClasses);
+        tvClasses = findViewById(R.id.tv_classes);
+        tGroupSize = findViewById(R.id.GRoupSizes);//NumberOfGroups
+        tNumberOfGroups = findViewById(R.id.NumberOfGroups);
 
-        subjectsRef.addValueEventListener(new ValueEventListener() {
+
+        reff1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     subjectsList.add(dataSnapshot.getKey().toString());
                 }
                 selectedSubjects = new boolean[subjectsList.size()];
+                selectedClasses = new boolean[classesList.size()];
                 subjectsArray = subjectsList.toArray(new String[subjectsList.size()]);
+                classesArray = classesList.toArray(new String[classesList.size()]);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(QuizPageTwo.this, "No subjects found", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CreateNewGroups.this, "No subjects found", Toast.LENGTH_SHORT).show();
             }
         });
 
-        btnLogout.setOnClickListener(new View.OnClickListener() {
+        btnGoBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(QuizPageTwo.this, Login.class));
+                startActivity(new Intent(CreateNewGroups.this, HomeScreenStaff.class));
             }
         });
 
-        btnNext.setOnClickListener(new View.OnClickListener() {
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!validateSubjects() | !validateTextInput(tilAvailabilities) | !validateTextInput(tilFaculties) |
-                        !validateTextInput(tilDegree) | !validateStudyLevel() | !validateTextInput(tilGpa) | !validateAllTutFields())
+                if (!validateSubjects() | !validateClasses() | !validateTextInput(tNumberOfGroups)| !validateTextInput(tGroupSize) )
                     return;
 
-                radioBtnSelectedLevel = findViewById(radioGrpStudyLevel.getCheckedRadioButtonId());
-
-                saveQuizPage2Answers(selectedSubjectsList,
-                        tilAvailabilities.getEditText().getText().toString(),
-                        actvFaculties.getText().toString(),
-                        tilDegree.getEditText().getText().toString(),
-                        radioBtnSelectedLevel.getText().toString(),
-                        tilGpa.getEditText().getText().toString());
+                saveDataG(selectedSubjectsList, selectedClassesList,
+                        tGroupSize.getEditText().getText().toString(),
+                        tNumberOfGroups.getEditText().getText().toString());
             }
         });
 
@@ -136,7 +110,7 @@ public class QuizPageTwo extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Initialise alert dialog
-                AlertDialog.Builder builder = new AlertDialog.Builder(QuizPageTwo.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(CreateNewGroups.this);
                 builder.setTitle("Select Subjects");
                 builder.setMultiChoiceItems(subjectsArray, selectedSubjects, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
@@ -153,8 +127,6 @@ public class QuizPageTwo extends AppCompatActivity {
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mLayout.removeAllViews();
-                        classesLayoutList.clear();
                         selectedSubjectsList.clear();
                         StringBuilder stringBuilder = new StringBuilder();
                         for (int i = 0; i < subjectsIndexList.size(); i++) {
@@ -167,11 +139,6 @@ public class QuizPageTwo extends AppCompatActivity {
                         }
                         tvSubjects.setText(stringBuilder.toString());
 
-                        for (int i = 0; i < subjectsIndexList.size(); i++) {
-                            TextInputLayout tilClass = createNewTextViewSelectClasses(subjectsArray[subjectsIndexList.get(i)]);
-                            classesLayoutList.add(tilClass);
-                            mLayout.addView(tilClass);
-                        }
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -183,8 +150,6 @@ public class QuizPageTwo extends AppCompatActivity {
                 builder.setNeutralButton("Clear All", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mLayout.removeAllViews();
-                        classesLayoutList.clear();
                         for (int i = 0; i < selectedSubjects.length; i++) {
                             //Remove all selections
                             selectedSubjects[i] = false;
@@ -198,9 +163,63 @@ public class QuizPageTwo extends AppCompatActivity {
             }
         });
 
-        facultiesAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.menu_item, facultiesList);
-        actvFaculties.setAdapter(facultiesAdapter);
-        actvFaculties.setThreshold(1);
+        tvClasses.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Initialise alert dialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(CreateNewGroups.this);
+                builder.setTitle("Select Classes");
+                builder.setMultiChoiceItems(classesArray, selectedClasses, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int position, boolean isChecked) {
+                        if (isChecked) {
+                            if (!classesIndexList.contains(position))
+                                classesIndexList.add(position);
+                        } else {
+                            classesIndexList.remove((Integer.valueOf(position)));
+                            selectedClassesList.remove((Integer.valueOf(position)));
+                        }
+                    }
+                });
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        selectedClassesList.clear();
+                        StringBuilder stringBuilder = new StringBuilder();
+                        for (int i = 0; i < classesIndexList.size(); i++) {
+                            selectedClassesList.add(classesArray[classesIndexList.get(i)]);
+                            //Concat array value
+                            stringBuilder.append(classesArray[classesIndexList.get(i)]);
+                            if (i != classesIndexList.size() - 1) {
+                                stringBuilder.append(", ");
+                            }
+                        }
+                        tvClasses.setText(stringBuilder.toString());
+
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.setNeutralButton("Clear All", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        for (int i = 0; i < selectedClasses.length; i++) {
+                            //Remove all selections
+                            selectedClasses[i] = false;
+                            classesIndexList.clear();
+                            tvClasses.setText("");
+                        }
+                    }
+                });
+                //Show dialog
+                builder.show();
+            }
+        });
+
     }
 
     private TextInputLayout createNewTextViewSelectClasses(String text) {
@@ -225,27 +244,28 @@ public class QuizPageTwo extends AppCompatActivity {
         return textInputLayout;
     }
 
-    private void saveQuizPage2Answers(ArrayList<String> subjects, String availabilities, String faculty, String degree, String studyLevel, String gpa) {
-        QP2Answers = new QP2Answers();
-        QP2Answers.setSubjects(subjects);
-        QP2Answers.setAvailabilities(availabilities);
-        QP2Answers.setFaculty(faculty);
-        QP2Answers.setDegree(degree);
-        QP2Answers.setStudyLevel(studyLevel);
-        QP2Answers.setGPA(gpa);
+    private void saveDataG(ArrayList<String> subjects, ArrayList<String> classes, String GroupSizes,String NumberOfGroups) {
 
-        String ID = user.getID();
-        users.child(ID).child("Quiz").child("QuizPage2").setValue(QP2Answers);
+        int sGroupSizes = Integer. parseInt(GroupSizes);
+        int sNumberOfGroups = Integer. parseInt(NumberOfGroups);
 
-        for (int i = 0; i < subjects.size(); i++) {
-            String classString = classesLayoutList.get(i).getEditText().getText().toString();
-            String subjectString = selectedSubjectsList.get(i);
+        for (int i = 0; i < subjects.size(); i ++) {
+            for (int tut = 0; tut < classes.size(); tut ++) {
 
-            users.child(ID).child("Quiz").child("QuizPage2").child("subjects").child(String.valueOf(i)).child("subjectName").setValue(subjectString);
-            users.child(ID).child("Quiz").child("QuizPage2").child("subjects").child(String.valueOf(i)).child("class").setValue(classString);
+                String classString = selectedClassesList.get(tut);
+                String subjectString = selectedSubjectsList.get(i);
+                reff1.child(subjectString).child(classString).child("GroupSizes").setValue(GroupSizes);
+                reff1.child(subjectString).child(classString).child("Groups").getRef().removeValue();
+                for(int f = 1; f <= sNumberOfGroups;f++){
+                    for(int x = 1; x <= sGroupSizes;x++){
+                        String gn = "Group"+String.valueOf(f);
+                        reff1.child(subjectString).child(classString).child("Groups").child(gn).child(String.valueOf(x)).setValue("1");
+                    }
+                }
+            }
         }
-
-        startActivity(new Intent(QuizPageTwo.this, QuizPageThree.class));
+        Toast.makeText(CreateNewGroups.this, "New Groups Added", Toast.LENGTH_SHORT).show();
+        reload();
     }
 
     private boolean validateTextInput(TextInputLayout textInput) {
@@ -262,41 +282,29 @@ public class QuizPageTwo extends AppCompatActivity {
 
     private boolean validateSubjects() {
         if (selectedSubjectsList.isEmpty()) {
-            tvSubjects.setError("Subjects is required");
+            tvSubjects.setError("Subjects are required");
             return false;
         } else {
             tvSubjects.setError(null);
             return true;
         }
     }
-
-    private boolean validateStudyLevel() {
-        int isSelected = radioGrpStudyLevel.getCheckedRadioButtonId();
-        if (isSelected <= 0) {
-            radioBtnPhd.setError("Study level is required");
+    private boolean validateClasses() {
+        if (selectedClassesList.isEmpty()) {
+            tvClasses.setError("Classes are required");
             return false;
         } else {
-            radioBtnPhd.setError(null);
+            tvClasses.setError(null);
             return true;
         }
     }
-
-    private boolean validateAllTutFields() {
-        int errorCount = 0;
-        for (int i = 0; i < classesLayoutList.size(); i++) {
-            String input = classesLayoutList.get(i).getEditText().getText().toString().trim();
-            String inputName = (String) classesLayoutList.get(i).getHint();
-            if (input.isEmpty()) {
-                classesLayoutList.get(i).setError(inputName + " is required");
-                errorCount++;
-            } else {
-                classesLayoutList.get(i).setError(null);
-            }
-        }
-
-        if (errorCount != 0)
-            return false;
-        else
-            return true;
+    public void reload() {
+        Intent intent = getIntent();
+        overridePendingTransition(0, 0);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(intent);
     }
+
 }

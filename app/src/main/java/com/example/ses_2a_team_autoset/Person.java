@@ -9,6 +9,8 @@ public class Person {
     private String Type;
     private String quizTaken;
 
+
+
     public String getFirstName() {
         return FirstName;
     }
@@ -45,4 +47,5 @@ public class Person {
     public void setQuizTaken(String Quiz) {
         this.quizTaken = Quiz;
     }
+
 }

@@ -15,12 +15,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.lang.Math;
+import java.lang.reflect.Array;
 import java.util.Arrays;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 public class HomeScreenAdmin extends AppCompatActivity {
 
@@ -31,7 +33,16 @@ public class HomeScreenAdmin extends AppCompatActivity {
     int results[]={1,2,3,4,5,6,7,8,9,10,11,12,13,14,15}; // Temp Answer Array
     ArrayList<String> subjects= new ArrayList<>();
     //array list to store students
-    ArrayList<ArrayList<String>> Students = new ArrayList<>(17);
+    ArrayList<ArrayList<String>> Students = new ArrayList<>(18);
+    ArrayList<String> selectedClassesList = new ArrayList<>();
+    ArrayList<String> selectedSubjectsList = new ArrayList<>();
+    ArrayList<ArrayList<String>> SES1A = new ArrayList<>();
+    ArrayList<ArrayList<String>> SES2A = new ArrayList<>();
+    ArrayList<ArrayList<String>> SES1B = new ArrayList<>();
+    ArrayList<ArrayList<String>> SES2B = new ArrayList<>();
+    ArrayList<ArrayList<String>> SES3A = new ArrayList<>();
+    ArrayList<ArrayList<String>> SES3B = new ArrayList<>();
+    private final int TUTNUM = 5;
 
 
     @Override
@@ -80,15 +91,95 @@ public class HomeScreenAdmin extends AppCompatActivity {
             }
         });
     }
+    public void addSubjects(){
+        for (int i = 0; i < TUTNUM; i++) {
+            SES1A.add(new ArrayList());
+            SES2A.add(new ArrayList());
+            SES3A.add(new ArrayList());
+            SES1B.add(new ArrayList());
+            SES2B.add(new ArrayList());
+            SES3B.add(new ArrayList());
+        }
 
-    public void inputSubjects(){
-        myRef.child("Subjects").addValueEventListener(new ValueEventListener(){
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+        for (int i = 0; i < Students.get(0).size(); i++){
+            switch (Students.get(15).get(i)) {
+                case "Software Engineering Studio 1A":
+                    if (Students.get(16).get(i).contains("Tut1"))
+                        SES1A.get(0).add(Students.get(0).get(i) + "_" + Students.get(16).get(i));
+                    else if (Students.get(16).get(i).contains("Tut2"))
+                        SES1A.get(1).add(Students.get(0).get(i) + "_" + Students.get(16).get(i));
+                    else if (Students.get(16).get(i).contains("Tut3"))
+                        SES1A.get(2).add(Students.get(0).get(i) + "_" + Students.get(16).get(i));
+
+                case "Software Engineering Studio 2A":
+                    if (Students.get(16).get(i).contains("Tut1"))
+                        SES2A.get(0).add(Students.get(0).get(i) + "_" + Students.get(16).get(i));
+                    else if (Students.get(16).get(i).contains("Tut2"))
+                        SES2A.get(1).add(Students.get(0).get(i) + "_" + Students.get(16).get(i));
+                    else if (Students.get(16).get(i).contains("Tut3"))
+                        SES2A.get(2).add(Students.get(0).get(i) + "_" + Students.get(16).get(i));
+
+                case "Software Engineering Studio 3A":
+                    if (Students.get(16).get(i).contains("Tut1"))
+                        SES3A.get(0).add(Students.get(0).get(i) + "_" + Students.get(16).get(i));
+                    else if (Students.get(16).get(i).contains("Tut2"))
+                        SES3A.get(1).add(Students.get(0).get(i) + "_" + Students.get(16).get(i));
+                    else if (Students.get(16).get(i).contains("Tut3"))
+                        SES3A.get(2).add(Students.get(0).get(i) + "_" + Students.get(16).get(i));
+
+                case "Software Engineering Studio 1B":
+                    if (Students.get(16).get(i).contains("Tut1"))
+                        SES1B.get(0).add(Students.get(0).get(i) + "_" + Students.get(16).get(i));
+                    else if (Students.get(16).get(i).contains("Tut2"))
+                        SES1B.get(1).add(Students.get(0).get(i) + "_" + Students.get(16).get(i));
+                    else if (Students.get(16).get(i).contains("Tut3"))
+                        SES1B.get(2).add(Students.get(0).get(i) + "_" + Students.get(16).get(i));
+
+                case "Software Engineering Studio 2B":
+                    if (Students.get(16).get(i).contains("Tut1"))
+                        SES2B.get(0).add(Students.get(0).get(i) + "_" + Students.get(16).get(i));
+                    else if (Students.get(16).get(i).contains("Tut2"))
+                        SES2B.get(1).add(Students.get(0).get(i) + "_" + Students.get(16).get(i));
+                    else if (Students.get(16).get(i).contains("Tut3"))
+                        SES2B.get(2).add(Students.get(0).get(i) + "_" + Students.get(16).get(i));
+
+                case "Software Engineering Studio 3B":
+                    if (Students.get(16).get(i).contains("Tut1"))
+                        SES3B.get(0).add(Students.get(0).get(i) + "_" + Students.get(16).get(i));
+                    else if (Students.get(16).get(i).contains("Tut2"))
+                        SES3B.get(1).add(Students.get(0).get(i) + "_" + Students.get(16).get(i));
+                    else if (Students.get(16).get(i).contains("Tut3"))
+                        SES3B.get(2).add(Students.get(0).get(i) + "_" + Students.get(16).get(i));
 
             }
-        });
+        }
     }
+
+    public void inputSubjects(){
+
+        int sGroupSizes =5;
+        int sNumberOfGroups=5;
+        String GroupSizes = "8";
+
+
+        for (int i = 0; i < subjects.size(); i ++) {
+            for (int tut = 0; tut < SES1A.get(0).size(); tut ++) { // tut in each class
+
+                String classString = selectedClassesList.get(tut);
+                String subjectString = selectedSubjectsList.get(i);
+                myRef.child(subjectString).child(classString).child("GroupSizes").setValue(GroupSizes); // adds group to database
+                myRef.child(subjectString).child(classString).child("Groups").getRef().removeValue();
+                for(int f = 1; f <= sNumberOfGroups;f++){
+                    for(int x = 1; x <= sGroupSizes;x++){
+                        String gn = "Group"+String.valueOf(f);
+                        myRef.child(subjectString).child(classString).child("Groups").child(gn).child(String.valueOf(x)).setValue("1"); //Student id here
+                    }
+                }
+            }
+        }
+        Toast.makeText(HomeScreenAdmin.this, "New Groups Added", Toast.LENGTH_SHORT).show();
+    }
+
     public void getSubjects(){
         myRef.child("Users").addValueEventListener(new ValueEventListener(){
            @Override
@@ -114,6 +205,7 @@ public class HomeScreenAdmin extends AppCompatActivity {
                     QP2Answers qp2 = snapshot.getValue(QP2Answers.class);
                     QP3Answers qp3 = snapshot.getValue(QP3Answers.class);
                     QP4Answers qp4 = snapshot.getValue(QP4Answers.class);
+                    Studentdetails std = snapshot.getValue(Studentdetails.class);
 
                     for (String subject: qp2.getSubjects()) {
                         Students.get(0).add(currentUser.getID());
@@ -132,6 +224,7 @@ public class HomeScreenAdmin extends AppCompatActivity {
                         Students.get(13).add(qp4.getMcq3());
                         Students.get(14).add(qp4.getMcq4());
                         Students.get(15).add(subject); //Adds specific subject
+                        Students.get(16).add(std.getTut());
                     }
 
 

@@ -61,6 +61,7 @@ public class Login extends AppCompatActivity {
                             String type = dataSnapshot.child(UID).child("type").getValue().toString();
                             user = new CurrentUser();
                             user.setID(UID);
+                            user.setType(type);
                             user.setFirstName(dataSnapshot.child(UID).child("firstName").getValue().toString());
                             user.setLastName(dataSnapshot.child(UID).child("lastName").getValue().toString());
 
