@@ -85,12 +85,13 @@ public class HomeScreenAdmin extends AppCompatActivity {
                         System.out.println(value);
                         Students.get(16).add(Long.toString(value)); //Adds scores to ArrayList
                 }
-                Collections.sort(Students, new Comparator<ArrayList<String>>() { // sorts entire student list by their compatibility score
+                /**Collections.sort(Students, new Comparator<ArrayList<String>>() { // sorts entire student list by their compatibility score
                     @Override
                     public int compare(ArrayList<String> o1, ArrayList<String> o2) {
                         return o1.get(16).compareTo(o2.get(16));
                     }
                 });
+                    */
 
                 addSubjects(); // creates arraylist for each ses
                 inputSubjects(); // Inputs student ids to groups in firebase
@@ -180,7 +181,7 @@ public class HomeScreenAdmin extends AppCompatActivity {
                 for (stu = 0; stu < Subjects.get(i).size(); stu++)
                     count = 1;
                     while(count < groupsize + 1){
-                        myRef.child("Subjects").child(subNames[i]).child("Tut" + Integer.toString(tut + 1)).child("Groups").child("Group"+ Integer.toString(gn)).child(String.valueOf(count)).setValue(Subjects.get(i).get(tut).get(stu)); //Student id here
+                        myRef.child("Subjects").child(subNames[i]).child("Tut" + String.valueOf(tut)).child("Groups").child("Group"+ Integer.toString(gn)).child(String.valueOf(count)).setValue(Subjects.get(i).get(tut).get(stu)); //Student id here
                         count++;
                     }
                     gn++;

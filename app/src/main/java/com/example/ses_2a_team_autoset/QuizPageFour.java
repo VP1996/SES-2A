@@ -25,10 +25,14 @@ public class QuizPageFour extends AppCompatActivity {
     RadioGroup radioGrpQ1, radioGrpQ2, radioGrpQ3, radioGrpQ4;
     RadioButton radioBtnSelectedQ1, radioBtnSelectedQ2, radioBtnSelectedQ3, radioBtnSelectedQ4;
 
+
+
+
+
     QP4Answers QP4Answers;
     CurrentUser user;
     FirebaseDatabase database;
-    DatabaseReference users, subjectsInstanceRef;
+    DatabaseReference users, subjectsInstanceRef,UsersIns;
 
     ArrayList<String> studentSubjectsList = new ArrayList<>();
     ArrayList<String> studentClassesList = new ArrayList<>();
@@ -107,6 +111,8 @@ public class QuizPageFour extends AppCompatActivity {
         users.child(ID).child("Quiz").child("QuizPage4").setValue(QP4Answers);
         users.child(ID).child("quizTaken").setValue("1");
 
+
+
         for (int i = 0; i < studentSubjectsList.size(); i++) {
             String subjectName = studentSubjectsList.get(i);
             String className = studentClassesList.get(i);
@@ -140,6 +146,10 @@ public class QuizPageFour extends AppCompatActivity {
                     Toast.makeText(QuizPageFour.this, "No subjects found", Toast.LENGTH_SHORT).show();
                 }
             });
+
+
+
+
         }
 
         startActivity(new Intent(QuizPageFour.this, HomeScreenStudent.class));
@@ -156,4 +166,6 @@ public class QuizPageFour extends AppCompatActivity {
             return true;
         }
     }
+
+
 }

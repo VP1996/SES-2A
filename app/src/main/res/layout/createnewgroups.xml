@@ -124,6 +124,17 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/NumberOfGroups" />
+
+            <Button
+                android:id="@+id/btn_sortAlg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:text="Sort Students into groups"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_submit" />
+
             <Button
                 android:id="@+id/btn_goBack"
                 android:layout_width="wrap_content"
@@ -132,7 +143,7 @@
                 android:text="Back"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_submit" />
+                app:layout_constraintTop_toBottomOf="@+id/btn_sortAlg" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

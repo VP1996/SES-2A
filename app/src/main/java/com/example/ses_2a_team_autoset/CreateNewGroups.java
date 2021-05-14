@@ -32,16 +32,19 @@ import java.util.Arrays;
 
 public class CreateNewGroups extends AppCompatActivity {
 
-    Button btnGoBack, btnSubmit;
+    Button btnGoBack, btnSubmit,btnSortAlg;
     TextView tvSubjects,tvClasses;
     boolean[] selectedSubjects;
     boolean[] selectedClasses;
+    int lol = 0;
+    int lolAgain = 0;
     TextInputLayout tGroupSize,tNumberOfGroups;
     FirebaseDatabase database;
-    DatabaseReference reffff,reff1;
+    DatabaseReference reffff,reff1,Sortthing;
     ArrayList<Integer> subjectsIndexList = new ArrayList<>();
     ArrayList<String> subjectsList = new ArrayList<>();
     ArrayList<String> selectedSubjectsList = new ArrayList<>();
+    int results[]={1,2,3,4,5,6,7,8,9,10,11,12,13,14,15}; // Temp Answer Array
 
     String[] classesArray = {"Tut1", "Tut2", "Tut3"};
     ArrayList<String> classesList = new ArrayList<String>(Arrays.asList(classesArray));
@@ -61,9 +64,11 @@ public class CreateNewGroups extends AppCompatActivity {
         setContentView(R.layout.createnewgroups);
 
         reff1 = FirebaseDatabase.getInstance().getReference().child("Subjects");
+        Sortthing = FirebaseDatabase.getInstance().getReference().child("Users");
         btnGoBack = findViewById(R.id.btn_goBack);
         btnSubmit = findViewById(R.id.btn_submit);
         tvSubjects = findViewById(R.id.tv_subjects);
+        btnSortAlg = findViewById(R.id.btn_sortAlg);
         tvClasses = findViewById(R.id.tv_classes);
         tGroupSize = findViewById(R.id.GRoupSizes);//NumberOfGroups
         tNumberOfGroups = findViewById(R.id.NumberOfGroups);
@@ -105,6 +110,50 @@ public class CreateNewGroups extends AppCompatActivity {
                         tNumberOfGroups.getEditText().getText().toString());
             }
         });
+
+        btnSortAlg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Sortthing.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                if (dataSnapshot.child("type").equals("Student") && dataSnapshot.child("quizTaken").equals("1")) {
+                                    for (DataSnapshot dp : dataSnapshot.child("Quiz").child("QuizPage3").getChildren()) {
+                                        if(dp.child("friendId").equals("") && lol <11 ){
+                                            String jeff= "mcq"+ String.valueOf(lol+1);
+                                            results[lol] = Integer.parseInt(dp.child(jeff).getRef().toString());
+                                            lol++;
+                                            }
+                                        }
+                                    for (DataSnapshot dank : dataSnapshot.child("Quiz").child("QuizPage4").getChildren()) {
+                                        if(lol >=11 ){
+                                            String jeff= "mcq"+ String.valueOf(lolAgain+1);
+                                            results[lol] = Integer.parseInt(dank.child(jeff).getRef().toString());
+                                            lol++;
+                                            lolAgain++;
+                                        }
+                                    }
+
+                                        long value = sortAlgo(results);
+                                        dataSnapshot.child("QuizREsults").getRef().setValue(value);
+
+
+                                    }
+                                }
+                            }
+                        }
+
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+        });
+
 
         tvSubjects.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -306,5 +355,50 @@ public class CreateNewGroups extends AppCompatActivity {
         overridePendingTransition(0, 0);
         startActivity(intent);
     }
+    public long sortAlgo(int results[]){
+        long score =0;
+        score=scorer(results);
+        int arrLength =results.length;
+        char[] strResults = new char[arrLength];
+
+        for (int i = 0; i <arrLength; i++){
+            strResults[i] = (char) results[i]; //change res to string so it can be hashed
+        }
+
+        long score1 = scorer(hashString(strResults,arrLength));
+
+        return score1;
+    }
+
+    //function to give the score of the user
+    public long scorer(int[] arr){
+        int magExp = 1;
+        int mod = 1000000007;
+        int prime = 5;
+        long score =arr[0];
+        for(int i=1;i<arr.length;i++){
+            score+=(arr[i]*Math.pow(prime,magExp)) % mod;
+            magExp++;
+        }
+        return score;
+    }
+
+    //function to compute the integer value of the string
+    public int[] hashString(char arr[], int length){
+        int hash[];
+        hash = new int[length];
+        for(int i = 0; i < length; i++){
+            if(arr[i] <= 'Z' && arr[i] >= 'A') {
+                hash[i] = arr[i] - 'A' + 1;
+            }else if(arr[i] <= 'z' && arr[i] >= 'a'){
+                hash[i] = arr[i] - 'a' + 1;
+            }else{
+                hash[i] = arr[i];
+            }
+        }
+
+        return hash;
+    }
+
 
 }

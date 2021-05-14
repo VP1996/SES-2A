@@ -48,8 +48,7 @@ public class Login extends AppCompatActivity {
     }
 
     private void logIn(final String UID, final String UPassword) {
-        //redirects directly to admin remove at the end of testing
-        startActivity(new Intent(Login.this, HomeScreenAdmin.class));
+
 
         DRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
